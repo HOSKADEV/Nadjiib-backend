@@ -18,7 +18,7 @@ return new class extends Migration {
       $table->string('name_fr');
       $table->string('name_en');
       $table->string('image')->nullable()->default(null);
-      $table->enum('type', ['academic', 'extracurricular']);
+      $table->enum('type', ['academic', 'extracurricular'])->default('academic');
       $table->timestamps();
       $table->softDeletes();
     });
