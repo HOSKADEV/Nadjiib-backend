@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use App\Providers\EloquentRepositoryProvider;
 
 return [
 
@@ -177,6 +178,9 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
+
+    App\Providers\EloquentRepositoryProvider::class,
+    
 
   ],
 
