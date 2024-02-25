@@ -5,7 +5,7 @@ namespace App\Repositories\Section;
 interface SectionRepository
 {
     /**
-     * Get all available Stage.
+     * Get all available Section.
      * @return mixed
      */
     public function all();
@@ -26,7 +26,7 @@ interface SectionRepository
     public function delete($id);
 
     /**
-     * Paginate Stages.
+     * Paginate Sections.
      *
      * @param $perPage
      * @param null $search
