@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes; 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseLevel extends Model
 {
     use HasFactory,SoftDeletes,SoftCascadeTrait;
-    /**
+  /**
  * The attributes that are mass assignable.
  *
  * @var array<int, string>
