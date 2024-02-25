@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Section;
+namespace App\Repositories\Level;
 
-interface SectionRepository
+interface LevelRepository
 {
     /**
-     * Get all available Section.
+     * Get all available Level.
      * @return mixed
      */
     public function all();
@@ -26,7 +26,7 @@ interface SectionRepository
     public function delete($id);
 
     /**
-     * Paginate Sections.
+     * Paginate Levels.
      *
      * @param $perPage
      * @param null $search

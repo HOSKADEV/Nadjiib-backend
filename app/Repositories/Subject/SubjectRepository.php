@@ -1,11 +1,10 @@
 <?php
+namespace App\Repositories\Subject;
 
-namespace App\Repositories\Section;
-
-interface SectionRepository
+interface SubjectRepository
 {
     /**
-     * Get all available Section.
+     * Get all available Subject.
      * @return mixed
      */
     public function all();
@@ -26,7 +25,7 @@ interface SectionRepository
     public function delete($id);
 
     /**
-     * Paginate Sections.
+     * Paginate Subjects.
      *
      * @param $perPage
      * @param null $search
