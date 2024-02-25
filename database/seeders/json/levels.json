@@ -1,0 +1,232 @@
+{
+  "1": {
+    "section_id": 1,
+    "year": 1,
+    "name_ar": "سنة اولى ابتدائي",
+    "name_fr": "Première année primaire",
+    "name_en": "First Grade Primary",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "2": {
+    "section_id": 1,
+    "year": 2,
+    "name_ar": "سنة ثانية ابتدائي",
+    "name_fr": "Deuxième année primaire",
+    "name_en": "Second Grade Primary",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "3": {
+    "section_id": 1,
+    "year": 3,
+    "name_ar": "سنة الثالثة ابتدائي",
+    "name_fr": "Troisième année primaire",
+    "name_en": "Third Grade Primary",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "4": {
+    "section_id": 1,
+    "year": 4,
+    "name_ar": "سنة رابعة ابتدائي",
+    "name_fr": "Quatrième année primaire",
+    "name_en": "Fourth Grade Primary",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "5": {
+    "section_id": 1,
+    "year": 5,
+    "name_ar": "سنة خامسة ابتدائي",
+    "name_fr": "Cinquième année primaire",
+    "name_en": "Fifth Grade Primary",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "6": {
+    "section_id": 2,
+    "year": 1,
+    "name_ar": "سنة اولى متوسط",
+    "name_fr": "Première année collégiale",
+    "name_en": "First Year Middle School",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "7": {
+    "section_id": 2,
+    "year": 2,
+    "name_ar": "سنة ثانية متوسط",
+    "name_fr": "Deuxième année collégiale",
+    "name_en": "Second Year Middle School",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "8": {
+    "section_id": 2,
+    "year": 3,
+    "name_ar": "سنة ثالثة متوسط",
+    "name_fr": "Troisième année collégiale",
+    "name_en": "Third Year Middle School",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "9": {
+    "section_id": 2,
+    "year": 4,
+    "name_ar": "سنة رابعة متوسط",
+    "name_fr": "Quatrième année collégiale",
+    "name_en": "Fourth Year Middle School",
+    "specialty_ar": null,
+    "specialty_fr": null,
+    "specialty_en": null
+  },
+  "10": {
+    "section_id": 3,
+    "year": 1,
+    "name_ar": "سنة اولى ثانوي",
+    "name_fr": "Première année secondaire",
+    "name_en": "First Year Secondary",
+    "specialty_ar": "جذع مشترك ادب ولغات اجنبية",
+    "specialty_fr": "Tronc commun Lettres et Langues Etrangères",
+    "specialty_en": "Common Core Literature and Foreign Languages"
+  },
+  "11": {
+    "section_id": 3,
+    "year": 1,
+    "name_ar": "سنة اولى ثانوي",
+    "name_fr": "Première année secondaire",
+    "name_en": "First Year Secondary",
+    "specialty_ar": "جذع مشترك علوم وتكنولوجيا",
+    "specialty_fr": "Tronc commun Sciences et Technologie",
+    "specialty_en": "Common Core Science and Technology"
+  },
+  "12": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "اداب وفلسفة",
+    "specialty_fr": "Lettres et Philosophie",
+    "specialty_en": "Literature and Philosophy"
+  },
+  "13": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "علوم الطبيعة والحياة",
+    "specialty_fr": "Sciences de la Vie et de la Terre",
+    "specialty_en": "Life and Earth Sciences"
+  },
+  "14": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "تقني رياضيات",
+    "specialty_fr": "Techniques Mathématiques",
+    "specialty_en": "Mathematical Techniques"
+  },
+  "15": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "رياضيات",
+    "specialty_fr": "Mathématiques",
+    "specialty_en": "Mathematics"
+  },
+  "16": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "التسيير والاقتصاد",
+    "specialty_fr": "Gestion et Économie",
+    "specialty_en": "Management and Economics"
+  },
+  "17": {
+    "section_id": 3,
+    "year": 2,
+    "name_ar": "سنة ثانية ثانوي",
+    "name_fr": "Deuxième année secondaire",
+    "name_en": "Second Year Secondary",
+    "specialty_ar": "لغات اجنبية",
+    "specialty_fr": "Langues Etrangères",
+    "specialty_en": "Foreign Languages"
+  },
+  "18": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "اداب وفلسفة",
+    "specialty_fr": "Lettres et Philosophie",
+    "specialty_en": "Literature and Philosophy"
+  },
+  "19": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "علوم الطبيعة والحياة",
+    "specialty_fr": "Sciences de la Vie et de la Terre",
+    "specialty_en": "Life and Earth Sciences"
+  },
+  "20": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "تقني رياضيات",
+    "specialty_fr": "Techniques Mathématiques",
+    "specialty_en": "Mathematical Techniques"
+  },
+  "21": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "رياضيات",
+    "specialty_fr": "Mathématiques",
+    "specialty_en": "Mathematics"
+  },
+  "22": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "التسيير والاقتصاد",
+    "specialty_fr": "Gestion et Économie",
+    "specialty_en": "Management and Economics"
+  },
+  "23": {
+    "section_id": 3,
+    "year": 3,
+    "name_ar": "سنة ثالثة ثانوي",
+    "name_fr": "Troisième année secondaire",
+    "name_en": "Third Year Secondary",
+    "specialty_ar": "لغات اجنبية",
+    "specialty_fr": "Langues Etrangères",
+    "specialty_en": "Foreign Languages"
+  }
+}

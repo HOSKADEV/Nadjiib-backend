@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('name_ar');
             $table->string('name_fr');
             $table->string('name_en');
-            $table->string('specialty_ar');
-            $table->string('specialty_fr');
-            $table->string('specialty_en');
+            $table->string('specialty_ar')->nullable()->default(null);
+            $table->string('specialty_fr')->nullable()->default(null);
+            $table->string('specialty_en')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
