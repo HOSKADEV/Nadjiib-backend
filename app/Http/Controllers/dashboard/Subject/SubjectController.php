@@ -2,19 +2,33 @@
 
 namespace App\Http\Controllers\Dashboard\Subject;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\Subject\SubjectRepository;
 
 class SubjectController extends Controller
 {
+    private $subjects;
+
+    /**
+     * SubjectController constructor.
+     * @param SubjectRepository $subjects
+     */
+    public function __construct(SubjectRepository $subjects)
+    {
+        $this->subjects = $subjects;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        //
+        $subjects = $this->subjects->paginate($perPage = 10, $request->search);
+        return view('dashboard.subject.index',compact('subjects'));
     }
 
     /**
@@ -35,7 +49,9 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->subjects->create($request->all());
+        toastr()->success(trans('message.success.create'));
+        return redirect()->route('dashboard.subjects.index');
     }
 
     /**
@@ -67,9 +83,11 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->subjects->update($request->id,$request->all());
+        toastr()->success(trans('message.success.update'));
+        return redirect()->route('dashboard.subjects.index');
     }
 
     /**
@@ -78,8 +96,10 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $this->subjects->delete($request->id);
+        toastr()->success(trans('message.success.delete'));
+        return redirect()->route('dashboard.subjects.index');
     }
 }
