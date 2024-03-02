@@ -3,7 +3,8 @@
 namespace App\Repositories\Subject;
 
 use App\Models\Subject;
-use App\Repositories\Section\SubjectRepository;
+use App\Http\Filters\SubjectKeywordSearch;
+use App\Repositories\Subject\SubjectRepository;
 
 class EloquentSubject implements SubjectRepository
 {
@@ -61,29 +62,19 @@ class EloquentSubject implements SubjectRepository
      * @param $searchTo
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
-    public function paginate($perPage, $search = null, $status = null)
+    public function paginate($perPage, $search = null)
     {
         $query = Subject::query();
+        if ($search) {
+            (new SubjectKeywordSearch)($query, $search);
+        }
 
-        // if ($status) {
-        //     $query->where('status', $status);
-        // }
+        $result = $query->orderBy('id', 'desc')
+            ->paginate($perPage);
 
-        // if ($search) {
-        //     (new StageKeywordSearch)($query, $search);
-        // }
-
-        // $result = $query->orderBy('id', 'desc')
-        //     ->paginate($perPage);
-
-        // if ($search) {
-        //     $result->appends(['search' => $search]);
-        // }
-
-        // if ($status) {
-        //     $result->appends(['status' => $status]);
-        // }
-
-        // return $result;
+        if ($search) {
+            $result->appends(['search' => $search]);
+        }
+        return $result;
     }
 }
