@@ -20,11 +20,10 @@ class LevelController extends Controller
         try
         {
             $levels = $this->levels->all();
-            // $levels = $this->levels->paginate(20);
-
+            // $levels = $this->levels->paginate(10);
             return response()->json([
               'status' => true,
-              'levels' => new LevelCollection($levels)
+              'data' => new LevelCollection($levels)
             ]);
         }
         catch(Exception $e)
