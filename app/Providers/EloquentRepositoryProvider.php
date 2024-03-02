@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\User\EloquentUser;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Level\EloquentLevel;
+use App\Repositories\User\UserRepository;
 use App\Repositories\Coupon\EloquentCoupon;
 use App\Repositories\Level\LevelRepository;
 use App\Repositories\Coupon\CouponRepository;
@@ -29,6 +31,8 @@ class EloquentRepositoryProvider extends ServiceProvider
         $this->app->bind(LevelSubjectRepository::class, EloquentLevelSubject::class);
 
         $this->app->bind(CouponRepository::class, EloquentCoupon::class);
+        $this->app->bind(UserRepository::class, EloquentUser::class);
+
     }
 
     /**
