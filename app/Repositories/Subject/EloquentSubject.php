@@ -3,7 +3,7 @@
 namespace App\Repositories\Subject;
 
 use App\Models\Subject;
-use App\Repositories\Section\SubjectRepository;
+use App\Repositories\Subject\SubjectRepository;
 
 class EloquentSubject implements SubjectRepository
 {
