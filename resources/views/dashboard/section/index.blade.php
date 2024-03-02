@@ -21,6 +21,7 @@
                         <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('section.create') }}
                     </button>
                 </div>
+
                 <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                     <form action="" method="GET" id="searchSectionForm">
                         <label for="name" class="form-label">{{ trans('section.label.name') }}</label>
