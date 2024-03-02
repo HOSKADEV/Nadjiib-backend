@@ -33,5 +33,5 @@ interface SectionRepository
      * @param null $status
      * @return mixed
      */
-    public function paginate($perPage, $search = null, $status = null);
+    public function paginate($perPage, $search = null);
 }
