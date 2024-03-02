@@ -1,6 +1,6 @@
 <?php
-  // Variables
-  return [
+// Variables
+return [
     "creatorName" => "ThemeSelection",
     "creatorUrl" => "https://themeselection.com",
     "templateName" => "Sneat",
@@ -18,4 +18,4 @@
     "githubUrl" => "https://github.com/themeselection",
     "dribbbleUrl" => "https://dribbble.com/themeselection",
     "instagramUrl" => "https://www.instagram.com/themeselection/"
-  ];
+];
