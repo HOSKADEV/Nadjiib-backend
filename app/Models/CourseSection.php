@@ -9,25 +9,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseSection extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'course_id',
-    'section_id',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'course_id',
+        'section_id',
+    ];
 
-  public function course()
-  {
-    return $this->belongsTo(Course::class);
-  }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
-  public function section()
-  {
-    return $this->belongsTo(Section::class);
-  }
-
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }

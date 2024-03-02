@@ -9,27 +9,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ad extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'name',
-    'image',
-    'url',
-    'type',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'image',
+        'url',
+        'type',
+    ];
 
-  public function teacher()
-  {
-    return $this->hasOneThrough(Teacher::class, TeacherAd::class);
-  }
+    public function teacher()
+    {
+        return $this->hasOneThrough(Teacher::class, TeacherAd::class);
+    }
 
-  public function course()
-  {
-    return $this->hasOneThrough(Course::class, CourseAd::class);
-  }
-
+    public function course()
+    {
+        return $this->hasOneThrough(Course::class, CourseAd::class);
+    }
 }

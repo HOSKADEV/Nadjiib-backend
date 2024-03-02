@@ -9,27 +9,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Review extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'course_id',
-    'student_id',
-    'rating',
-    'comment',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'course_id',
+        'student_id',
+        'rating',
+        'comment',
+    ];
 
-  public function course()
-  {
-    return $this->belongsTo(Course::class);
-  }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
-  public function student()
-  {
-    return $this->belongsTo(Student::class);
-  }
-
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

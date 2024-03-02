@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Documentation extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
 
-  protected $fillable = [
-    'name',
-    'content'
-  ];
+    protected $fillable = [
+        'name',
+        'content'
+    ];
 }

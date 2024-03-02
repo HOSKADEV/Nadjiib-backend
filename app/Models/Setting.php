@@ -9,15 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Setting extends Model
 {
-    use HasFactory,SoftDeletes,SoftCascadeTrait;
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
     /**
- * The attributes that are mass assignable.
- *
- * @var array<int, string>
- */
-protected $fillable = [
-  'name',
-  'value',
-];
-
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'value',
+    ];
 }

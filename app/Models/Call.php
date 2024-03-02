@@ -9,29 +9,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Call extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'teacher_id',
-    'student_id',
-    'start_time',
-    'end_time',
-    'duration',
-    'type',
-    'rating',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'teacher_id',
+        'student_id',
+        'start_time',
+        'end_time',
+        'duration',
+        'type',
+        'rating',
+    ];
 
-  public function teacher()
-  {
-    return $this->belongsTo(Teacher::class);
-  }
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 
-  public function student()
-  {
-    return $this->belongsTo(Student::class);
-  }
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

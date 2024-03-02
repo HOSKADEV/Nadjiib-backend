@@ -9,26 +9,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseCoupon extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'purchase_id',
-    'coupon_id',
-    'discount_amount',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'purchase_id',
+        'coupon_id',
+        'discount_amount',
+    ];
 
-  public function purchase()
-  {
-    return $this->belongsTo(Purchase::class);
-  }
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class);
+    }
 
-  public function coupon()
-  {
-    return $this->belongsTo(Coupon::class);
-  }
-
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
 }

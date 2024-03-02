@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'purchase_id',
-  ];
+    use HasFactory, SoftDeletes, SoftCascadeTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'purchase_id',
+    ];
 
-  public function purchase()
-  {
-    return $this->belongsTo(Purchase::class);
-  }
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class);
+    }
 }
