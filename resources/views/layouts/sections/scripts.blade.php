@@ -4,10 +4,15 @@
 <script src="{{ asset(mix('assets/vendor/js/bootstrap.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
+
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
+{{-- <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> --}}
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}
+
+{{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
 
 <!-- END: Theme JS-->
 <!-- Pricing Modal JS-->
