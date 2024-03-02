@@ -3,7 +3,6 @@
 namespace App\Repositories\Subject;
 
 use App\Models\Subject;
-use App\Http\Filters\SubjectKeywordSearch;
 use App\Repositories\Subject\SubjectRepository;
 
 class EloquentSubject implements SubjectRepository
