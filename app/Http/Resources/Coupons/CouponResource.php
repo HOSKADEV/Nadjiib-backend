@@ -14,6 +14,14 @@ class CouponResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+          'id '         => $this->id,
+          'code '       => $this->code,
+          'type'        => $this->type,
+          'discount'    => $this->discount,
+          'start_date'  => date('d-m-Y',strtotime($this->start_date)),
+          'end_date'    => date('d-m-Y',strtotime($this->end_date)),
+          'created'     => $this->created_at->format('d-m-Y'),
+        ];
     }
 }

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API\Section;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Section\PaginateSectionCollection;
-use App\Http\Resources\Section\SectionCollection;
 use App\Repositories\Section\SectionRepository;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {
@@ -21,11 +21,10 @@ class SectionController extends Controller
     public function getSection()
     {
       try {
-          // $sections =  $this->sections->paginate(5);
-          $sections =  $this->sections->all();
+          $sections =  $this->sections->paginate(10);
           return response()->json([
             'status'   => true,
-            'sections' => new SectionCollection($sections)
+            'sections' => new PaginateSectionCollection($sections)
           ]);
       }
       catch(Exception $e)
@@ -35,5 +34,28 @@ class SectionController extends Controller
           'message' => $e->getMessage()
         ]);
       }
+    }
+
+    public function searchSection(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+          'section_id' => 'require|exists:sections,id'
+        ]);
+        if ($validator->fails()) {
+          return response()->json([
+              'status' => false,
+              'message' => $validator->errors()->first()
+            ]);
+        }
+        try
+        {
+          
+        }
+        catch(Exception $e){
+          return response()->json([
+            'status' => 0,
+            'message' => $e->getMessage()
+          ]);
+        }
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Levels;
+namespace App\Http\Resources\Coupons;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PaginatedLevelCollection extends ResourceCollection
+class PaginateCouponCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -12,7 +12,7 @@ class PaginatedLevelCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public $collects = LevelResource::class;
+    public $collects = CouponResource::class;
     public function toArray($request)
     {
         return [

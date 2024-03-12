@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Subject;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Subject\PaginateSubjectCollection;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
@@ -18,17 +19,17 @@ class SubjectController extends Controller
     public function getSubject(){
       try
       {
-        $subject = $this->subject->all();
+        $subject = $this->subject->paginate(10);
 
         return response()->json([
           'status' => true,
-          'subject' => new SubjectCollection($subject)
+          'subject' => new PaginateSubjectCollection($subject)
         ]);
       }
       catch(Exception $e)
       {
         return response()->json([
-          'status' => 0,
+          'status'  => 0,
           'message' => $e->getMessage()
         ]);
       }
