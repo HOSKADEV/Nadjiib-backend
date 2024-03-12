@@ -18,11 +18,11 @@ class PaginatedLevelCollection extends ResourceCollection
         return [
           'data' => $this->collection,
           'meta' => [
-            'current_page' => $this->currentPage(),
-            'last_page' => $this->lastPage(),
-            'per_page' => $this->perPage(),
-            'total' => $this->total(),
-            'count' => $this->count(),
+            'current_page'  => $this->currentPage(),
+            'last_page'     => $this->lastPage(),
+            'per_page'      => $this->perPage(),
+            'total'         => $this->total(),
+            'count'         => $this->count(),
           ]
         ];
     }
