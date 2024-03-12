@@ -10,6 +10,11 @@ return [
     'role'   => 'Rôle',
     'status' => 'Statut',
 
+    'create'    => 'Ajouter un nouvel utilisateur',
+    'edit'      => 'Modifier le profil utilisateur',
+    'update'    => 'Mettre à jour les données utilisateur',   
+    'delete'    => "Supprimer l'utilisateur",  
+
     'delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
     'label'=> [
         'status'   => 'statut',

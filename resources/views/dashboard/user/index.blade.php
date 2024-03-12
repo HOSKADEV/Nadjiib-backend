@@ -23,10 +23,10 @@
                         <select class="form-select" id="status" name="status" aria-label="Default select example">
                             <option value="{{ Request::get('status') != '' ? Request::get('status') : '' }}"
                                 {{ Request::get('status') != '' ? 'selected' : '' }}>
-                                {{ Request::get('status') != '' ? (Request::get('status') == 1 ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.status') }}
+                                {{ Request::get('status') != '' ? (Request::get('status') == 'ACTIVE' ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.status') }}
                             </option>
-                            <option value="1">{{ trans('user.statuss.active') }}</option>
-                            <option value="2">{{ trans('user.statuss.inactive') }}</option>
+                            <option value="ACTIVE">{{ trans('user.statuss.active') }}</option>
+                            <option value="INACTIVE">{{ trans('user.statuss.inactive') }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
@@ -72,20 +72,31 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->role }}</td>
-                            <td>{{ $user->status }}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-info mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#editCouponModal{{ $user->id }}">
-                                    <i class='bx bxs-edit'></i>
-                                </button>
+                                <span class="badge rounded-pill text-capitalize bg-{{ $user->status == 'ACTIVE' ? 'success' : 'danger' }}">
+                                {{ 
+                                    $user->status == 'ACTIVE' ? trans('app.status.Active') : trans('app.status.Inactive')
+                                }}
+                                </span>
+                                {{-- 
+                                <span class="badge rounded-pill bg-primary">Primary</span>
+                                <span class="badge rounded-pill bg-secondary">Secondary</span>
+                                <span class="badge rounded-pill bg-success">Success</span>
+                                <span class="badge rounded-pill bg-danger">Danger</span>
+                                <span class="badge rounded-pill bg-warning">Warning</span>
+                                <span class="badge rounded-pill bg-info">Info</span>
+                                <span class="badge rounded-pill bg-dark">Dark</span> 
+                                --}}
+                            </td>
+                            <td>
                                 <button type="button" class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#deleteCouponModal{{ $user->id }}">
+                                    data-bs-target="#deleteUserModal{{ $user->id }}">
                                     <i class='bx bx-trash'></i>
                                 </button>
                             </td>
                         </tr>
                         {{-- @include('dashboard.coupon.edit') --}}
-                        {{-- @include('dashboard.coupon.delete') --}}
+                        @include('dashboard.user.delete')
                     @endforeach
                 </tbody>
             </table>
@@ -103,12 +114,22 @@
 
                 timer = setTimeout(function() {
                     submitForm();
+                }, 1000);
+
+            });
+
+            // search
+            $('#search').on('keyup', function(event) {
+                $("#search").focus();
+                timer = setTimeout(function() {
+                    submitForm();
                 }, 4000);
 
-                function submitForm() {
-                    $("#searchUserForm").submit();
-                }
-            });
+            })
+
+            function submitForm() {
+                $("#searchUserForm").submit();
+            }
         });
     </script>
 @endsection
