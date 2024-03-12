@@ -7,5 +7,6 @@ return [
     'levels'     => 'Les niveaux',
     'subjects'   => 'Sujets',
     'level-subjects' => 'Niveau des matières',
-    'coupons'        => 'Coupons' 
+    'coupons'        => 'Coupons',
+    'users'          => 'Utilisateurs',
 ];

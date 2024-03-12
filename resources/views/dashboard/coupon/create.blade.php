@@ -11,13 +11,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-6 mb-3">
-                            <label for="code" class="form-label">{{ trans('coupon.label.code') }}</label>
+                            <label for="code" class="form-label">{{ trans('coupon.label.code') }} <i class="fa fa-refresh" aria-hidden="true"></i></label>
                             <div class="row">
-                                <div class="col-10">
+                                <div class="col-10 px-1">
                                     <input type="text" id="code" name="code" class="form-control mx-2" placeholder="{{ trans('coupon.placeholder.code') }}">
                                 </div>
-                                <div class="col-2 pt-2 btn pl-1">
-                                    <img id="generate" src="{{ asset('assets/img/icons/captcha.png') }}" width="20px" alt="" srcset="">
+                                    <div class="col-2 px-1">
+                                    {{-- <i id="generate" class='bx bx-refresh bx-md bx-spin'></i> --}}
+
+                                    <i id="generate" class='bx bx-refresh bx-md bx-spin-hover'></i>i
                                 </div>
                             </div>
                         </div>

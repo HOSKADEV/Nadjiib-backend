@@ -25,25 +25,28 @@
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+                <i class='menu-icon bx bxs-dashboard'></i>
                 <div>{{ trans('menu.dashboard') }}</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.sections.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.sections.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+                <i class='menu-icon bx bxs-grid'></i>
                 <div>{{ trans('menu.sections') }}</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.levels.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.levels.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+                <i class='menu-icon  bx bxs-graduation'></i>
                 <div>{{ trans('menu.levels') }}</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.subjects.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.subjects.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class='menu-icon bx bxs-purchase-tag'></i>
                 <div>{{ trans('menu.subjects') }}</div>
             </a>
         </li>
@@ -55,14 +58,18 @@
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.coupons.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.coupons.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+                <i class='menu-icon bx bx-store-alt'></i>
                 <div>{{ trans('menu.coupons') }}</div>
             </a>
         </li>
-
-        {{-- coupons --}}
-
-        {{-- level-subjects --}}
+        <li class="menu-item {{ request()->routeIs('dashboard.users.index') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.users.index') }}" class="menu-link">
+                {{-- <i class="menu-icon tf-icons bx bx-user"></i> --}}
+                <i class='menu-icon bx bx-group'></i>
+                <div>{{ trans('menu.users') }}</div>
+            </a>
+        </li>
     </ul>
 
 </aside>
