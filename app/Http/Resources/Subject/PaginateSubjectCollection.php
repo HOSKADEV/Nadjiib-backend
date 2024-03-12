@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Http\Resources\Section;
+namespace App\Http\Resources\Subject;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PaginateSectionCollection extends ResourceCollection
+class PaginateSubjectCollection extends ResourceCollection
 {
-    public $collects = SectionResource::class;
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public $collects = SubjectResource::class;
     public function toArray($request)
     {
       return [

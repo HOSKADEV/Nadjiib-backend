@@ -56,6 +56,14 @@ class EloquentLevel implements LevelRepository
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBySection($section_id)
+    {
+      return Level::whereSectionId($section_id)->get();
+    }
+
+    /**
      * @param $perPage
      * @param null $status
      * @param null $searchFrom

@@ -26,6 +26,11 @@ interface LevelRepository
     public function delete($id);
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBySection($section_id);
+
+    /**
      * Paginate Levels.
      *
      * @param $perPage
@@ -34,4 +39,5 @@ interface LevelRepository
      * @return mixed
      */
     public function paginate($perPage, $search = null);
+
 }
