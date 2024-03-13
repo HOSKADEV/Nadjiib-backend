@@ -65,8 +65,8 @@ class EloquentUser implements UserRepository
      */
     public function paginate($perPage, $search = null, $status = null)
     {
-        $query = User::query();
-        
+        $query = User::query()->with('student', 'teacher');
+
         if ($status) {
             $query->where('status', $status);
         }
@@ -82,5 +82,18 @@ class EloquentUser implements UserRepository
             $result->appends(['search' => $search]);
         }
         return $result;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function changeStatus($id)
+    {
+        $user = $this->find($id);
+
+        $user->changeStatus();
+
+        return $user;
     }
 }
