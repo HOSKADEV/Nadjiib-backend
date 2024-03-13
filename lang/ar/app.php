@@ -5,11 +5,14 @@ return [
 
     'actions'   => 'العمليات',
     'close'     => 'اغلاق',
+    'ok'        => 'موافق',
 
     'create'    => 'إظافة',
     'edit'      => 'تعديل',
     'update'    => 'تحديث',
     'delete'    => 'حذف',
+
+    'all' => 'الكـل',
 
     'status' => [
         'Active'   => 'مفعل',
@@ -28,5 +31,20 @@ return [
         'Used'        => 'مستعمل',
         'Unused'      => 'غير مستعمل',
     ],
+    "statuss" => [
+        'active'      => 'مفعل',
+        'inactive'    => 'عير مفعل',
+        'banned'      => 'ممنوع',
+        'unconfirmed' => 'غير مؤكد',
+    ],
 
+    'approved' => 'موافـقة',
+    'reject'   => 'رفض',
+    'student' => 'تلميذ',
+    'teacher' => 'أستاذ',
+    'user'    => 'مستخدم',
+    'gender' => [
+        'male' => 'ذكر',
+        'female' => 'أنثى',
+    ],
 ];

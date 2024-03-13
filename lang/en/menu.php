@@ -9,4 +9,5 @@ return [
     'level-subjects' => 'Subjects Level',
     'coupons'        => 'Coupons',
     'users'          => 'Users',
+    'courses'        => 'Courses'
 ];
