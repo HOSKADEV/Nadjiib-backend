@@ -23,8 +23,7 @@ return new class extends Migration {
       $table->double('price')->default(0.0);
       $table->string('image')->nullable()->default(null);
       $table->string('video')->nullable()->default(null);
-      // $table->smallInteger('status')->default(1);
-      $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+      $table->enum('status',['PENDING','ACCEPTED','REFUSED'])->default('PENDING');
       $table->timestamps();
       $table->softDeletes();
     });
