@@ -38,6 +38,16 @@ class LevelController extends Controller
 
     public function levelBySection(Request $request)
     {
+        $validation = Validator::make($request->all(), [
+          'section_id' => 'required|exists:sections,id'
+        ]);
+        if ($validation->fails()) {
+          return response()->json([
+            "status" => false,
+            'message' => 'Invalid data sent',
+            "errors" => $validation->errors()->getMessages(),
+          ],422);
+        }
         try{
             $level = $this->levels->getBySection($request->section_id);
             return response()->json([
