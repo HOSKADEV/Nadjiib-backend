@@ -19,7 +19,6 @@ class CouponController extends Controller
       try
       {
           $coupon = $this->coupon->paginate(10);
-
           return response()->json([
             'status' => true,
             'coupon' => new PaginateCouponCollection($coupon)
