@@ -13,6 +13,10 @@ interface CourseRepository
     /**
      * {@inheritdoc}
      */
+    public function find($id);
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $data);
 
     /**
@@ -25,7 +29,7 @@ interface CourseRepository
      */
     public function delete($id);
 
-     /**
+    /**
      * Paginate Courses.
      *
      * @param $perPage
