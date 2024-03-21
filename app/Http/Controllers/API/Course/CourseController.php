@@ -31,12 +31,16 @@ class CourseController extends Controller
       $this->courseSection = $courseSection;
       $this->courseLevel   = $courseLevel;
     }
-    public function index()
+    public function index(Request $request)
     {
         try
         {
-            $course = $this->course->paginate(10);
+            $searchByName     = $request->search_byName;
+            $searchBySubject  = $request->search_bySubject;
+            $searchByTeatcher = $request->search_byTeatcher;
 
+            $course = $this->course->paginate(10,$searchByName,$searchBySubject,$searchByTeatcher);
+            // $courses = $this->course->paginate($perPage = 10, $request->search, $request->subject, $request->teacher, $request->status);
             return response()->json([
               'status' => true,
               'data'  => new PaginateCourseCollection($course)
@@ -80,6 +84,7 @@ class CourseController extends Controller
           $levels_ids   = json_decode($request->input('levels_ids'), true);
           // ** Save image in public folder and return path image save
           $pathImage = $this->SaveImage($request->image , 'images/courses/image/');
+          $pathVideo = $this->SaveVideo($request->video , 'videos/courses/video/');
           // ** Verfication is has a new subject and Saved
           if ($request->has('name_subject')){
               $subject = new Subject();
@@ -93,6 +98,7 @@ class CourseController extends Controller
           $data = array_replace($request->all() ,[
             'subject_id' => $request->has('name_subject') != null ? $subject->id : $request->subject_id,
             'image' => $pathImage,
+            'video' => $pathVideo,
           ]);
           // ** Save data to model Course
           $course = $this->course->create($data);
@@ -162,6 +168,7 @@ class CourseController extends Controller
           else {
             // ** Delete old image from folder when updating the course.
             $imageCourse = $course->image;
+            $videoCourse = $course->video;
             if ($request->has('image')) {
               if ($imageCourse != null && File::exists($imageCourse)) {
                 // !! Delete image from public folder
@@ -178,9 +185,27 @@ class CourseController extends Controller
               // ** retun the same image
               $pathImage = $imageCourse;
             }
+            if ($request->has('video')) {
+                if ($videoCourse != null && File::exists($videoCourse)) {
+                  // !! Delete image from public folder
+                  File::delete($videoCourse);
+                  // ** Save new video in public folder and return path video save
+                  $pathVideo = $this->SaveVideo($request->video , 'videos/courses/video/');
+                }
+                else{
+                  // ** Save new video in public folder and return path video save
+                  $pathVideo = $this->SaveVideo($request->video , 'videos/courses/video/');
+                }
+            }
+            else {
+              // ** retun the same video
+              $pathVideo = $videoCourse;
+            }
+
             // ** data array append subject ID after save new  and iamge
             $data = array_replace($request->all() ,[
               'image' => $pathImage,
+              'video' => $pathVideo,
             ]);
             $courseupdate = $this->course->update($request->course_id, $data);
             if (!$courseupdate) {

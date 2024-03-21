@@ -32,7 +32,7 @@ class CourseResource extends JsonResource
           'description' => $this->description,
           'price'       => $this->price,
           'image'       => is_null($this->image) ? null : url($this->image),
-          'video'       => $this->video,
+          'video'       => is_null($this->video) ? null : url($this->video),
           'status'      => $this->status,
           'level'       => $this->courseLevel()-> count() === 0 ? null : new CourseLevelCollection($this->courseLevel),
           'section'     => $this->courseSection()-> count() === 0  ? null : new CourseSectionCollection($this->courseSection),
