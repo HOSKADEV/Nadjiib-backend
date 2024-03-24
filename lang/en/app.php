@@ -24,6 +24,7 @@ return [
         'Processing' => 'Processing',
         'Accepted'   => 'Accepted',
         'Canceled'   => 'Canceled',
+        'Refused'    => 'Refused',
         'Completed'  => 'Completed',
         'In way'  => 'In way',
         'Used'    => 'Used',
@@ -36,5 +37,10 @@ return [
     'gender' => [
         'male' => 'Male',
         'female' => 'Female',
+    ],
+
+    'currencies'=> [
+        'DZ' => 'DZD',
+        'US' => 'USD',
     ],
 ];

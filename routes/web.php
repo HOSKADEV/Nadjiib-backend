@@ -59,5 +59,4 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);
-
 });

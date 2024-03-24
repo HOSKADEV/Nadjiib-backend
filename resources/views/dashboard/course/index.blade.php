@@ -13,7 +13,6 @@
 @endsection
 
 @section('content')
-    {{-- @include('dashboard.coupon.create') --}}
     <div class="card">
         <h5 class="card-header pt-0 mt-2">
             <form action="" method="GET" id="searchCourseForm">
@@ -21,15 +20,16 @@
                     <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                         <label for="name" class="form-label">{{ trans('course.label.status') }}</label>
                         <select class="form-select" id="status" name="status" aria-label="Default select example">
-                            <option value="{{ Request::get('status') != '' ? Request::get('status') : '' }}"
-                                {{ Request::get('status') != '' ? 'selected' : '' }}>
-                                {{ Request::get('status') != '' ? (Request::get('status') == 'ACTIVE' ? trans('app.statuss.active') : trans('app.statuss.inactive')) : trans('course.select.status') }}
-                            </option>
                             <option value="">{{ trans('app.all') }}</option>
-                            <option value="ACTIVE">{{ trans('user.statuss.active') }}</option>
-                            <option value="INACTIVE">{{ trans('user.statuss.inactive') }}</option>
+                            <option value="PENDING" {{ Request::get('status') == 'PENDING' ? 'selected' : '' }}>
+                                {{ trans('app.status.Pending') }}</option>
+                            <option value="ACCEPTED" {{ Request::get('status') == 'ACCEPTED' ? 'selected' : '' }}>
+                                {{ trans('app.status.Accepted') }}</option>
+                            <option value="REFUSED" {{ Request::get('status') == 'REFUSED' ? 'selected' : '' }}>
+                                {{ trans('app.status.Refused') }}</option>
                         </select>
                     </div>
+
                     <div class="form-group col-md-3">
                         <label for="subject" class="form-label">{{ trans('course.label.subject') }}</label>
                         <select class="form-select" id="subject" name="subject" aria-label="Default select example">
@@ -43,6 +43,7 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group col-md-3">
                         <label for="teacher" class="form-label">{{ trans('course.label.teacher') }}</label>
                         <select class="form-select" id="teacher" name="teacher" aria-label="Default select example">
@@ -87,48 +88,63 @@
                             <td>{{ $course->name }}</td>
                             <td>{{ $course->subject->{'name_' . config('app.locale')} }}</td>
                             <td>{{ $course->teacher->user->name }}</td>
-                            <td>{{ $course->price }}</td>
-
+                            {{-- <td>{{ $course->price }}</td> --}}
+                            <td class="align-middle" style="direction: ltr">@money($course->price)</td>
                             <td>
-                                <span
-                                    class="badge rounded-pill text-capitalize bg-{{ $course->status == 'ACTIVE' ? 'success' : 'danger' }}">
-                                    {{ $course->status == 'ACTIVE' ? trans('app.status.Active') : trans('app.status.Inactive') }}
-                                </span>
+                                @if ($course->status == 'PENDING')
+                                    <span class="badge rounded-pill text-capitalize bg-warning">
+                                        {{ trans('app.status.Pending') }}
+                                    </span>
+                                @elseif($course->status == 'ACCEPTED')
+                                    <span class="badge rounded-pill text-capitalize bg-success">
+                                        {{ trans('app.status.Accepted') }}
+                                    </span>
+                                @else
+                                    <span class="badge rounded-pill text-capitalize bg-danger">
+                                        {{ trans('app.status.Refused') }}
+                                    </span>
+                                @endif
                             </td>
-
                             <td>
-
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
+                                        data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        @if ($course->status == 'INACTIVE')
+                                        @if ($course->status == 'PENDING')
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#UpdateStatusModal{{ $course->id }}">
-                                                {{-- <i class='bx bx-check-circle me-2'></i> --}}
+                                                data-bs-target="#approvedCourseModal{{ $course->id }}">
                                                 <i class='bx bxs-badge-check me-2'></i>
-                                                {{-- <i class='bx bx-x'></i> --}}
                                                 {{ trans('course.approved') }}
                                             </a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                            data-bs-target="#UpdateStatusModal{{ $course->id }}">
-                                            <i class='bx bx-x me-2'></i>
-                                            {{ trans('course.reject') }}
-                                        </a>
+                                                data-bs-target="#rejectCourseModal{{ $course->id }}">
+                                                <i class='bx bx-x me-2'></i>
+                                                {{ trans('course.reject') }}
+                                            </a>
                                         @endif
 
-                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                            data-bs-target="#deleteUserModal{{ $course->id }}">
-                                            <i class="bx bx-trash me-2"></i>
-                                            {{ trans('course.delete') }}
+                                        @if ($course->status != 'ACCEPTED')
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#deleteCourseModal{{ $course->id }}">
+                                                <i class="bx bx-trash me-2"></i>
+                                                {{ trans('course.delete') }}
+                                            </a>
+                                        @endif
+
+                                        <a class="dropdown-item" href="{{ route('dashboard.courses.show', $course->id) }}">
+                                            <i class="bx bx-show me-2"></i>
+                                            {{ trans('course.show') }}
                                         </a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        {{-- @include('dashboard.coupon.edit')
-                        @include('dashboard.coupon.delete') --}}
+                        {{-- @include('dashboard.coupon.edit') --}}
+                        @include('dashboard.course.delete')
+                        @include('dashboard.course.approved')
+                        @include('dashboard.course.reject')
                     @endforeach
                 </tbody>
             </table>

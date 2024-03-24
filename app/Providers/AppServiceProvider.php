@@ -27,5 +27,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         Schema::defaultStringLength(191);
+
+        \Blade::directive('money', function ($money) {
+            return "<?php echo number_format($money, 2,'.',' ').' '.trans('app.currencies.DZ'); ?>";
+        });
     }
 }
