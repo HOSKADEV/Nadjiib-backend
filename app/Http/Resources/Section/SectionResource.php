@@ -16,9 +16,7 @@ class SectionResource extends JsonResource
     {
         return [
           'id'      => $this->id,
-          'name_ar' => $this->name_ar,
-          'name_fr' => $this->name_fr,
-          'name_en' => $this->name_en,
+          'name' => $this->name($request->header('Accept-language','ar')),
           'image'   => empty($this->image) ? null : url($this->image),
         ];
     }

@@ -1,11 +1,16 @@
 <?php
 
-use App\Http\Controllers\API\Coupons\CouponController;
-use App\Http\Controllers\API\Levels\LevelController;
-use App\Http\Controllers\API\Section\SectionController;
-use App\Http\Controllers\API\Subject\SubjectController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\Teacher\TeacherController;
+use App\Http\Controllers\API\Levels\LevelController;
+use App\Http\Controllers\API\Coupons\CouponController;
+use App\Http\Controllers\API\Section\SectionController;
+use App\Http\Controllers\API\Student\StudentController;
+use App\Http\Controllers\API\Subject\SubjectController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,16 +23,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::prefix('v1')->group(function () {
+  Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+    return response()->json([
+      'status' => 1,
+      'data' => new \App\Http\Resources\User\UserResource($request->user())
+    ]);
 });
-// Router For Section
-Route::get('/sections-all', [SectionController::class,'getSection']);
+  Route::post('/auth/login', [AuthController::class,'login']);
+  Route::get('/auth/logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
+  Route::post('/section/get', [SectionController::class,'get']);
+  Route::post('/level/get', [LevelController::class,'get']);
+  Route::post('/subject/get', [SubjectController::class,'get']);
+  Route::post('/student/create', [StudentController::class,'create']);
+  Route::post('/student/update', [StudentController::class,'update']);
+  Route::post('/teacher/create', [TeacherController::class,'create']);
+  Route::post('/teacher/update', [TeacherController::class,'update']);
+});
 
-Route::get('/levels-all',   [LevelController::class, 'getLevel']);
-Route::post('/level/bysection', [LevelController::class,'levelBySection']);
 
-Route::get('/subjects-all', [SubjectController::class, 'getSubject']);
-Route::get('/coupons-all',  [CouponController::class, 'getCoupon']);
 
 

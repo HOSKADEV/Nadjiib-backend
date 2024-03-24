@@ -17,14 +17,30 @@ class LevelController extends Controller
     {
         $this->levels = $levels;
     }
-    public function getLevel()
+    public function get(Request $request)
     {
+      $validator = Validator::make($request->all(), [
+        'section_id' => 'required|exists:sections,id',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json(
+          [
+            'status' => 0,
+            'message' => $validator->errors()->first()
+          ]
+        );
+      }
+
         try
         {
-            $levels = $this->levels->paginate(10);
+
+
+          $levels = $this->levels->getBySection($request->section_id);
+
             return response()->json([
-              'status' => true,
-              'level' => new PaginatedLevelCollection($levels)
+              'status' => 1,
+              'data' => new LevelCollection($levels)
             ]);
         }
         catch(Exception $e)
@@ -36,21 +52,5 @@ class LevelController extends Controller
         }
     }
 
-    public function levelBySection(Request $request)
-    {
-        try{
-            $level = $this->levels->getBySection($request->section_id);
-            return response()->json([
-              'status' => true,
-              'lavel'  => new LevelCollection($level)
-            ]);
-        }
-        catch(Exception $e){
-          return response()->json([
-            'status' => 0,
-            'message' => $e->getMessage()
-          ]);
-        }
-    }
 
 }

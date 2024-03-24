@@ -45,4 +45,22 @@ class Level extends Model
     {
         return $this->belongsToMany(Subject::class, 'level_subjects');
     }
+
+    public function name($lang = 'ar'){
+      return match($lang){
+        'ar' => $this->name_ar,
+        'en' => $this->name_en,
+        'fr' => $this->name_fr,
+        'default' => $this->name_ar,
+      };
+    }
+
+    public function specialty($lang = 'ar'){
+      return match($lang){
+        'ar' => $this->specialty_ar,
+        'en' => $this->specialty_en,
+        'fr' => $this->specialty_fr,
+        'default' => $this->specialty_ar,
+      };
+    }
 }

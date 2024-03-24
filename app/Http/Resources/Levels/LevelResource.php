@@ -17,16 +17,10 @@ class LevelResource extends JsonResource
     public function toArray($request)
     {
         return [
-          'id'           => $this->id,
-          'section'      => new SectionCollection($this->section()->get()),
-          'year'         => $this->year,
-          'name_ar'      => $this->name_ar,
-          'name_fr'      => $this->name_fr,
-          'name_en'      => $this->name_en,
-          'specialty_ar' => $this->specialty_ar,
-          'specialty_fr' => $this->specialty_fr,
-          'specialty_en' => $this->specialty_en,
-          'created'      => is_null($this->created_at) ? null : $this->created_at->format('d-m-Y'),
+          'id'        => $this->id,
+          'year'      => $this->year,
+          'name'      => $this->name($request->header('Accept-language','ar')),
+          'specialty' => $this->specialty($request->header('Accept-language','ar')),
         ];
     }
 }

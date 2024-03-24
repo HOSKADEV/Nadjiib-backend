@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Subject;
+namespace App\Http\Resources\Student;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubjectResource extends JsonResource
+class StudentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,8 @@ class SubjectResource extends JsonResource
     public function toArray($request)
     {
         return [
-          'id'      => $this->id ,
-          'name'    => $this->name($request->header('Accept-Language','ar')),
-          'image'   => is_null($this->image) ? null : $this->image,
-          'type'    => $this->type ,
+          'student_id' => $this->id,
+          'level_id' => $this->level_id,
         ];
     }
 }

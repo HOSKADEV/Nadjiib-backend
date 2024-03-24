@@ -38,4 +38,13 @@ class Subject extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function name($lang = 'ar'){
+      return match($lang){
+        'ar' => $this->name_ar,
+        'en' => $this->name_en,
+        'fr' => $this->name_fr,
+        'default' => $this->name_ar,
+      };
+    }
 }

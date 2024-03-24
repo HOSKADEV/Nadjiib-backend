@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Http\Controllers\API\Student;
+
+use Exception;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
+use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Validator;
+use App\Repositories\Student\StudentRepository;
+use App\Http\Resources\Student\StudentCollection;
+use App\Http\Resources\Student\PaginateStudentCollection;
+
+class StudentController extends Controller
+{
+  private $student;
+  private $user;
+
+  public function __construct(StudentRepository $student, UserRepository $user)
+  {
+    $this->student = $student;
+    $this->user = $user;
+  }
+
+  public function create(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'user_id' => 'required|exists:users,id',
+      'level_id' => 'required|exists:levels,id',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          'status' => 0,
+          'message' => $validator->errors()->first()
+        ]
+      );
+    }
+
+    try {
+
+      $student = $this->student->create($request->all());
+
+      return response()->json([
+        'status' => 1,
+        'data' => $student
+      ]);
+    } catch (Exception $e) {
+      return response()->json([
+        'status' => 0,
+        'message' => $e->getMessage()
+      ]);
+    }
+  }
+
+  public function update(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'student_id' => 'required|exists:students,id',
+      'level_id' => 'sometimes|exists:levels,id',
+      "name" => 'sometimes|string',
+      "image" => 'sometimes|string',
+      "phone" => 'sometimes|unique:users,phone',
+      "gender" => 'sometimes|in:male,female'
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          'status' => 0,
+          'message' => $validator->errors()->first()
+        ]
+      );
+    }
+
+    try {
+
+      $student = $this->student->update($request->student_id, $request->only('level_id'));
+
+      $user = $this->user->update($student->user_id,$request->except(['student_id','level_id']));
+
+      return response()->json([
+        'status' => 1,
+        'data' => new UserResource($user)
+      ]);
+    } catch (Exception $e) {
+      return response()->json([
+        'status' => 0,
+        'message' => $e->getMessage()
+      ]);
+    }
+  }
+
+}

@@ -10,9 +10,13 @@ use App\Repositories\Coupon\EloquentCoupon;
 use App\Repositories\Level\LevelRepository;
 use App\Repositories\Coupon\CouponRepository;
 use App\Repositories\Section\EloquentSection;
+use App\Repositories\Student\EloquentStudent;
 use App\Repositories\Subject\EloquentSubject;
+use App\Repositories\Teacher\EloquentTeacher;
 use App\Repositories\Section\SectionRepository;
+use App\Repositories\Student\StudentRepository;
 use App\Repositories\Subject\SubjectRepository;
+use App\Repositories\Teacher\TeacherRepository;
 use App\Repositories\LevelSubject\EloquentLevelSubject;
 use App\Repositories\LevelSubject\LevelSubjectRepository;
 
@@ -32,6 +36,8 @@ class EloquentRepositoryProvider extends ServiceProvider
 
         $this->app->bind(CouponRepository::class, EloquentCoupon::class);
         $this->app->bind(UserRepository::class, EloquentUser::class);
+        $this->app->bind(StudentRepository::class, EloquentStudent::class);
+        $this->app->bind(TeacherRepository::class, EloquentTeacher::class);
 
     }
 

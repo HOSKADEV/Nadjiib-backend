@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Subject;
 
+use App\Models\Level;
 use App\Models\Subject;
 use App\Repositories\Subject\SubjectRepository;
 
@@ -12,6 +13,13 @@ class EloquentSubject implements SubjectRepository
      */
     public function all(){
         return Subject::all();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function table(){
+        return Subject::withoutTrashed();
     }
     /**
      * {@inheritdoc}
@@ -52,6 +60,15 @@ class EloquentSubject implements SubjectRepository
         $subject = $this->find($id);
 
         return $subject->delete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByLevel($level_id)
+    {
+      $level = Level::findOrFail($level_id);
+      return $level->subjects()->whereType('academic');
     }
 
     /**

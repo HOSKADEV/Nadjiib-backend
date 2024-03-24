@@ -1,18 +1,17 @@
 <?php
-namespace App\Repositories\Subject;
 
-interface SubjectRepository
+namespace App\Repositories\Student;
+
+use App\Models\Student;
+
+interface StudentRepository
 {
     /**
-     * Get all available Subject.
+     * Get all available Student.
      * @return mixed
      */
     public function all();
 
-     /**
-     * {@inheritdoc}
-     */
-    public function table();
     /**
      * {@inheritdoc}
      */
@@ -31,15 +30,15 @@ interface SubjectRepository
     /**
      * {@inheritdoc}
      */
-    public function getByLevel($level_id);
+    public function findByEmail($email);
 
     /**
-     * Paginate Subjects.
+     * Paginate Students.
      *
      * @param $perPage
      * @param null $search
      * @param null $status
      * @return mixed
      */
-    public function paginate($perPage, $search = null);
+    public function paginate($perPage, $search = null, $status = null);
 }

@@ -16,6 +16,12 @@ interface CouponRepository
     public function create(array $data);
 
     /**
+     * @param array $data
+     * @return mixed
+     */
+    public function generate();
+
+    /**
      * {@inheritdoc}
      */
     public function update($id, array $data);

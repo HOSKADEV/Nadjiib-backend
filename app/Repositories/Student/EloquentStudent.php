@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Repositories\User;
+namespace App\Repositories\Student;
 
-use App\Models\User;
-use App\Repositories\User\UserRepository;
-use App\Http\Filters\User\UserKeywordSearch;
+use App\Models\Student;
+use App\Repositories\Student\StudentRepository;
+use App\Http\Filters\Student\StudentKeywordSearch;
 
-class EloquentUser implements UserRepository
+class EloquentStudent implements StudentRepository
 {
     /**
      * {@inheritdoc}
      */
     public function all()
     {
-        return User::all();
+        return Student::all();
     }
     /**
      * {@inheritdoc}
      */
     public function find($id)
     {
-        return User::find($id);
+        return Student::find($id);
     }
 
     /**
@@ -29,9 +29,9 @@ class EloquentUser implements UserRepository
      */
     public function create(array $data)
     {
-        $user = User::create($data);
+        $student = Student::create($data);
 
-        return $user;
+        return $student;
     }
 
     /**
@@ -39,11 +39,11 @@ class EloquentUser implements UserRepository
      */
     public function update($id, array $data)
     {
-        $user = $this->find($id);
+        $student = $this->find($id);
 
-        $user->update($data);
+        $student->update($data);
 
-        return $user;
+        return $student;
     }
 
     /**
@@ -51,16 +51,16 @@ class EloquentUser implements UserRepository
      */
     public function delete($id)
     {
-        $user = $this->find($id);
+        $student = $this->find($id);
 
-        return $user->delete();
+        return $student->delete();
     }
 
     /**
      * {@inheritdoc}
      */
     public function findByEmail($email){
-      return User::whereEmail($email)->first();
+      return Student::whereEmail($email)->first();
     }
 
     /**
@@ -72,14 +72,14 @@ class EloquentUser implements UserRepository
      */
     public function paginate($perPage, $search = null, $status = null)
     {
-        $query = User::query();
+        $query = Student::query();
 
         if ($status) {
             $query->where('status', $status);
         }
 
         if ($search) {
-            (new UserKeywordSearch)($query, $search);
+            (new StudentKeywordSearch)($query, $search);
         }
 
         $result = $query->orderBy('id', 'desc')

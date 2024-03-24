@@ -21,7 +21,7 @@ class RegisterBasic extends Controller
   {
     //dd($request->all());
     $request->validate([
-      'username' => 'required|unique:users',
+      'username' => 'required',
       'email' => 'required|email|unique:users',
       'password' => 'required|min:6',
     ]);

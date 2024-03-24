@@ -2,6 +2,8 @@
 
 namespace App\Repositories\User;
 
+use App\Models\User;
+
 interface UserRepository
 {
     /**
@@ -24,6 +26,11 @@ interface UserRepository
      * {@inheritdoc}
      */
     public function delete($id);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByEmail($email);
 
     /**
      * Paginate Users.

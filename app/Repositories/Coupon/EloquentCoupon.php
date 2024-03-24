@@ -5,6 +5,7 @@ namespace App\Repositories\Coupon;
 use App\Models\Coupon;
 use App\Http\Filters\LevelKeywordSearch;
 use App\Repositories\Coupon\CouponRepository;
+use Random\Randomizer;
 
 class EloquentCoupon implements CouponRepository
 {
@@ -29,6 +30,21 @@ class EloquentCoupon implements CouponRepository
     public function create(array $data)
     {
         $coupon = Coupon::create($data);
+
+        return $coupon;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function generate()
+    {
+        do{
+          $code = $this->random(10);
+        }while(Coupon::whereCode($code)->count());
+
+        $coupon = Coupon::create(['code' => $code]);
 
         return $coupon;
     }
@@ -78,4 +94,16 @@ class EloquentCoupon implements CouponRepository
         }
         return $result;
     }
+
+    function random($length)
+  {
+    $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    $pass = array();
+    $alphaLength = strlen($alphabet) - 1;
+    for ($i = 0; $i < $length; $i++) {
+      $n = rand(0, $alphaLength);
+      $pass[] = $alphabet[$n];
+    }
+    return implode($pass);
+  }
 }
