@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CourseLevel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -26,6 +27,14 @@ class Course extends Model
         'status',
     ];
 
+    protected $softCascade = ['courseLevel','courseSection'];
+
+    protected $casts = [
+        'teacher_id' => 'integer',
+        'subject_id' => 'integer',
+        'price' => 'double',
+    ];
+
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
@@ -46,9 +55,19 @@ class Course extends Model
         return $this->belongsToMany(Level::class, 'course_levels');
     }
 
+    public function courseLevel()
+    {
+        return $this->hasMany(courseLevel::class);
+    }
+
     public function sections()
     {
         return $this->belongsToMany(Section::class, 'course_sections');
+    }
+
+    public function courseSection()
+    {
+      return $this->hasMany(CourseSection::class);
     }
 
     public function purchases()

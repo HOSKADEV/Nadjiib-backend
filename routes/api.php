@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\Teacher\TeacherController;
 use App\Http\Controllers\API\Levels\LevelController;
+use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Coupons\CouponController;
 use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
@@ -31,7 +32,7 @@ Route::prefix('v1')->group(function () {
       'status' => 1,
       'data' => new \App\Http\Resources\User\UserResource($request->user())
     ]);
-});
+  });
   Route::post('/auth/login', [AuthController::class,'login']);
   Route::get('/auth/logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
   Route::post('/section/get', [SectionController::class,'get']);
@@ -41,8 +42,15 @@ Route::prefix('v1')->group(function () {
   Route::post('/student/update', [StudentController::class,'update']);
   Route::post('/teacher/create', [TeacherController::class,'create']);
   Route::post('/teacher/update', [TeacherController::class,'update']);
+
+  Route::get('/course/all', [CourseController::class, 'index']);
+  Route::post('/course/create', [CourseController::class, 'create']);
+  Route::post('/course/update', [CourseController::class, 'update']);
+  Route::post('/course/deleted', [CourseController::class, 'destory']);
 });
 
 
+
+// ** Router For curses
 
 

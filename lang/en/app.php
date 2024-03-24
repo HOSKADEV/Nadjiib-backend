@@ -5,11 +5,13 @@ return [
 
     'actions'   => 'Actions',
     'close'     => 'Close',
+    'ok'        => 'Yes',
     'create'    => 'Create',
     'edit'      => 'Edit',
     'update'    => 'Update',
     'delete'    => 'Delete',
 
+    'all' => 'All',
     'status' => [
         'Active'   => 'Active',
         'Inactive' => 'Inactive',
@@ -22,9 +24,23 @@ return [
         'Processing' => 'Processing',
         'Accepted'   => 'Accepted',
         'Canceled'   => 'Canceled',
+        'Refused'    => 'Refused',
         'Completed'  => 'Completed',
         'In way'  => 'In way',
         'Used'    => 'Used',
         'Unused'  => 'Unused',
+    ],
+    'student' => 'Student',
+    'teacher' => 'Teacher',
+    'user'    => 'User',
+
+    'gender' => [
+        'male' => 'Male',
+        'female' => 'Female',
+    ],
+
+    'currencies'=> [
+        'DZ' => 'DZD',
+        'US' => 'USD',
     ],
 ];

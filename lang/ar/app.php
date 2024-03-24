@@ -5,11 +5,14 @@ return [
 
     'actions'   => 'العمليات',
     'close'     => 'اغلاق',
+    'ok'        => 'موافق',
 
     'create'    => 'إظافة',
     'edit'      => 'تعديل',
     'update'    => 'تحديث',
     'delete'    => 'حذف',
+
+    'all' => 'الكـل',
 
     'status' => [
         'Active'   => 'مفعل',
@@ -22,11 +25,31 @@ return [
         'Payed'       => 'مدفوع',
         'Processing'  => 'في المعالجة',
         'Accepted'    => 'مقبول',
-        'Canceled'    => 'غير مقبول',
+        'Refused'    => 'غير مقبول',
         'Completed'   => 'إكتمال الخدمة',
         'In way'      => 'في الطريق',
         'Used'        => 'مستعمل',
         'Unused'      => 'غير مستعمل',
     ],
+    "statuss" => [
+        'active'      => 'مفعل',
+        'inactive'    => 'عير مفعل',
+        'banned'      => 'ممنوع',
+        'unconfirmed' => 'غير مؤكد',
+    ],
 
+    'approved' => 'موافـقة',
+    'reject'   => 'رفض',
+    'student' => 'تلميذ',
+    'teacher' => 'أستاذ',
+    'user'    => 'مستخدم',
+    'gender' => [
+        'male' => 'ذكر',
+        'female' => 'أنثى',
+    ],
+
+    'currencies'=> [
+        'DZ' => 'دج',
+        'US' => 'دولار',
+    ],
 ];

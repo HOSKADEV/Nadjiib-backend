@@ -4,7 +4,7 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
-    @endsectionv
+@endsection
 
 @section('page-header')
     <h4 class="fw-bold py-3 mb-1 ">
@@ -25,6 +25,7 @@
                                 {{ Request::get('status') != '' ? 'selected' : '' }}>
                                 {{ Request::get('status') != '' ? (Request::get('status') == 'ACTIVE' ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.status') }}
                             </option>
+                            <option value="">{{ trans('app.all') }}</option>
                             <option value="ACTIVE">{{ trans('user.statuss.active') }}</option>
                             <option value="INACTIVE">{{ trans('user.statuss.inactive') }}</option>
                         </select>
@@ -59,7 +60,8 @@
                         <th>{{ trans('user.name') }}</th>
                         <th>{{ trans('user.email') }}</th>
                         <th>{{ trans('user.phone') }}</th>
-                        <th>{{ trans('user.role') }}</th>
+                        {{-- <th>{{ trans('user.role') }}</th> --}}
+                        <th>{{ trans('user.account') }}</th>
                         <th>{{ trans('user.status') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>
@@ -71,31 +73,49 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->role }}</td>
                             <td>
-                                <span class="badge rounded-pill text-capitalize bg-{{ $user->status == 'ACTIVE' ? 'success' : 'danger' }}">
-                                {{ 
-                                    $user->status == 'ACTIVE' ? trans('app.status.Active') : trans('app.status.Inactive')
-                                }}
-                                </span>
-                                {{-- 
-                                <span class="badge rounded-pill bg-primary">Primary</span>
-                                <span class="badge rounded-pill bg-secondary">Secondary</span>
-                                <span class="badge rounded-pill bg-success">Success</span>
-                                <span class="badge rounded-pill bg-danger">Danger</span>
-                                <span class="badge rounded-pill bg-warning">Warning</span>
-                                <span class="badge rounded-pill bg-info">Info</span>
-                                <span class="badge rounded-pill bg-dark">Dark</span> 
-                                --}}
+                                {{ $user->account }}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#deleteUserModal{{ $user->id }}">
-                                    <i class='bx bx-trash'></i>
-                                </button>
+                                <span
+                                    class="badge rounded-pill text-capitalize bg-{{ $user->status == 'ACTIVE' ? 'success' : 'danger' }}">
+                                    {{ $user->status == 'ACTIVE' ? trans('app.status.Active') : trans('app.status.Inactive') }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                        data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                            data-bs-target="#UpdateStatusModal{{ $user->id }}">
+                                            <i class='bx bx-repeat me-2'></i>
+                                            {{ $user->status == 'ACTIVE' ? trans('user.statuses.inactive') : trans('user.statuses.active') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('dashboard.users.edit', $user->id) }}">
+                                            <i class='bx bxs-edit me-2'></i>
+                                            {{ trans('user.edit') }}
+                                        </a>
+                                        @if ($user->teacher == null)
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#upgradeAccountModal{{ $user->id }}">
+                                                <i class='bx bx-diamond me-2'></i>
+                                                {{ trans('user.upgrade') }}
+                                            </a>
+                                        @endif
+
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                            data-bs-target="#deleteUserModal{{ $user->id }}">
+                                            <i class="bx bx-trash me-2"></i>
+                                            {{ trans('user.delete') }}
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
-                        {{-- @include('dashboard.coupon.edit') --}}
+                        @include('dashboard.user.upgrade')
+                        @include('dashboard.user.update-status')
                         @include('dashboard.user.delete')
                     @endforeach
                 </tbody>

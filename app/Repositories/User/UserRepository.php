@@ -15,6 +15,10 @@ interface UserRepository
     /**
      * {@inheritdoc}
      */
+    public function find($id);
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $data);
 
     /**
@@ -41,4 +45,12 @@ interface UserRepository
      * @return mixed
      */
     public function paginate($perPage, $search = null, $status = null);
+
+    /**
+     * Change Status Account.
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function changeStatus($id);
 }

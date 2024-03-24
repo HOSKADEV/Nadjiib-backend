@@ -65,9 +65,14 @@
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.users.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.users.index') }}" class="menu-link">
-                {{-- <i class="menu-icon tf-icons bx bx-user"></i> --}}
                 <i class='menu-icon bx bx-group'></i>
                 <div>{{ trans('menu.users') }}</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('dashboard.courses.index') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.courses.index') }}" class="menu-link">
+                <i class='menu-icon bx bx-group'></i>
+                <div>{{ trans('menu.courses') }}</div>
             </a>
         </li>
     </ul>

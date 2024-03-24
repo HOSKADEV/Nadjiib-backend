@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
+use App\Http\Controllers\Dashboard\Course\CourseController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
@@ -52,9 +53,10 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('subjects', SubjectController::class);
     Route::resource('level-subjects', LevelSubjectController::class);
     Route::resource('coupons', CouponController::class);
+   
+    Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
+    Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
     Route::resource('users', UserController::class);
 
-    // UserController
-    // CouponController
-    // LevelSubjectController
+    Route::resource('courses', CourseController::class);
 });

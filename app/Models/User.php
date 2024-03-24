@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'role',
         'status',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -46,6 +48,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function changeStatus()
+    {
+        $this->status = $this->status == 'ACTIVE' ? 'INACTIVE'  : 'ACTIVE' ;
+        $this->save();    
+    }
+
+    public function getAccountAttribute()
+    {
+        if($this->student && $this->teacher ){
+            return trans('app.teacher');
+        }else if($this->student){
+            return trans('app.student');  
+        }else if($this->teacher){
+            return trans('app.teacher');
+        }else{
+            return trans('app.user');
+        }
+    }
 
     public function student()
     {
