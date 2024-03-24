@@ -24,7 +24,7 @@ class EloquentCourse implements CourseRepository
      */
     public function find($id)
     {
-        return Course::find($id);
+        return Course::with('lessons')->find($id);
     }
 
     /**
@@ -68,7 +68,7 @@ class EloquentCourse implements CourseRepository
      * @param null $status
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
-    public function paginate($perPage, $search = null, $subject = null, $teacher = null, $status = null)
+    public function paginate($perPage, $search = null, $subject = null, $teacher = null,$status = 'PENDING')
     {
         $query = Course::query();
 

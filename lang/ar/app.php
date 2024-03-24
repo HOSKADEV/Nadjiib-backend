@@ -25,7 +25,7 @@ return [
         'Payed'       => 'مدفوع',
         'Processing'  => 'في المعالجة',
         'Accepted'    => 'مقبول',
-        'Canceled'    => 'غير مقبول',
+        'Refused'    => 'غير مقبول',
         'Completed'   => 'إكتمال الخدمة',
         'In way'      => 'في الطريق',
         'Used'        => 'مستعمل',
@@ -46,5 +46,10 @@ return [
     'gender' => [
         'male' => 'ذكر',
         'female' => 'أنثى',
+    ],
+
+    'currencies'=> [
+        'DZ' => 'دج',
+        'US' => 'دولار',
     ],
 ];

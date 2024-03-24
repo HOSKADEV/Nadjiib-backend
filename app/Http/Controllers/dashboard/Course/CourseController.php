@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Course;
 
+use App\Enums\CourseStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Course\CourseRepository;
@@ -10,7 +11,6 @@ use App\Repositories\Teacher\TeacherRepository;
 
 class CourseController extends Controller
 {
-
     private $courses;
     private $teachers;
     private $subjects;
@@ -35,12 +35,9 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        // public function paginate($perPage, $search = null, $subject = null, $teacher = null, $status = null)
-
         $courses = $this->courses->paginate($perPage = 10, $request->search, $request->subject, $request->teacher, $request->status);
         $subjects = $this->subjects->all();
         $teachers = $this->teachers->all();
-
         return view('dashboard.course.index', compact('courses', 'teachers', 'subjects'));
     }
 
@@ -73,7 +70,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        $course = $this->courses->find($id);
+        return view('dashboard.course.single',compact('course'));
     }
 
     /**
@@ -91,22 +89,28 @@ class CourseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data = [
+            'status' => $request->status == 1 ? CourseStatus::ACCEPTED : CourseStatus::REFUSED
+        ];
+        $this->courses->update($request->id, $data);
+        toastr()->success($request->status == 1 ? trans('message.success.approved') : trans('message.success.reject'));
+        return redirect()->route('dashboard.courses.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $this->courses->delete($request->id);
+        toastr()->success(trans('message.success.delete'));
+        return redirect()->route('dashboard.courses.index');
     }
 }

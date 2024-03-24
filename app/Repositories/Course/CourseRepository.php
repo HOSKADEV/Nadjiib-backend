@@ -14,6 +14,7 @@ interface CourseRepository
      * {@inheritdoc}
      */
     public function find($id);
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +40,5 @@ interface CourseRepository
      * @param null $status
      * @return mixed
      */
-    public function paginate($perPage, $search = null, $subject = null, $teacher = null,$status = null);
-
+    public function paginate($perPage, $search = null, $subject = null, $teacher = null, $status = 'PENDING');
 }
