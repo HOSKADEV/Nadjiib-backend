@@ -49,7 +49,7 @@ class CourseController extends Controller
         catch(Exception $e)
         {
           return response()->json([
-            'status'  => 0,
+            'status'  => false,
             'message' => $e->getMessage()
           ]);
         }
@@ -114,14 +114,14 @@ class CourseController extends Controller
           }
           if ($course) {
             return response()->json([
-              'status'  =>true,
+              'status'  => true,
               'message' =>'The course has been created successfully',
               'data'    => new CourseResource($course)
             ],202);
           }
           else{
             return response()->json([
-              "status"  =>false,
+              "status"  => false,
               "message" =>"Error in the server when creating the course"
             ],500);
           }
@@ -130,7 +130,7 @@ class CourseController extends Controller
       catch(Exception $e)
       {
         return response()->json([
-          'status'  => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }
@@ -149,9 +149,9 @@ class CourseController extends Controller
 
       if ($validation->fails()) {
         return response()->json([
-          'status' => false,
+          'status'  => false,
           'message' => 'Invalid data sent',
-          'errors' => $validation->errors()
+          'errors'  => $validation->errors()
         ], 422);
       }
 
@@ -226,13 +226,13 @@ class CourseController extends Controller
       catch(Exception $e)
       {
         return response()->json([
-          'status'  => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }
     }
 
-    public function destory(Request $request)
+    public function delete(Request $request)
     {
         $validation = Validator::make($request->all(), [
           'course_id' => 'required|exists:courses,id'
@@ -240,9 +240,9 @@ class CourseController extends Controller
 
         if ($validation->fails()) {
           return response()->json([
-            'status' => false,
+            'status'  => false,
             'message' => 'Invalid data sent',
-            'errors' => $validation->errors()
+            'errors'  => $validation->errors()
           ], 422);
         }
 
@@ -251,7 +251,7 @@ class CourseController extends Controller
             $courseDelete = $this->course->delete($request->course_id);
             if(!$courseDelete){
                 return response()->json([
-                  'status' => false,
+                  'status'  => false,
                   'message' => 'Server Error. Can\'t delete the course at this time.',
                 ], 500);
             }
@@ -265,7 +265,7 @@ class CourseController extends Controller
         catch(Exception $e)
         {
           return response()->json([
-            'status'  => 0,
+            'status'  => false,
             'message' => $e->getMessage()
           ]);
         }

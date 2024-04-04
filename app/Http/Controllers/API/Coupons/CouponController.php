@@ -27,7 +27,7 @@ class CouponController extends Controller
       catch(Exception $e)
       {
         return response()->json([
-          'status'  => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }

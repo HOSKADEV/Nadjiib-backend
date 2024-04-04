@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('coupon_id');
             $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->string('channel_name')->nullable()->default(null);
+            $table->longText('bio')->nullable()->default(null);
             $table->enum('cloud_chat',['active','inactive'])->default('inactive');
             $table->smallInteger('status')->default(1);
             $table->timestamps();

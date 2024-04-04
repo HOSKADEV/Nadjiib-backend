@@ -4,14 +4,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
-use App\Http\Controllers\Teacher\TeacherController;
 use App\Http\Controllers\API\Levels\LevelController;
 use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Coupons\CouponController;
 use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
-
+use App\Http\Controllers\API\Teacher\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,24 +32,23 @@ Route::prefix('v1')->group(function () {
       'data' => new \App\Http\Resources\User\UserResource($request->user())
     ]);
   });
-  Route::post('/auth/login', [AuthController::class,'login']);
-  Route::get('/auth/logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
+  Route::post('/auth/login',  [AuthController::class,'login']);
+  Route::get('/auth/logout',  [AuthController::class,'logout'])->middleware('auth:sanctum');
   Route::post('/section/get', [SectionController::class,'get']);
-  Route::post('/level/get', [LevelController::class,'get']);
+  Route::post('/level/get',   [LevelController::class,'get']);
   Route::post('/subject/get', [SubjectController::class,'get']);
   Route::post('/student/create', [StudentController::class,'create']);
   Route::post('/student/update', [StudentController::class,'update']);
   Route::post('/teacher/create', [TeacherController::class,'create']);
   Route::post('/teacher/update', [TeacherController::class,'update']);
-
+  // ** Router For curses
   Route::get('/course/all', [CourseController::class, 'index']);
   Route::post('/course/create', [CourseController::class, 'create']);
   Route::post('/course/update', [CourseController::class, 'update']);
-  Route::post('/course/deleted', [CourseController::class, 'destory']);
+  Route::post('/course/delete', [CourseController::class, 'delete']);
 });
 
 
 
-// ** Router For curses
 
 

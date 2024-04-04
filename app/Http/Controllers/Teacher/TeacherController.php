@@ -16,7 +16,6 @@ class TeacherController extends Controller
 {
   private $teacher;
   private $user;
-
   private $coupon;
 
   public function __construct(TeacherRepository $teacher, UserRepository $user, CouponRepository $coupon)

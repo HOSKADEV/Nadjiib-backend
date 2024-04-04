@@ -29,7 +29,7 @@ class AuthController extends Controller
 
       if ($validator->fails()){
         return response()->json([
-            'status' => 0,
+            'status' => false,
             'message' => $validator->errors()->first()
           ]
         );
@@ -69,7 +69,7 @@ class AuthController extends Controller
         $token = $user->createToken($this->random())->plainTextToken;
 
         return response()->json([
-          'status'=> 1,
+          'status'=> true,
           'message' => 'success',
           'token' => $token,
           'data' => new UserResource($user),
@@ -77,7 +77,7 @@ class AuthController extends Controller
 
       } catch (Exception $e) {
           return response()->json([
-          'status'=> 0,
+          'status'=> false,
           'message' => $e->getMessage(),
         ]);
       }
@@ -92,12 +92,12 @@ class AuthController extends Controller
         $user->currentAccessToken()->delete();
 
         return response()->json([
-          'status'=> 1,
+          'status'=> true,
           'message' => 'logged out',
         ]);
       }catch(Exception $e){
         return response()->json([
-          'status'=> 0,
+          'status'=> false,
           'message' => $e->getMessage(),
         ]);
       }

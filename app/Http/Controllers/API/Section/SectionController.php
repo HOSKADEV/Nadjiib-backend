@@ -24,13 +24,21 @@ class SectionController extends Controller
     try {
       $sections = $this->sections->all();
 
+      if (count($sections) == 0) {
+          return response()->json([
+            'status' => false,
+            'message' => 'No data found'
+          ], 404);
+      }
+
       return response()->json([
-        'status' => 1,
-        'data' => new SectionCollection($sections)
-      ]);
-    } catch (Exception $e) {
+        'status' => true,
+        'data'   => new SectionCollection($sections)
+      ], 200);
+    }
+    catch (Exception $e) {
       return response()->json([
-        'status' => 0,
+        'status'  => false,
         'message' => $e->getMessage()
       ]);
     }

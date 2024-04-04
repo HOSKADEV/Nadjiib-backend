@@ -33,7 +33,7 @@ class StudentController extends Controller
     if ($validator->fails()) {
       return response()->json(
         [
-          'status' => 0,
+          'status' => false,
           'message' => $validator->errors()->first()
         ]
       );
@@ -44,12 +44,12 @@ class StudentController extends Controller
       $student = $this->student->create($request->all());
 
       return response()->json([
-        'status' => 1,
-        'data' => $student
+        'status' => true,
+        'data'   => $student
       ]);
     } catch (Exception $e) {
       return response()->json([
-        'status' => 0,
+        'status'  => false,
         'message' => $e->getMessage()
       ]);
     }
@@ -59,17 +59,17 @@ class StudentController extends Controller
   {
     $validator = Validator::make($request->all(), [
       'student_id' => 'required|exists:students,id',
-      'level_id' => 'sometimes|exists:levels,id',
-      "name" => 'sometimes|string',
-      "image" => 'sometimes|string',
-      "phone" => 'sometimes|unique:users,phone',
-      "gender" => 'sometimes|in:male,female'
+      'level_id'   => 'sometimes|exists:levels,id',
+      "name"       => 'sometimes|string',
+      "image"      => 'sometimes|string',
+      "phone"      => 'sometimes|unique:users,phone',
+      "gender"     => 'sometimes|in:male,female'
     ]);
 
     if ($validator->fails()) {
       return response()->json(
         [
-          'status' => 0,
+          'status'  => false,
           'message' => $validator->errors()->first()
         ]
       );
@@ -82,12 +82,12 @@ class StudentController extends Controller
       $user = $this->user->update($student->user_id,$request->except(['student_id','level_id']));
 
       return response()->json([
-        'status' => 1,
-        'data' => new UserResource($user)
+        'status' => true,
+        'data'   => new UserResource($user)
       ]);
     } catch (Exception $e) {
       return response()->json([
-        'status' => 0,
+        'status'  => false,
         'message' => $e->getMessage()
       ]);
     }

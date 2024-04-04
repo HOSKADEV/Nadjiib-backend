@@ -21,15 +21,15 @@ class SubjectController extends Controller
     public function get(Request $request){
 
       $validator = Validator::make($request->all(), [
-        'level_id' => 'sometimes|prohibits:type|exists:levels,id',
-        'type' => 'sometimes|in:academic,extracurricular',
-        'search' => 'sometimes|string',
+        'level_id'  => 'sometimes|prohibits:type|exists:levels,id',
+        'type'      => 'sometimes|in:academic,extracurricular',
+        'search'    => 'sometimes|string',
       ]);
 
       if ($validator->fails()) {
         return response()->json(
           [
-            'status' => 0,
+            'status'  => false,
             'message' => $validator->errors()->first()
           ]
         );
@@ -54,14 +54,14 @@ class SubjectController extends Controller
         }
 
         return response()->json([
-          'status' => 1,
-          'data' => new SubjectCollection($subject->get())
+          'status' => true,
+          'data'   => new SubjectCollection($subject->get())
         ]);
       }
       catch(Exception $e)
       {
         return response()->json([
-          'status'  => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }
