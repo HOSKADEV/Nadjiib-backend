@@ -27,14 +27,27 @@ class CourseController extends Controller
 
     public function __construct(CourseRepository $course, CourseSectionRepository $courseSection, CourseLevelRepository $courseLevel)
     {
-      $this->course = $course;
+      $this->course        = $course;
       $this->courseSection = $courseSection;
       $this->courseLevel   = $courseLevel;
     }
-    public function index(Request $request)
+    public function get(Request $request)
     {
         try
         {
+            $validation = Validator::make($request->all(),[
+              'search_byName'     => 'sometimes|string',
+              'search_bySubject'  => 'sometimes|string',
+              'search_byTeatcher' => 'sometimes|string',
+            ]);
+
+            if ($validation->fails()) {
+                return response()->json([
+                  "status"  => false,
+                  "errors"  => $validation->errors()
+                ],403);
+            }
+
             $searchByName     = $request->search_byName;
             $searchBySubject  = $request->search_bySubject;
             $searchByTeatcher = $request->search_byTeatcher;

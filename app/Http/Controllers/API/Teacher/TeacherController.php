@@ -77,41 +77,41 @@ class TeacherController extends Controller
     }
 
     public function update(Request $request)
-  {
-    $validator = Validator::make($request->all(), [
-      'teacher_id'  => 'required|exists:teachers,id',
-      "name"        => 'sometimes|string',
-      "image"       => 'sometimes|string',
-      "phone"       => 'sometimes|unique:users,phone',
-      "channel_name" => 'sometimes|string',
-      "bio"         => 'sometimes|string',
-      "cloud_chat"  => 'sometimes|in:active,inactive',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+          'teacher_id'  => 'required|exists:teachers,id',
+          "name"        => 'sometimes|string',
+          "image"       => 'sometimes|string',
+          "phone"       => 'sometimes|unique:users,phone',
+          "channel_name" => 'sometimes|string',
+          "bio"         => 'sometimes|string',
+          "cloud_chat"  => 'sometimes|in:active,inactive',
+        ]);
 
-    if ($validator->fails()) {
-      return response()->json(
-        [
+        if ($validator->fails()) {
+          return response()->json(
+            [
+              'status' => 0,
+              'message' => $validator->errors()->first()
+            ]
+          );
+        }
+
+      try {
+
+        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
+
+        $user = $this->user->update($teacher->user_id, $request->only(['name','image','phone']));
+
+        return response()->json([
+          'status' => 1,
+          'data' => new UserResource($user)
+        ]);
+      } catch (Exception $e) {
+        return response()->json([
           'status' => 0,
-          'message' => $validator->errors()->first()
-        ]
-      );
+          'message' => $e->getMessage()
+        ]);
+      }
     }
-
-    try {
-
-      $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
-
-      $user = $this->user->update($teacher->user_id, $request->only(['name','image','phone']));
-
-      return response()->json([
-        'status' => 1,
-        'data' => new UserResource($user)
-      ]);
-    } catch (Exception $e) {
-      return response()->json([
-        'status' => 0,
-        'message' => $e->getMessage()
-      ]);
-    }
-  }
 }

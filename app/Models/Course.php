@@ -67,7 +67,7 @@ class Course extends Model
 
     public function courseSection()
     {
-      return $this->hasMany(CourseSection::class);
+        return $this->hasMany(CourseSection::class);
     }
 
     public function purchases()
@@ -83,6 +83,11 @@ class Course extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 
     public function reviewers()

@@ -20,6 +20,12 @@ class Lesson extends Model
         'title',
         'description',
     ];
+    protected $softCascade = ['files','videos'];
+
+    protected $casts = [
+      'course_id' => 'integer',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);

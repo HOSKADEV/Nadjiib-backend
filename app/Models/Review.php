@@ -22,6 +22,12 @@ class Review extends Model
         'comment',
     ];
 
+    protected $casts = [
+      'course_id'  => 'integer',
+      'student_id' => 'integer',
+      'rating'     => 'integer',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);

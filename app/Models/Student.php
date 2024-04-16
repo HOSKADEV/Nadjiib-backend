@@ -41,6 +41,11 @@ class Student extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
     public function purchased_courses()
     {
         return $this->belongsToMany(Course::class, 'purchases');
