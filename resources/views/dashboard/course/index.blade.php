@@ -83,9 +83,12 @@
                 </thead>
                 <tbody>
                     @foreach ($courses as $key => $course)
-                        <tr>
+                        <tr href="{{ route('dashboard.courses.show', $course->id) }}">
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $course->name }}</td>
+                            <td><a href="{{ route('dashboard.courses.show', $course->id) }}">
+                                    {{ $course->name }}
+                                </a>
+                            </td>
                             <td>{{ $course->subject->{'name_' . config('app.locale')} }}</td>
                             <td>{{ $course->teacher->user->name }}</td>
                             {{-- <td>{{ $course->price }}</td> --}}

@@ -4,7 +4,7 @@ return [
     'title' => 'إسم الدرس',
     'description' => 'وصـف الدرس',
     'image' => 'الصور',
-    'video' => 'الفديوات',
+    'videos' => 'الفديوات',
     'files' => 'الملفات',
     'lessonNumber' => [
         '1' => 'الدرس الأول',

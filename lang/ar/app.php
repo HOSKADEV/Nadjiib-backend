@@ -30,6 +30,9 @@ return [
         'In way'      => 'في الطريق',
         'Used'        => 'مستعمل',
         'Unused'      => 'غير مستعمل',
+
+        'Failed' => 'مرفوض',
+        'Success' => 'مقبول',
     ],
     "statuss" => [
         'active'      => 'مفعل',

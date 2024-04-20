@@ -5,8 +5,10 @@ use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
 use App\Http\Controllers\Dashboard\Course\CourseController;
+use App\Http\Controllers\Dashboard\Payment\PaymentController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
+use App\Http\Controllers\Dashboard\Purchase\PurchaseController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
 
 /*
@@ -59,4 +61,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);
+
+    Route::resource('payments', PaymentController::class);
+    Route::resource('purchases', PurchaseController::class);
+
+    // 
 });

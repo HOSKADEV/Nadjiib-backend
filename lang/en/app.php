@@ -29,6 +29,10 @@ return [
         'In way'  => 'In way',
         'Used'    => 'Used',
         'Unused'  => 'Unused',
+
+        
+        'Failed' => 'Failed',
+        'Success' => 'Success',
     ],
     'student' => 'Student',
     'teacher' => 'Teacher',

@@ -54,15 +54,15 @@
                     <label class="form-label">{{ trans('course.description') }}</label>
                     <p>{{ $course->description }}</p>
                 </div>
-                <div class="col-sm-12 col-md-6" height="100px">
+                <div class="col-sm-12 col-md-6">
                     <label class="form-label">{{ trans('course.image') }}</label>
                     <img class="img-fluid mx-auto" src="https://elmadrasah.com/cdn/shop/articles/10.jpg?v=1701684565"
-                        alt="" srcset="" height="100px">
+                        alt="" srcset="">
                 </div>
-                <div class="col-sm-12 col-md-6" height="100px">
+                <div class="col-sm-12 col-md-6">
                     <label class="form-label">{{ trans('course.video') }}</label>
                     <img class="img-fluid mx-auto" src="https://elmadrasah.com/cdn/shop/articles/10.jpg?v=1701684565"
-                        alt="" srcset="" height="100px">
+                        alt="" srcset="">
                 </div>
             </div>
         </div>
@@ -72,42 +72,49 @@
         <h5 class="card-header py-2 mt-2">
             {{ trans('course.lessons') }}
         </h5>
-        <div class="table-responsive text-nowrap">
-            <table class="table mb-2">
-                <thead>
-                    <tr class="text-nowrap">
-                        <th>#</th>
-                        <th class="text-center">{{ trans('lesson.title') }}</th>
-                        {{-- <th>{{ trans('lesson.description') }}</th> --}}
-                        <th class="text-center">{{ trans('lesson.files') }}</th>
-                        <th class="text-center">{{ trans('lesson.videos') }}</th>
-                        <th>{{ trans('app.actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($course->lessons as $item => $lesson)
-                        <tr>
-                            <th scope="row">{{ trans('lesson.lessonNumber.' . $loop->iteration) }}</th>
-                            <td class="text-center">{{ $lesson->title }}</td>
-                            {{-- <td class="text-center">
-                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar"
-                                    class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
-                            </td>
-                            <td class="text-center">
-                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar"
-                                    class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
-                            </td> --}}
+        <hr class="m-0" />
+        <div class="card-body">
+            <div class="row">
+                @foreach ($course->lessons as $item => $lesson)
+                    @php
+                        $item++;
+                    @endphp
+                    <h6 class="card-title">
+                        {{ trans('lesson.lessonNumber.' . $item) }} : <span>{{ $lesson->title }}</span>
+                    </h6>
+                    <div class="col-sm-12 col-md-12">
+                        <label class="form-label">{{ trans('lesson.description') }}</label>
+                        <p class="card-text">{{ $lesson->description }}</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label class="form-label">{{ trans('lesson.image') }}</label>
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+    
+                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label class="form-label">{{ trans('lesson.files') }}</label>
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+    
+                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded"
+                                height="100" width="100" id="uploadedAvatar" />
+                        </div>
+                    </div>
 
-                            <td class="text-center">{{ trans('lesson.files') }}</td>
-                            <td class="text-center">{{ trans('lesson.videos') }}</td>
-                            <td>Actions</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {{-- {{ $course->lessons->links() }} --}}
+                    <hr class="my-2">
+                @endforeach
+            </div>
         </div>
-
     </div>
 @endsection
 

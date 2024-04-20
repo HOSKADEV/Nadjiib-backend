@@ -8,7 +8,7 @@
                 {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
             </span>
             <span class="app-brand-text demo menu-text fw-bold text-capitalize ms-2">
-                {{ config('app.locale') == 'en' ? "Najib" : "نجيب"  }}
+                {{ config('app.locale') == 'en' ? 'Najib' : 'نجيب' }}
             </span>
         </a>
 
@@ -58,7 +58,6 @@
         </li>
         <li class="menu-item {{ request()->routeIs('dashboard.coupons.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.coupons.index') }}" class="menu-link">
-                {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
                 <i class='menu-icon bx bx-store-alt'></i>
                 <div>{{ trans('menu.coupons') }}</div>
             </a>
@@ -73,6 +72,18 @@
             <a href="{{ route('dashboard.courses.index') }}" class="menu-link">
                 <i class='menu-icon bx bx-group'></i>
                 <div>{{ trans('menu.courses') }}</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('dashboard.purchases.index') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.purchases.index') }}" class="menu-link">
+                <i class='menu-icon bx bx-shopping-bag'></i>
+                <div>{{ trans('menu.purchases') }}</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('dashboard.payments.index') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.payments.index') }}" class="menu-link">
+                <i class='menu-icon bx bx-money'></i>
+                <div>{{ trans('menu.payments') }}</div>
             </a>
         </li>
     </ul>

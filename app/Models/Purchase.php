@@ -29,7 +29,7 @@ class Purchase extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function Course()
+    public function course()
     {
         return $this->belongsTo(Course::class);
     }
