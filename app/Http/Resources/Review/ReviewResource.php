@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Review;
 
+use App\Http\Resources\Student\StudentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReviewResource extends JsonResource
@@ -17,7 +18,7 @@ class ReviewResource extends JsonResource
         return [
           'id'          => $this->id,
           'course_id'   => $this->course_id,
-          'student_id'  => $this->student_id,
+          'student'     => new StudentResource($this->student),
           'rating'      => $this->rating,
           'comment'     => $this->comment,
           'created'     => $this->created_at->format('d-m-Y'),

@@ -23,9 +23,9 @@ class Review extends Model
     ];
 
     protected $casts = [
-      'course_id'  => 'integer',
-      'student_id' => 'integer',
-      'rating'     => 'integer',
+        'course_id'  => 'integer',
+        'student_id' => 'integer',
+        'rating'     => 'integer',
     ];
 
     public function course()

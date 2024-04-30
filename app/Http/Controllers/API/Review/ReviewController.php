@@ -19,10 +19,41 @@ class ReviewController extends Controller
         $this->review = $review;
     }
 
-    public function get()
+    public function get(Request $request)
     {
+        $validtion = Validator::make($request->all(),[
+          'course_id' => 'required|exists:courses,id',
+        ]);
+        if ($validtion->fails()) {
+            return response()->json([
+                "status" => false,
+                "errors" => $validtion->errors()
+            ], 403);
+        }
         try
         {
+            $reviews = $this->review->getByCourse($request->course_id);
+
+            if (!$reviews) {
+                return response()->json([
+                  'status' => false,
+                  'message' => 'Course  not found in reviews'
+                ]);
+            }
+            else {
+              $data = [];
+              foreach ($reviews as $review) {
+                $data[] = [
+
+                ];
+              }
+
+              return response()->json([
+                'status' => true,
+                'data'   => new ReviewCollection($reviews),
+                'count'  => $reviews->count()
+              ]);
+            }
 
         }
         catch(Exception $e){
@@ -76,11 +107,11 @@ class ReviewController extends Controller
     public function update(Request $request)
     {
         $validtion = Validator::make($request->all(),[
-          'review_id'  => 'required|exists:reviews,id',
-          'course_id'  => 'sometimes|exists:courses,id',
-          'student_id' => 'sometimes|exists:students,id',
-          'rating'     => 'sometimes|between:1,5',
-          'comment'    => 'sometimes',
+            'review_id'  => 'required|exists:reviews,id',
+            'course_id'  => 'sometimes|exists:courses,id',
+            'student_id' => 'sometimes|exists:students,id',
+            'rating'     => 'sometimes|between:1,5',
+            'comment'    => 'sometimes',
         ]);
         if ($validtion->fails()) {
             return response()->json([
@@ -109,8 +140,8 @@ class ReviewController extends Controller
         }
         catch(Exception $e){
             return response()->json([
-              'status'  => false,
-              'message' => $e->getMessage()
+                'status'  => false,
+                'message' => $e->getMessage()
             ]);
         }
     }
@@ -118,7 +149,7 @@ class ReviewController extends Controller
     public function delete(Request $request)
     {
         $validtion = Validator::make($request->all(),[
-          'review_id'  => 'required|exists:reviews,id',
+            'review_id'  => 'required|exists:reviews,id',
         ]);
         if ($validtion->fails()) {
             return response()->json([

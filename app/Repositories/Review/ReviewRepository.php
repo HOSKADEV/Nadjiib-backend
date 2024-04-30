@@ -24,6 +24,11 @@ interface ReviewRepository
      * {@inheritdoc}
      */
     public function delete($id);
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getByCourse($course_id);
 
     /**
      * Paginate Levels.

@@ -53,6 +53,15 @@ class EloquentReview implements ReviewRepository
 
         return $review->delete();
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function getByCourse($course_id)
+    {
+        $review = Review::whereCourseId($course_id)->get();
+
+        return $review;
+    }
 
     /**
      * @param $perPage
