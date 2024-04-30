@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
 use App\Http\Controllers\API\Teacher\TeacherController;
+use App\Http\Controllers\API\Wishlist\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,10 @@ Route::prefix('v1')->group(function () {
   Route::post('/review/create', [ReviewController::class, 'create']);
   Route::post('/review/update', [ReviewController::class, 'update']);
   Route::post('/review/delete', [ReviewController::class, 'delete']);
+  //  ** Route for wishlist
+  Route::post('/wishlist/get', [WishlistController::class, 'get']);
+  Route::post('/wishlist/create', [WishlistController::class, 'create']);
+  Route::post('/wishlist/delete', [WishlistController::class, 'delete']);
 });
 
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources\Wishlist;
 
+use App\Http\Resources\Course\CourseCollection;
+use App\Http\Resources\Course\CourseResource;
+use App\Http\Resources\Student\StudentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WishlistResource extends JsonResource
@@ -14,6 +17,11 @@ class WishlistResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+          'id' => $this->id,
+          'course_id'  => $this->course_id,
+          'student_id' => $this->student_id,
+          'created' => $this->created_at,
+        ];
     }
 }

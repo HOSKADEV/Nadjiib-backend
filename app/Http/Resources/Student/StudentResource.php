@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Student;
 
+use App\Http\Resources\Review\ReviewUserResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StudentResource extends JsonResource
@@ -16,6 +18,7 @@ class StudentResource extends JsonResource
     {
         return [
           'student_id' => $this->id,
+          'user' => new ReviewUserResource($this->user),
           'level_id' => $this->level_id,
         ];
     }

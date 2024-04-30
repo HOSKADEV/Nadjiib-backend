@@ -24,6 +24,10 @@ interface WishlistRepository
      * {@inheritdoc}
      */
     public function delete($id);
+    /**
+     * {@inheritdoc}
+     */
+    public function getByStudent($student_id);
 
     /**
      * Paginate Levels.

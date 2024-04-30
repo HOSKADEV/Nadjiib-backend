@@ -11,8 +11,8 @@ class EloquentWishlist implements WishlistRepository
      * {@inheritdoc}
      */
     public function all(){
-      return Wishlist::all();
-  }
+        return Wishlist::all();
+    }
   /**
    * {@inheritdoc}
    */
@@ -52,6 +52,15 @@ class EloquentWishlist implements WishlistRepository
       $wishlist = $this->find($id);
 
       return $wishlist->delete();
+  }
+  /**
+   * {@inheritdoc}
+   */
+  public function getByStudent($student_id)
+  {
+      $wishlist = Wishlist::whereStudentId($student_id)->get();
+
+      return $wishlist;
   }
 
   /**
