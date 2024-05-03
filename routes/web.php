@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
@@ -36,7 +38,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 // Main Page Route
-Route::get('/', 'App\Http\Controllers\dashboard\Analytics@index')->name('dashboard')->middleware('auth');
+Route::get('/', 'App\Http\Controllers\Dashboard\Analytics@index')->name('dashboard')->middleware('auth');
 
 
 // authentication
@@ -53,7 +55,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('subjects', SubjectController::class);
     Route::resource('level-subjects', LevelSubjectController::class);
     Route::resource('coupons', CouponController::class);
-   
+
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
     Route::resource('users', UserController::class);
