@@ -31,6 +31,11 @@ interface StudentRepository
      * {@inheritdoc}
      */
     public function findByEmail($email);
+    /**
+     * {@inheritdoc}
+     */
+
+    public function studentExists($id);
 
     /**
      * Paginate Students.

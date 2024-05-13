@@ -64,6 +64,14 @@ class EloquentStudent implements StudentRepository
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function studentExists($id)
+    {
+      return Student::whereUserId($id)->exists();
+    }
+
+    /**
      * @param $perPage
      * @param null $status
      * @param null $searchFrom
@@ -78,9 +86,7 @@ class EloquentStudent implements StudentRepository
             $query->where('status', $status);
         }
 
-        if ($search) {
-            (new StudentKeywordSearch)($query, $search);
-        }
+
 
         $result = $query->orderBy('id', 'desc')
             ->paginate($perPage);

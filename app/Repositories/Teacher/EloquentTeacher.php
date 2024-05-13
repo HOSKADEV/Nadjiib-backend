@@ -105,9 +105,7 @@ class EloquentTeacher implements TeacherRepository
       $query->where('status', $status);
     }
 
-    if ($search) {
-      (new TeacherKeywordSearch)($query, $search);
-    }
+    
 
     $result = $query->orderBy('id', 'desc')
       ->paginate($perPage);

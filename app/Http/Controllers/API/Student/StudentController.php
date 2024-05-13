@@ -41,12 +41,23 @@ class StudentController extends Controller
 
     try {
 
-      $student = $this->student->create($request->all());
+      $studentexists =  $this->student->studentExists($request->user_id);
 
-      return response()->json([
-        'status' => true,
-        'data'   => $student
-      ]);
+      if (!$studentexists) {
+        $student = $this->student->create($request->all());
+        $user = $this->user->find($request->user_id);
+        return response()->json([
+          'status' => true,
+          'data'   => new UserResource($user)
+        ]);
+      }
+      else {
+        return response()->json([
+          'status' => false,
+          'message' => 'Sorry, but you have already created an account.',
+        ]);
+      }
+
     } catch (Exception $e) {
       return response()->json([
         'status'  => false,
