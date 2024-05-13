@@ -20,12 +20,12 @@ class UserResource extends JsonResource
       "user_id" => $this->id,
       "student" => new StudentResource($this->student),
       'teacher' => new TeacherResource($this->teacher),
-      "name" => $this->name,
+      "name"  => $this->name,
       "email" => $this->email,
       "phone" => $this->phone,
       "gender" => $this->gender,
-      "image" => $this->image,
-      "role" => $this->role,
+      "image"  => $this->image,
+      "role"   => $this->role,
     ];
   }
 }

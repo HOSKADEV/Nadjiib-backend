@@ -33,6 +33,11 @@ interface TeacherRepository
     public function findByEmail($email);
 
     /**
+     * {@inheritdoc}
+     */
+    public function teacherExists($id);
+
+    /**
      * Paginate Teachers.
      *
      * @param $perPage

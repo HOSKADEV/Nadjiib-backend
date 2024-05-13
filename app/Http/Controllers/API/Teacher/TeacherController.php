@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\API\Teacher;
 
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
-use Illuminate\Http\Request;
+use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Validator;
 use App\Repositories\Coupon\CouponRepository;
 use App\Repositories\Teacher\TeacherRepository;
-use App\Repositories\User\UserRepository;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
 {
@@ -40,26 +41,38 @@ class TeacherController extends Controller
       if ($validator->fails()) {
         return response()->json(
           [
-            'status' => 0,
+            'status' => false,
             'message' => $validator->errors()->first()
           ]
         );
       }
 
       try {
-
+        $teacherExists = $this->teacher->teacherExists($request->user_id);
+        if ($teacherExists) {
+          return response()->json([
+            'status' => false,
+            'message' => 'Sorry, but you have already created an account.',
+          ]);
+        }
         DB::beginTransaction();
 
         $coupon = $this->coupon->generate();
 
         $request->merge(['coupon_id' => $coupon->id]);
 
+
         $this->teacher->create(
           $request->only(['user_id', 'coupon_id', 'channel_name','bio','cloud_chat']),
           $request->sections,
-          $request->subjects);
-
-        $user = $this->user->update($request->user_id, $request->only(['name','phone']));
+          $request->subjects
+        );
+        $dataUser = array_replace([
+          'name'  => $request->name,
+          'phone' => $request->phone,
+          'role'=> 2
+        ]);
+        $user = $this->user->update($request->user_id, $dataUser);
 
         DB::commit();
 

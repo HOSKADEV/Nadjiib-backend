@@ -83,6 +83,14 @@ class EloquentTeacher implements TeacherRepository
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function teacherExists($id)
+  {
+    return Teacher::whereUserId($id)->exists();
+  }
+
+  /**
    * @param $perPage
    * @param null $status
    * @param null $searchFrom
