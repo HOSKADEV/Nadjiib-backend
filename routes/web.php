@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\Analytics\AnalyticicsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -38,8 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 // Main Page Route
-Route::get('/', 'App\Http\Controllers\Dashboard\Analytics@index')->name('dashboard')->middleware('auth');
-
+Route::get('/',[AnalyticicsController::class, 'index'])->name('dashboard')->middleware('auth');
+//
 
 // authentication
 Route::get('/auth/login-basic', 'App\Http\Controllers\authentications\LoginBasic@index')->name('login');
