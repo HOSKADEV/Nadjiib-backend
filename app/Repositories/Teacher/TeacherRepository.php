@@ -11,6 +11,11 @@ interface TeacherRepository
      * @return mixed
      */
     public function all();
+    /**
+     * Get all available Teacher.
+     * @return mixed
+     */
+    public function find($id);
 
     /**
      * {@inheritdoc}

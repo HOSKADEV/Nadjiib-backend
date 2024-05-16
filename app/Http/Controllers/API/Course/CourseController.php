@@ -93,8 +93,8 @@ class CourseController extends Controller
 
       try
       {
-          $sections_ids = json_decode($request->input('sections_ids'), true);
-          $levels_ids   = json_decode($request->input('levels_ids'), true);
+          $sections_ids = $request->input('sections_ids');
+          $levels_ids   = $request->input('levels_ids');
           // ** Save image in public folder and return path image save
           $pathImage = $this->SaveImage($request->image , 'images/courses/image/');
           $pathVideo = $this->SaveVideo($request->video , 'videos/courses/video/');

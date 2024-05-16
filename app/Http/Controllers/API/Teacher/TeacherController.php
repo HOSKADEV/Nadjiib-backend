@@ -33,7 +33,6 @@ class TeacherController extends Controller
         "phone"   => 'sometimes|unique:users,phone',
         "channel_name" => 'required|string',
         "bio"   => 'sometimes|string',
-        "cloud_chat" => 'sometimes|in:active,inactive',
         "sections"   => 'required|array',
         "subjects"   => 'required|array',
       ]);
@@ -63,7 +62,7 @@ class TeacherController extends Controller
 
 
         $this->teacher->create(
-          $request->only(['user_id', 'coupon_id', 'channel_name','bio','cloud_chat']),
+          $request->only(['user_id', 'coupon_id','bio','channel_name']),
           $request->sections,
           $request->subjects
         );
@@ -77,13 +76,13 @@ class TeacherController extends Controller
         DB::commit();
 
         return response()->json([
-          'status' => 1,
+          'status' =>true,
           'data' => new UserResource($user)
         ]);
       } catch (Exception $e) {
         DB::rollBack();
         return response()->json([
-          'status' => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }
@@ -98,31 +97,36 @@ class TeacherController extends Controller
           "phone"       => 'sometimes|unique:users,phone',
           "channel_name" => 'sometimes|string',
           "bio"         => 'sometimes|string',
-          "cloud_chat"  => 'sometimes|in:active,inactive',
         ]);
 
         if ($validator->fails()) {
           return response()->json(
             [
-              'status' => 0,
+              'status'  => false,
               'message' => $validator->errors()->first()
             ]
           );
         }
 
       try {
-
-        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
+        $teacherFind = $this->teacher->find($request->teacher_id);
+        if (is_null($teacherFind)) {
+            return response()->json([
+              'status' => false,
+              'message' => 'Sorry, This teacher does not exist.',
+            ]);
+        }
+        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio']));
 
         $user = $this->user->update($teacher->user_id, $request->only(['name','image','phone']));
 
         return response()->json([
-          'status' => 1,
+          'status' => true,
           'data' => new UserResource($user)
         ]);
       } catch (Exception $e) {
         return response()->json([
-          'status' => 0,
+          'status'  => false,
           'message' => $e->getMessage()
         ]);
       }
