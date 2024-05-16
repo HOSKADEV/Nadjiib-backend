@@ -11,6 +11,11 @@ interface StudentRepository
      * @return mixed
      */
     public function all();
+    /**
+     * Get all available Student.
+     * @return mixed
+     */
+    public function find($id);
 
     /**
      * {@inheritdoc}

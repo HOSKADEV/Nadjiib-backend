@@ -68,7 +68,7 @@ class EloquentStudent implements StudentRepository
      */
     public function studentExists($id)
     {
-      return Student::whereUserId($id)->exists();
+        return Student::whereUserId($id)->exists();
     }
 
     /**

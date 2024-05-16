@@ -87,7 +87,13 @@ class StudentController extends Controller
     }
 
     try {
-
+      $studentFind = $this->student->find($request->student_id);
+      if (is_null($studentFind)) {
+          return response()->json([
+            'status' => false,
+            'message' => 'Sorry, This student does not exist.',
+          ]);
+      }
       $student = $this->student->update($request->student_id, $request->only('level_id'));
 
       $user = $this->user->update($student->user_id,$request->except(['student_id','level_id']));
