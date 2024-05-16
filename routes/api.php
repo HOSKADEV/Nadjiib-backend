@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
 use App\Http\Controllers\API\Teacher\TeacherController;
+use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\Wishlist\WishlistController;
 
 /*
@@ -35,6 +36,7 @@ Route::prefix('v1')->group(function () {
       'data' => new \App\Http\Resources\User\UserResource($request->user())
     ]);
   });
+  Route::post('/user/get', [UserController::class, 'get']);
   Route::post('/auth/login',  [AuthController::class,'login']);
   Route::get('/auth/logout',  [AuthController::class,'logout'])->middleware('auth:sanctum');
   Route::post('/section/get', [SectionController::class,'get']);
