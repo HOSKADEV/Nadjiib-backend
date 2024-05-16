@@ -31,7 +31,7 @@ class WishlistController extends Controller
 
         try {
             $wishlists = $this->wishlist->getByStudent($request->student_id);
-            // dd($wishlists);
+            dd($wishlists);
             if (!$wishlists) {
               return response()->json([
                 'status' => false,
