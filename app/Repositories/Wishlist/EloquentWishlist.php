@@ -62,6 +62,15 @@ class EloquentWishlist implements WishlistRepository
 
       return $wishlist;
   }
+  /**
+   * {@inheritdoc}
+   */
+  public function findStudent($student_id)
+  {
+      $wishlist = Wishlist::whereStudentId($student_id)->exists();
+
+      return $wishlist;
+  }
 
   /**
    * @param $perPage

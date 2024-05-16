@@ -28,6 +28,10 @@ interface WishlistRepository
      * {@inheritdoc}
      */
     public function getByStudent($student_id);
+    /**
+     * {@inheritdoc}
+     */
+    public function findStudent($student_id);
 
     /**
      * Paginate Levels.

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\API\Wishlist;
 
+use Exception;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Wishlist\WishlistCollection;
-use App\Http\Resources\Wishlist\WishlistResource;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Wishlist\WishlistResource;
 use App\Repositories\Wishlist\WishlistRepository;
-use Exception;
+use App\Http\Resources\Wishlist\WishlistCollection;
+
 class WishlistController extends Controller
 {
     private $wishlist;
@@ -30,8 +32,15 @@ class WishlistController extends Controller
         }
 
         try {
+            $wishlistStudent = $this->wishlist->findStudent($request->student_id);
+            if (!$wishlistStudent) {
+              return response()->json([
+                "status"  => false,
+                "message" => "wishlist Student not found."
+              ],404);
+            }
             $wishlists = $this->wishlist->getByStudent($request->student_id);
-            dd($wishlists);
+            
             if (!$wishlists) {
               return response()->json([
                 'status' => false,
