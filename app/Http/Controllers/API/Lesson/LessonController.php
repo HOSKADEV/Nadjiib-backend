@@ -153,6 +153,13 @@ class LessonController extends Controller
 
         try
         {
+            $lesson = $this->lesson->find($request->lesson_id);
+            if (is_null($lesson)) {
+              return response()->json([
+                "status"  => false,
+                "message" => "Course not found."
+              ],404);
+            }
             $lesson = $this->lesson->update($request->lesson_id, $request->except(['lesson_id']));
             if(!$lesson){
               return response()->json([

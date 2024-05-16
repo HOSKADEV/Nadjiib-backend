@@ -156,8 +156,8 @@ class CourseController extends Controller
         'name'        => 'required|string',
         'description' => 'required',
         'price'       => 'required|numeric|min:0',
-        'image'       => 'required|mimes:jpeg,png,jpg,gif,svg',
-        'video'       => 'required',
+        'image'       => 'sometimes|mimes:jpeg,png,jpg,gif,svg',
+        'video'       => 'sometimes',
       ]);
 
       if ($validation->fails()) {

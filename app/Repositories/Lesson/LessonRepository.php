@@ -9,6 +9,11 @@ interface LessonRepository
      * @return mixed
      */
     public function all();
+    /**
+     * Get all available Level.
+     * @return mixed
+     */
+    public function find($id);
 
     /**
      * {@inheritdoc}
