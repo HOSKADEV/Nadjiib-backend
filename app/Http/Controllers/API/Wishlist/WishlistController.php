@@ -40,7 +40,7 @@ class WishlistController extends Controller
               ],404);
             }
             $wishlists = $this->wishlist->getByStudent($request->student_id);
-            
+
             if (!$wishlists) {
               return response()->json([
                 'status' => false,
@@ -55,8 +55,12 @@ class WishlistController extends Controller
                   'course' => [
                     'id'   => $wishlist->course->id,
                     'name' => $wishlist->course->name,
+                    'description' => $wishlist->course->description,
                     'price' => $wishlist->course->price,
                     'image' => is_null($wishlist->course->image) ? null : url($wishlist->course->image),
+                    'teacher ' => $wishlist->course->teacher->user->name,
+                    'vedoes' => count($wishlist->course->videos),
+                    'lessons' => count($wishlist->course->lessons),
                   ],
                   'created' => $wishlist->created_at->format('d-m-Y'),
                 ];
