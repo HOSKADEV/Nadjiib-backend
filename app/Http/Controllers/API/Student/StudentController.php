@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API\Student;
 
 use Exception;
 use Illuminate\Http\Request;
+use App\Http\Traits\uploadImage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Validator;
@@ -16,6 +18,7 @@ class StudentController extends Controller
 {
   private $student;
   private $user;
+  use uploadImage;
 
   public function __construct(StudentRepository $student, UserRepository $user)
   {
@@ -72,7 +75,7 @@ class StudentController extends Controller
       'student_id' => 'required|exists:students,id',
       'level_id'   => 'sometimes|exists:levels,id',
       "name"       => 'sometimes|string',
-      "image"      => 'sometimes|string',
+      "image"      => 'sometimes|mimes:jpeg,png,jpg,gif',
       "phone"      => 'sometimes|unique:users,phone',
       "gender"     => 'sometimes|in:male,female'
     ]);
@@ -94,9 +97,33 @@ class StudentController extends Controller
             'message' => 'Sorry, This student does not exist.',
           ]);
       }
+
+      $userFind = $this->user->find($studentFind->user_id);
+      $imageStudent = $userFind->image;
+      if ($request->has('image')) {
+        if ($imageStudent != null && File::exists($imageStudent)) {
+          // !! Delete image from public folder
+          File::delete($imageStudent);
+          // ** Save new image in public folder and return path image save
+          $pathImage = $this->SaveImage($request->image , 'images/students/image/');
+        }
+        else{
+          // ** Save new image in public folder and return path image save
+          $pathImage = $this->SaveImage($request->image , 'images/students/image/');
+        }
+      }
+      else {
+        // ** retun the same image
+        $pathImage = $imageStudent;
+      }
+
+      $dataStudent = array_replace($request->except(['student_id','level_id']), [
+        'image' => $pathImage,
+      ]);
+      
       $student = $this->student->update($request->student_id, $request->only('level_id'));
 
-      $user = $this->user->update($student->user_id,$request->except(['student_id','level_id']));
+      $user = $this->user->update($student->user_id,$dataStudent);
 
       return response()->json([
         'status' => true,

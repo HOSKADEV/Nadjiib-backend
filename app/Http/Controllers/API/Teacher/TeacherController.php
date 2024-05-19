@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\Teacher;
 
 use Exception;
 use Illuminate\Http\Request;
+use App\Http\Traits\uploadImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +20,7 @@ class TeacherController extends Controller
     private $teacher;
     private $user;
     private $coupon;
+    use uploadImage;
 
     public function __construct(TeacherRepository $teacher, UserRepository $user, CouponRepository $coupon)
     {
@@ -93,7 +96,7 @@ class TeacherController extends Controller
         $validator = Validator::make($request->all(), [
           'teacher_id'  => 'required|exists:teachers,id',
           "name"        => 'sometimes|string',
-          "image"       => 'sometimes|string',
+          "image"       => 'sometimes|mimes:jpeg,png,jpg,gif',
           "phone"       => 'sometimes|unique:users,phone',
           "channel_name" => 'sometimes|string',
           "bio"         => 'sometimes|string',
@@ -116,9 +119,34 @@ class TeacherController extends Controller
               'message' => 'Sorry, This teacher does not exist.',
             ]);
         }
-        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio']));
 
-        $user = $this->user->update($teacher->user_id, $request->only(['name','image','phone']));
+        $userFind = $this->user->find($teacherFind->user_id);
+        $imageTeacher = $userFind->image;
+      if ($request->has('image')) {
+        if ($imageTeacher != null && File::exists($imageTeacher)) {
+          // !! Delete image from public folder
+          File::delete($imageTeacher);
+          // ** Save new image in public folder and return path image save
+          $pathImage = $this->SaveImage($request->image , 'images/teachers/image/');
+        }
+        else{
+          // ** Save new image in public folder and return path image save
+          $pathImage = $this->SaveImage($request->image , 'images/teachers/image/');
+        }
+      }
+      else {
+        // ** retun the same image
+        $pathImage = $imageTeacher;
+      }
+
+        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio']));
+        $dataTeacher = array_replace([
+          'name' => $request->name,
+          'image' => $pathImage,
+          'phone' => $request->phone,
+        ]);
+
+        $user = $this->user->update($teacher->user_id, $dataTeacher);
 
         return response()->json([
           'status' => true,
