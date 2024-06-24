@@ -4,17 +4,18 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\Levels\LevelController;
 use App\Http\Controllers\API\Course\CourseController;
-use App\Http\Controllers\API\Coupons\CouponController;
 use App\Http\Controllers\API\Lesson\LessonController;
 use App\Http\Controllers\API\Review\ReviewController;
+use App\Http\Controllers\API\Coupons\CouponController;
 use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
 use App\Http\Controllers\API\Teacher\TeacherController;
-use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\Wishlist\WishlistController;
+use App\Http\Controllers\API\Notification\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,16 @@ Route::prefix('v1')->group(function () {
   });
   Route::post('/user/get', [UserController::class, 'get']);
   Route::post('/auth/login',  [AuthController::class,'login']);
-  Route::get('/auth/logout',  [AuthController::class,'logout'])->middleware('auth:sanctum');
+
+  Route::get('/home', [AuthController::class, 'home']);
+
+  Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/auth/logout', [AuthController::class,'logout']);
+    Route::get('/notification/get', [NotificationController::class, 'get']);
+    Route::get('/course/purchase', [CourseController::class, 'purchase']);
+
+  });
+
   Route::post('/section/get', [SectionController::class,'get']);
   Route::post('/level/get',   [LevelController::class,'get']);
   Route::post('/subject/get', [SubjectController::class,'get']);
@@ -46,8 +56,9 @@ Route::prefix('v1')->group(function () {
   Route::post('/student/update', [StudentController::class,'update']);
   Route::post('/teacher/create', [TeacherController::class,'create']);
   Route::post('/teacher/update', [TeacherController::class,'update']);
-  // ** Router For curses
-  Route::post('/course/all', [CourseController::class, 'get']);
+  // ** Router For courses
+  Route::post('/course/all', [CourseController::class, 'all']);
+  Route::post('/course/get', [CourseController::class, 'get']);
   Route::post('/course/create', [CourseController::class, 'create']);
   Route::post('/course/update', [CourseController::class, 'update']);
   Route::post('/course/delete', [CourseController::class, 'delete']);
@@ -65,6 +76,8 @@ Route::prefix('v1')->group(function () {
   Route::post('/wishlist/get', [WishlistController::class, 'get']);
   Route::post('/wishlist/create', [WishlistController::class, 'create']);
   Route::post('/wishlist/delete', [WishlistController::class, 'delete']);
+
+  Route::post('/coupon/validate', [CouponController::class, 'validateCoupon']);
 });
 
 

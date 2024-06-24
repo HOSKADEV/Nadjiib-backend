@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function changeStatus()
     {
         $this->status = $this->status == 'ACTIVE' ? 'INACTIVE'  : 'ACTIVE' ;
-        $this->save();    
+        $this->save();
     }
 
     public function getAccountAttribute()
@@ -60,7 +60,7 @@ class User extends Authenticatable
         if($this->student && $this->teacher ){
             return trans('app.teacher');
         }else if($this->student){
-            return trans('app.student');  
+            return trans('app.student');
         }else if($this->teacher){
             return trans('app.teacher');
         }else{

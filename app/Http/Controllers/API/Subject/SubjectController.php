@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API\Subject;
 
+use App\Models\LevelSubject;
 use Exception;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -21,8 +23,9 @@ class SubjectController extends Controller
     public function get(Request $request){
 
       $validator = Validator::make($request->all(), [
-        'level_id'  => 'sometimes|prohibits:type|exists:levels,id',
+        'level_id'  => 'sometimes|prohibits:type,sections|exists:levels,id',
         'type'      => 'sometimes|in:academic,extracurricular',
+        'sections'  => 'sometimes|array',
         'search'    => 'sometimes|string',
       ]);
 
@@ -43,6 +46,12 @@ class SubjectController extends Controller
 
         if($request->has('type')){
           $subject = $subject->whereType($request->type);
+        }
+
+        if($request->has('sections')){
+          $level_ids = Level::whereIn('section_id', $request->sections)->pluck('id')->toArray();
+          $subject_ids = LevelSubject::whereIn('level_id',$level_ids)->distinct('subject_id')->pluck('subject_id')->toArray();
+          $subject = $subject->whereIn('id', $subject_ids);
         }
 
         if($request->has('search')){

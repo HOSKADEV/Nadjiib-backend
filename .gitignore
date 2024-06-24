@@ -13,7 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-<<<<<<< HEAD
 public/css
 public/js
 public/mix-manifest.json
@@ -22,13 +21,3 @@ public/assets/*
 public/assets/js
 public/assets/css
 public/assets/vendor
-=======
-#/public/css
-#/public/js
-#/public/mix-manifest.json
-# But not these files...
-#!/public/assets/*
-#/public/assets/js
-#/public/assets/css
-#/public/assets/vendor
->>>>>>> InitializationControllers

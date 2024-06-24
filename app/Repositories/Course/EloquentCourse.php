@@ -68,7 +68,7 @@ class EloquentCourse implements CourseRepository
      * @param null $status
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
-    public function paginate($perPage, $search = null, $subject = null, $teacher = null,$status = 'PENDING')
+    public function paginate($perPage, $search = null, $subject = null, $teacher = null,$status = 'ACCEPTED')
     {
         $query = Course::query();
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Auth;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HomePageResource;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Validator;
@@ -62,7 +63,7 @@ class AuthController extends Controller
           $user->save();
         }
 
-      if($user->status == 0){
+      if($user->status == 'INACTIVE'){
         throw new Exception('blocked account');
       }
 
@@ -102,6 +103,25 @@ class AuthController extends Controller
         ]);
       }
 
+    }
+
+    public function home(Request $request){
+      try{
+
+        $user = $this->get_user_from_token($request->bearerToken());
+        $request->merge(['user' => $user]);
+
+        return response()->json([
+          'status'=> 1,
+          'message' => 'success',
+          'data' => new HomePageResource($user)
+        ]);
+      }catch(Exception $e){
+        return response()->json([
+          'status'=> 0,
+          'message' => $e->getMessage(),
+        ]);
+      }
     }
 
 }

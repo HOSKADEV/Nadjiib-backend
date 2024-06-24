@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Analytics\AnalyticicsController;
+use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 // Main Page Route
-Route::get('/',[AnalyticicsController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
 //
 
 // authentication
