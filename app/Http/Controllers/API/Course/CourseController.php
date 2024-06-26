@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Course\CourseResource;
 use App\Repositories\Course\CourseRepository;
+use App\Http\Resources\Wishlist\WishlistCollection;
 use App\Http\Resources\Course\PaginateCourseCollection;
 use App\Repositories\CourseLevel\CourseLevelRepository;
 use App\Repositories\CourseSection\CourseSectionRepository;
@@ -295,7 +296,9 @@ class CourseController extends Controller
           $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(5));
         }
         if ($request->type == 'wishlist') {
-          $courses = new PaginateCourseCollection(Course::whereIn('id', $user?->student?->wishlists()->pluck('course_id')->toArray()?? [])->paginate(5));
+          $user = $this->get_user_from_token($request->bearerToken());
+          $request->merge(['user' => $user]);
+          $courses = new WishlistCollection($user?->student?->wishlists);
         }
 
         return response()->json([

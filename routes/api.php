@@ -33,7 +33,7 @@ use App\Http\Controllers\API\Notification\NotificationController;
 Route::prefix('v1')->group(function () {
   Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
     return response()->json([
-      'status' => 1,
+      'status' => true,
       'data' => new \App\Http\Resources\User\UserResource($request->user())
     ]);
   });

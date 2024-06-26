@@ -14,7 +14,7 @@
                             <label for="code" class="form-label">{{ trans('coupon.label.code') }} <i class="fa fa-refresh" aria-hidden="true"></i></label>
                             <div class="row">
                                 <div class="col-10 px-1">
-                                    <input type="text" id="code" name="code" class="form-control mx-2" disabled>
+                                    <input type="text" id="code" name="code" class="form-control mx-2" readonly>
                                 </div>
                                     <div class="col-2 px-1">
                                     <i id="generate" class='bx bx-refresh bx-md bx-spin-hover'></i>

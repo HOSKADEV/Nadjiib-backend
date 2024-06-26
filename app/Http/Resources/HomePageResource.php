@@ -9,6 +9,7 @@ use App\Http\Resources\Levels\LevelResource;
 use App\Http\Resources\Course\CourseCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Subject\SubjectCollection;
+use App\Http\Resources\Course\CourseInfoCollection;
 
 class HomePageResource extends JsonResource
 {
@@ -28,11 +29,11 @@ class HomePageResource extends JsonResource
       'level' => empty($user) ? null : new LevelResource($user->student->level),
       'subjects' => empty($user) ? null : new SubjectCollection($user->student->level->subjects),
       'notifications' => empty($user) ? 0 : $user->notifications()->count(),
-      'wishlist' => empty($user) ? 0 : $user->notifications()->count(),
+      'wishlist' => empty($user) ? 0 : $user->student?->wishlists()->count(),
       'ads' => new AdCollection(Ad::inRandomOrder()->limit(5)->get()),
-      'best_sellers' => new CourseCollection(Course::inRandomOrder()->limit(5)->get()),
-      'suggestions' => new CourseCollection(Course::inRandomOrder()->limit(5)->get()),
-      'recommended' => new CourseCollection(Course::inRandomOrder()->limit(5)->get()),
+      'best_sellers' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
+      'suggestions' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
+      'recommended' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
     ];
   }
 }

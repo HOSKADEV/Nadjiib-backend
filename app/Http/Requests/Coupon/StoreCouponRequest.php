@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Coupon;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCouponRequest extends FormRequest
@@ -61,5 +62,5 @@ class StoreCouponRequest extends FormRequest
             'code' => 'trim',
         ];
     }
-    
+
 }

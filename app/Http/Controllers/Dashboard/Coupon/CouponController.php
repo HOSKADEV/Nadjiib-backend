@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Coupon;
 use App\Enums\CouponType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Repositories\Coupon\CouponRepository;
 use App\Http\Requests\Coupon\StoreCouponRequest;
 use App\Http\Requests\Coupon\UpdateCouponRequest;
@@ -48,15 +49,28 @@ class CouponController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCouponRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
-        $data = array_replace($request->all() ,[
-            'type' => CouponType::LIMITED
+        //$validated = $request->validated();
+        $validation = Validator::make($request->all(), [
+          'code' => ['required','string','min:8','max:8','unique:coupons,code',],
+          'discount'  => ['required','integer'],
+          'start_date'  => ['required','date'],
+          'end_date'  => ['required','date','after:start_date']
         ]);
-        $this->coupons->create($request->all());
-        toastr()->success(trans('message.success.create'));
-        return redirect()->route('dashboard.coupons.index');
+
+        if ($validation->fails()) {
+          toastr()->error(trans($validation->messages()->first()));
+          return redirect()->back();
+        }else{
+          $data = array_replace($request->all() ,[
+            'type' => CouponType::LIMITED
+          ]);
+          $this->coupons->create($request->all());
+          toastr()->success(trans('message.success.create'));
+          return redirect()->route('dashboard.coupons.index');
+        }
+
     }
 
     /**

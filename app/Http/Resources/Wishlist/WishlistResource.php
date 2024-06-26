@@ -4,6 +4,7 @@ namespace App\Http\Resources\Wishlist;
 
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
+use App\Http\Resources\Course\CourseInfoResource;
 use App\Http\Resources\Student\StudentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,8 @@ class WishlistResource extends JsonResource
           'id' => $this->id,
           'course_id'  => $this->course_id,
           'student_id' => $this->student_id,
-          'created' => $this->created_at,
+          'created' => $this->created_at->format('d-m-Y'),
+          'course' => new CourseInfoResource($this->course)
         ];
     }
 }

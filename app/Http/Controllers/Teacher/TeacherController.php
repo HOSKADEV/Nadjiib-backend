@@ -41,7 +41,7 @@ class TeacherController extends Controller
     if ($validator->fails()) {
       return response()->json(
         [
-          'status' => 0,
+          'status' => false,
           'message' => $validator->errors()->first()
         ]
       );
@@ -60,18 +60,20 @@ class TeacherController extends Controller
         $request->sections,
         $request->subjects);
 
-      $user = $this->user->update($request->user_id, $request->only(['name','phone']));
+      $request->merge(['role' => '2']);
+
+      $user = $this->user->update($request->user_id, $request->only(['name','phone','role']));
 
       DB::commit();
 
       return response()->json([
-        'status' => 1,
+        'status' => true,
         'data' => new UserResource($user)
       ]);
     } catch (Exception $e) {
       DB::rollBack();
       return response()->json([
-        'status' => 0,
+        'status' => false,
         'message' => $e->getMessage()
       ]);
     }
@@ -92,7 +94,7 @@ class TeacherController extends Controller
     if ($validator->fails()) {
       return response()->json(
         [
-          'status' => 0,
+          'status' => false,
           'message' => $validator->errors()->first()
         ]
       );
@@ -105,12 +107,12 @@ class TeacherController extends Controller
       $user = $this->user->update($teacher->user_id, $request->only(['name','image','phone']));
 
       return response()->json([
-        'status' => 1,
+        'status' => true,
         'data' => new UserResource($user)
       ]);
     } catch (Exception $e) {
       return response()->json([
-        'status' => 0,
+        'status' => false,
         'message' => $e->getMessage()
       ]);
     }

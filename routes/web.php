@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Dashboard\Ad\AdController;
 use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
 use App\Http\Controllers\Dashboard\Course\CourseController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
+use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
 
 /*
@@ -56,6 +57,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('subjects', SubjectController::class);
     Route::resource('level-subjects', LevelSubjectController::class);
     Route::resource('coupons', CouponController::class);
+    Route::resource('ads', AdController::class);
+    //Route::post('coupons/store', [CouponController::class, 'store'])->name('coupons.store');
 
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');

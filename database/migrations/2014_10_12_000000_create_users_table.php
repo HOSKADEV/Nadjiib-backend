@@ -23,7 +23,7 @@ return new class extends Migration {
       $table->string('password')->nullable()->default(null);
       $table->string('fcm_token')->nullable()->default(null);
       $table->rememberToken();
-      $table->smallInteger('role')->default(0);
+      $table->smallInteger('role')->default(1);
       // $table->smallInteger('status')->default(1);
       $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
       $table->timestamps();

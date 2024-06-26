@@ -112,13 +112,13 @@ class AuthController extends Controller
         $request->merge(['user' => $user]);
 
         return response()->json([
-          'status'=> 1,
+          'status' => true,
           'message' => 'success',
           'data' => new HomePageResource($user)
         ]);
       }catch(Exception $e){
         return response()->json([
-          'status'=> 0,
+          'status' => false,
           'message' => $e->getMessage(),
         ]);
       }
