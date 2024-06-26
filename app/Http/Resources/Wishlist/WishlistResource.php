@@ -23,7 +23,7 @@ class WishlistResource extends JsonResource
           'course_id'  => $this->course_id,
           'student_id' => $this->student_id,
           'created' => $this->created_at->format('d-m-Y'),
-          'course' => new CourseInfoResource($this->course)
+          'course' => new CourseResource($this->course)
         ];
     }
 }

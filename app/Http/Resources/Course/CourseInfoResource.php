@@ -21,10 +21,10 @@ class CourseInfoResource extends JsonResource
       'description' => $this->description,
       'price' => $this->price,
       'image' => is_null($this->image) ? null : url($this->image),
-      'teacher ' => $this->teacher->user->name,
-      'vidoes' => count($this->videos),
-      'lessons' => count($this->lessons),
-      'is_wished' => empty($user) ? false : in_array($this->id, $user->student?->wishlists()->pluck('course_id')->toArray()),
+      'teacher_name' => $this->teacher->user->name,
+      'vidoes'      => $this->videos()->count(),
+      'lessons'     => $this->lessons()->count(),
+      'is_wished'   => empty($user) ? false : in_array($this->id, $user->student?->wishlists()->pluck('course_id')->toArray()),
     ];
   }
 }

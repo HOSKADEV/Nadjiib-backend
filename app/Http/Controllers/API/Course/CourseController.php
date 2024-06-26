@@ -284,6 +284,7 @@ class CourseController extends Controller
     try{
 
       $user = $this->get_user_from_token($request->bearerToken());
+      $request->merge(['user' => $user]);
 
       if ($request->has("type")) {
         if ($request->type == 'best_sellers') {
@@ -296,8 +297,6 @@ class CourseController extends Controller
           $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(5));
         }
         if ($request->type == 'wishlist') {
-          $user = $this->get_user_from_token($request->bearerToken());
-          $request->merge(['user' => $user]);
           $courses = new WishlistCollection($user?->student?->wishlists);
         }
 
