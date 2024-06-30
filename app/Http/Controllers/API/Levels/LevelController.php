@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\API\Levels;
 
+use Exception;
+use App\Models\Level;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\YearCollection;
+use Illuminate\Support\Facades\Validator;
+use App\Repositories\Level\LevelRepository;
 use App\Http\Resources\Levels\LevelCollection;
 use App\Http\Resources\Levels\PaginatedLevelCollection;
-use App\Repositories\Level\LevelRepository;
-use Illuminate\Http\Request;
-use Exception;
-use Illuminate\Support\Facades\Validator;
 
 class LevelController extends Controller
 {
@@ -17,11 +19,12 @@ class LevelController extends Controller
     {
         $this->levels = $levels;
     }
-    
+
     public function get(Request $request)
     {
         $validator = Validator::make($request->all(), [
-          'section_id' => 'required|exists:sections,id',
+          'sections' => 'required|array',
+          'sections.*' => 'exists:sections,id'
         ]);
 
         if ($validator->fails()) {
@@ -35,10 +38,14 @@ class LevelController extends Controller
 
         try
         {
-          $levels = $this->levels->getBySection($request->section_id);
+          $levels = Level::whereIn('section_id', $request->sections)
+                          ->select('section_id', 'year', 'name_ar', 'name_fr', 'name_en')
+                          ->groupBy('section_id', 'year', 'name_ar', 'name_fr', 'name_en')
+                          ->get();
+          //return($levels);
             return response()->json([
               'status' => true,
-              'data'   => new LevelCollection($levels)
+              'data'   => new YearCollection($levels)
             ]);
         }
         catch(Exception $e)

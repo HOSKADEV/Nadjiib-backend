@@ -17,10 +17,11 @@ class LevelResource extends JsonResource
     public function toArray($request)
     {
         return [
-          'id'        => $this->id,
-          'year'      => $this->year,
-          'name'      => $this->name($request->header('Accept-language','ar')),
-          'specialty' => $this->specialty($request->header('Accept-language','ar')),
+          'id'         => $this->id,
+          'section_id' => $this->section_id,
+          //'year'       => $this->year,
+          'name'       => $this->name($request->header('Accept-language','ar')),
+          'specialty'  => $this->specialty($request->header('Accept-language','ar')),
         ];
     }
 }

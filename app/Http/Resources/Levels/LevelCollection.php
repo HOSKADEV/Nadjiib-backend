@@ -14,7 +14,8 @@ class LevelCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-      $levels = parent::toArray($request);
+      return parent::toArray($request);
+      /* $levels = parent::toArray($request);
 
         $years = [];
 
@@ -40,6 +41,6 @@ class LevelCollection extends ResourceCollection
           array_push($data, $array);
         }
 
-        return $data;
+        return $data; */
     }
 }

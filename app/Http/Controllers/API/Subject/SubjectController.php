@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API\Subject;
 
-use App\Models\LevelSubject;
 use Exception;
 use App\Models\Level;
+use App\Models\Subject;
+use App\Models\LevelSubject;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -23,9 +24,11 @@ class SubjectController extends Controller
     public function get(Request $request){
 
       $validator = Validator::make($request->all(), [
-        'level_id'  => 'sometimes|prohibits:type,sections|exists:levels,id',
+        'sections' => 'prohibits:levels|array',
+        'sections.*' => 'exists:sections,id',
+        'levels' => 'prohibits:sections|array',
+        'levels.*' => 'exists:levels,id',
         'type'      => 'sometimes|in:academic,extracurricular',
-        'sections'  => 'sometimes|array',
         'search'    => 'sometimes|string',
       ]);
 
@@ -40,22 +43,28 @@ class SubjectController extends Controller
 
       try
       {
-        $subject = $request->has('level_id')?
-        $this->subject->getByLevel($request->level_id):
-        $this->subject->table();
 
-        if($request->has('type')){
-          $subject = $subject->whereType($request->type);
+        $subjects = Subject::latest();
+
+        if($request->has('levels')){
+          $subject_ids = LevelSubject::whereIn('level_id',$request->levels)->distinct('subject_id')->pluck('subject_id')->toArray();
+          $subjects = $subjects->whereIn('id', $subject_ids);
         }
 
         if($request->has('sections')){
           $level_ids = Level::whereIn('section_id', $request->sections)->pluck('id')->toArray();
           $subject_ids = LevelSubject::whereIn('level_id',$level_ids)->distinct('subject_id')->pluck('subject_id')->toArray();
-          $subject = $subject->whereIn('id', $subject_ids);
+          $subjects = $subjects->whereIn('id', $subject_ids);
         }
 
+        if($request->has('type')){
+          $subjects = $subjects->whereType($request->type);
+        }
+
+
+
         if($request->has('search')){
-          $subject = $subject->where(function ($query) use($request) {
+          $subjects = $subjects->where(function ($query) use($request) {
             $query->where('name_ar', 'like', '%' . $request->search . '%')
                 ->orWhere('name_en', 'like', '%' . $request->search . '%')
                 ->orWhere('name_fr', 'like', '%' . $request->search . '%');
@@ -64,7 +73,7 @@ class SubjectController extends Controller
 
         return response()->json([
           'status' => true,
-          'data'   => new SubjectCollection($subject->get())
+          'data'   => new SubjectCollection($subjects->get())
         ]);
       }
       catch(Exception $e)

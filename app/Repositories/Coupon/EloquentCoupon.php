@@ -80,7 +80,7 @@ class EloquentCoupon implements CouponRepository
      */
     public function paginate($perPage, $search = null)
     {
-        $query = Coupon::query();
+        $query = Coupon::query()->where('type', 'limited');
 
         if ($search) {
             (new LevelKeywordSearch)($query, $search);
