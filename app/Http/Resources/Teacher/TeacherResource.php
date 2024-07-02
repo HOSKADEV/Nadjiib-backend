@@ -24,6 +24,8 @@ class TeacherResource extends JsonResource
           'cloud_chat' => $this->cloud_chat,
           'sections' => new SectionCollection($this->sections),
           'subjects' => new SubjectCollection($this->subjects),
+          'num_posts' => $this->posts()->count(),
+          'num_likes' => $this->likes()->count(),
         ];
     }
 }

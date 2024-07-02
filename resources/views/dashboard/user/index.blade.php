@@ -4,6 +4,7 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
 @endsection
 
 @section('page-header')
@@ -105,6 +106,14 @@
                                             </a>
                                         @endif
 
+                                        @if ($user->teacher)
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                        data-bs-target="#createAdModal{{$user->teacher->id}}">
+                                        <i class='bx bxs-offer me-2'></i>
+                                        {{ trans('ad.create') }}
+                                </a>
+                                        @endif
+
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                             data-bs-target="#deleteUserModal{{ $user->id }}">
                                             <i class="bx bx-trash me-2"></i>
@@ -114,9 +123,13 @@
                                 </div>
                             </td>
                         </tr>
+
                         @include('dashboard.user.upgrade')
                         @include('dashboard.user.update-status')
                         @include('dashboard.user.delete')
+                        @if ($user->teacher)
+                          @include('dashboard.user.create')
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -150,6 +163,23 @@
             function submitForm() {
                 $("#searchUserForm").submit();
             }
+
+            $('.image-input').on('change', function(event) {
+                const id = $(this).attr('id').replace('image', '');
+                //const fileInput = document.querySelector('.image-input');
+                const fileInput = document.getElementById('image' + id);
+                if (fileInput.files[0]) {
+                    document.getElementById('uploaded-image' + id).src = window.URL.createObjectURL(fileInput
+                        .files[0]);
+                }
+            });
+            $('.image-reset').on('click', function(event) {
+                const id = $(this).attr('id').replace('reset', '');
+                //const fileInput = document.querySelector('.image-input');
+                const fileInput = document.getElementById('image' + id);
+                fileInput.value = '';
+                document.getElementById('uploaded-image' + id).src = document.getElementById('old-image' + id).src;
+            });
         });
     </script>
 @endsection

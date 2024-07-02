@@ -59,6 +59,11 @@ class Teacher extends Model
         return $this->hasMany(Post::class);
     }
 
+    public function likes()
+    {
+        return $this->hasManyThrough(PostLike::class, Post::class);
+    }
+
     public function followings()
     {
         return $this->hasMany(Following::class);

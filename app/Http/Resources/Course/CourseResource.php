@@ -7,6 +7,7 @@ use App\Http\Resources\Levels\LevelCollection;
 use App\Http\Resources\Section\SectionResource;
 use App\Http\Resources\Subject\SubjectResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Section\SectionCollection;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Http\Resources\CourseLevel\CourseLevelResource;
 use App\Http\Resources\LevelCourse\LevelCourseResource;
@@ -35,9 +36,12 @@ class CourseResource extends JsonResource
           'price'       => $this->price,
           'image'       => is_null($this->image) ? null : url($this->image),
           'video'       => is_null($this->video) ? null : url($this->video),
+          'thumbnail'   => is_null($this->thumbnail) ? null : url($this->thumbnail),
           'status'      => $this->status,
-          'level'       => $this->courseLevel()-> count() === 0 ? null : new CourseLevelCollection($this->courseLevel),
-          'section'     => $this->courseSection()-> count() === 0  ? null : new CourseSectionCollection($this->courseSection),
+          //'level'       => $this->courseLevel()-> count() === 0 ? null : new CourseLevelCollection($this->courseLevel),
+          //'section'     => $this->courseSection()-> count() === 0  ? null : new CourseSectionCollection($this->courseSection),
+          'levels'       => new LevelCollection($this->levels),
+          'sections'     => new SectionCollection($this->sections),
           'vidoes'      => $this->videos()->count(),
           'lessons'     => $this->lessons()->count(),
           'is_wished'   => empty($user) ? false : in_array($this->id, $user->student?->wishlists()->pluck('course_id')->toArray()),

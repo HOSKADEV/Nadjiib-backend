@@ -157,16 +157,20 @@
 
             });
             $('.image-input').on('change', function(event) {
-                const fileInput = document.querySelector('.image-input');
+                const id = $(this).attr('id').replace('image', '');
+                //const fileInput = document.querySelector('.image-input');
+                const fileInput = document.getElementById('image' + id);
                 if (fileInput.files[0]) {
-                    document.getElementById('uploaded-image').src = window.URL.createObjectURL(fileInput
+                    document.getElementById('uploaded-image' + id).src = window.URL.createObjectURL(fileInput
                         .files[0]);
                 }
             });
             $('.image-reset').on('click', function(event) {
-                const fileInput = document.querySelector('.image-input');
+                const id = $(this).attr('id').replace('reset', '');
+                //const fileInput = document.querySelector('.image-input');
+                const fileInput = document.getElementById('image' + id);
                 fileInput.value = '';
-                document.getElementById('uploaded-image').src = document.getElementById('old-image').src;
+                document.getElementById('uploaded-image' + id).src = document.getElementById('old-image' + id).src;
             });
         });
     </script>

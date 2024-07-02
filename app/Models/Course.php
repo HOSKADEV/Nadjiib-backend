@@ -24,6 +24,7 @@ class Course extends Model
         'price',
         'image',
         'video',
+        'thumbnail',
         'status',
     ];
 

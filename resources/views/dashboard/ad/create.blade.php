@@ -24,7 +24,7 @@
                                 <input class="image-input" type="file" id="image" name="image" hidden
                                     accept="image/png, image/jpeg" />
                             </label>
-                            <button type="button" class="btn btn-outline-secondary image-reset">
+                            <button type="button" class="btn btn-outline-secondary image-reset" id="reset">
                                 <i class="bx bx-reset d-block d-sm-none"></i>
                                 <span class="d-none d-sm-block">{{ trans('app.reset') }}</span>
                             </button>

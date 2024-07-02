@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\API\Teacher;
 
 use Exception;
+use App\Models\User;
+use App\Models\Level;
+use App\Models\Teacher;
+use App\Models\LevelSubject;
 use Illuminate\Http\Request;
+use App\Models\TeacherSection;
+use App\Models\TeacherSubject;
 use App\Http\Traits\uploadImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -12,8 +18,10 @@ use Illuminate\Support\Facades\File;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\User\UserCollection;
 use App\Repositories\Coupon\CouponRepository;
 use App\Repositories\Teacher\TeacherRepository;
+use App\Http\Resources\Subject\SubjectCollection;
 
 class TeacherController extends Controller
 {
@@ -61,6 +69,8 @@ class TeacherController extends Controller
 
         $coupon = $this->coupon->generate();
 
+        $user = User::findOrFail($request->user_id);
+
         $request->merge(['coupon_id' => $coupon->id]);
 
 
@@ -70,8 +80,8 @@ class TeacherController extends Controller
           $request->subjects
         );
         $dataUser = array_replace([
-          'name'  => $request->name,
-          'phone' => $request->phone,
+          'name'  => $request->name?? $user->name,
+          'phone' => $request->phone?? $user->phone,
           'role'=> 2
         ]);
         $user = $this->user->update($request->user_id, $dataUser);
@@ -153,6 +163,91 @@ class TeacherController extends Controller
           'data' => new UserResource($user)
         ]);
       } catch (Exception $e) {
+        return response()->json([
+          'status'  => false,
+          'message' => $e->getMessage()
+        ]);
+      }
+    }
+
+    public function get(Request $request){
+
+      $validator = Validator::make($request->all(), [
+        'sections' => 'sometimes|array',
+        'sections.*' => 'exists:sections,id',
+        'subjects' => 'sometimes|array',
+        'subjects.*' => 'exists:subjects,id',
+        'type'      => 'sometimes|in:cloud_chat,channels,most_active',
+        'search'    => 'sometimes|string',
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json(
+          [
+            'status'  => false,
+            'message' => $validator->errors()->first()
+          ]
+        );
+      }
+
+      try
+      {
+
+        $teachers = User::join('teachers','users.id','teachers.user_id')
+                        ->leftjoin('posts','teachers.id','posts.teacher_id')
+                        ->groupBy('teachers.id')
+                        ->select('users.*',
+                        'teachers.id as teacher_id',
+                        'teachers.bio',
+                        'teachers.cloud_chat',
+                        'teachers.channel_name',
+                        DB::raw('COUNT(posts.id) as num_posts'))
+                        ->where('users.status','ACTIVE')
+                        ->where('role', '2');
+
+        //return($teachers->get());
+
+        if($request->has('subjects')){
+          $teacher_ids = TeacherSubject::whereIn('subject_id',$request->subjects)->distinct('teacher_id')->pluck('teacher_id')->toArray();
+          $teachers = $teachers->whereIn('teachers.id', $teacher_ids);
+        }
+
+        if($request->has('sections')){
+          $teacher_ids = TeacherSection::whereIn('section_id',$request->sections)->distinct('teacher_id')->pluck('teacher_id')->toArray();
+          $teachers = $teachers->whereIn('teachers.id', $teacher_ids);
+        }
+
+
+        if($request->has('search')){
+          $teachers = $teachers->where(function ($query) use($request) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('bio', 'like', '%' . $request->search . '%')
+                ->orWhere('channel_name', 'like', '%' . $request->search . '%');
+        });
+        }
+
+        if($request->has('type')){
+          if($request->type == 'cloud_chat'){
+            $teachers = $teachers->where('cloud_chat', 'ACTIVE')->orderBy('teachers.created_at', 'DESC');
+          }
+          if($request->type == 'channels'){
+            $teachers = $teachers->having('num_posts','>', 0)->orderBy('teachers.created_at', 'DESC');
+          }
+          if($request->type == 'most_active'){
+            $teachers = $teachers->having('num_posts','>', 0)->orderBy('num_posts', 'DESC');
+          }
+
+        }else{
+          $teachers = $teachers->orderBy('users.created_at', 'DESC');
+        }
+
+        return response()->json([
+          'status' => true,
+          'data'   => new UserCollection($teachers->paginate(10))
+        ]);
+      }
+      catch(Exception $e)
+      {
         return response()->json([
           'status'  => false,
           'message' => $e->getMessage()

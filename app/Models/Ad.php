@@ -24,11 +24,13 @@ class Ad extends Model
 
     public function teacher()
     {
-        return $this->hasOneThrough(Teacher::class, TeacherAd::class);
+        return $this->hasOneThrough(Teacher::class, TeacherAd::class,
+      'ad_id', 'id', 'id', 'teacher_id');
     }
 
     public function course()
     {
-        return $this->hasOneThrough(Course::class, CourseAd::class);
+        return $this->hasOneThrough(Course::class, CourseAd::class,
+      'ad_id', 'id', 'id', 'course_id');
     }
 }

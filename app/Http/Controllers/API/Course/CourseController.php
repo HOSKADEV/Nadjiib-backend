@@ -73,6 +73,7 @@ class CourseController extends Controller
       'price' => 'required|numeric|min:0',
       'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
       'video' => 'required',
+      'thumbnail' => 'required',
       'sections_ids' => 'required',
       'levels_ids' => 'sometimes',
       'name_subject' => 'sometimes',
@@ -92,7 +93,9 @@ class CourseController extends Controller
       $levels_ids = $request->input('levels_ids');
       // ** Save image in public folder and return path image save
       $pathImage = $this->SaveImage($request->image, 'images/courses/image/');
+      $pathThumbnail = $this->SaveImage($request->thumbnail, 'images/courses/thumbnail/');
       $pathVideo = $this->SaveVideo($request->video, 'videos/courses/video/');
+
       // ** Verfication is has a new subject and Saved
       if ($request->has('name_subject')) {
         $subject = new Subject();
@@ -107,6 +110,7 @@ class CourseController extends Controller
         'subject_id' => $request->has('name_subject') != null ? $subject->id : $request->subject_id,
         'image' => $pathImage,
         'video' => $pathVideo,
+        'thumbnail' => $pathThumbnail
       ]);
       // ** Save data to model Course
       $course = $this->course->create($data);
@@ -124,7 +128,7 @@ class CourseController extends Controller
         return response()->json([
           'status' => true,
           'message' => 'The course has been created successfully',
-          'data' => new CourseResource($course)
+          'data' => new CourseResource($course->refresh())
         ], 202);
       } else {
         return response()->json([

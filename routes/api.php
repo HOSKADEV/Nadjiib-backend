@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\API\Ad\AdController;
 use App\Http\Controllers\API\Levels\LevelController;
 use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Lesson\LessonController;
@@ -56,6 +57,7 @@ Route::prefix('v1')->group(function () {
   Route::post('/student/update', [StudentController::class,'update']);
   Route::post('/teacher/create', [TeacherController::class,'create']);
   Route::post('/teacher/update', [TeacherController::class,'update']);
+  Route::post('/teacher/get', [TeacherController::class,'get']);
   // ** Router For courses
   Route::post('/course/all', [CourseController::class, 'all']);
   Route::post('/course/get', [CourseController::class, 'get']);
@@ -78,6 +80,8 @@ Route::prefix('v1')->group(function () {
   Route::post('/wishlist/delete', [WishlistController::class, 'delete']);
 
   Route::post('/coupon/validate', [CouponController::class, 'validateCoupon']);
+
+  Route::post('/ad/get', [AdController::class, 'get']);
 });
 
 
