@@ -139,26 +139,23 @@ class TeacherController extends Controller
           // !! Delete image from public folder
           File::delete($imageTeacher);
           // ** Save new image in public folder and return path image save
-          $pathImage = $this->SaveImage($request->image , 'images/teachers/image/');
         }
-        else{
+
           // ** Save new image in public folder and return path image save
-          $pathImage = $this->SaveImage($request->image , 'images/teachers/image/');
-        }
+          $pathImage = $this->SaveImage($request->image , 'images/teachers/image/')->getPathName();
+
       }
       else {
         // ** retun the same image
         $pathImage = $imageTeacher;
       }
 
-        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
-        $dataTeacher = array_replace([
-          'name' => $request->name,
-          'image' => $pathImage,
-          'phone' => $request->phone,
-        ]);
 
-        $user = $this->user->update($teacher->user_id, $dataTeacher);
+
+      $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
+      $user = $this->user->update($teacher->user_id, $request->only('name','phone'));
+      $user->image = $pathImage;
+      $user->save();
 
         return response()->json([
           'status' => true,
