@@ -43,6 +43,7 @@ class TeacherController extends Controller
         "name"    => 'sometimes|string',
         "phone"   => 'sometimes|unique:users,phone',
         "channel_name" => 'required|string',
+        "cloud_chat" => 'required|in:active,inactive',
         "bio"   => 'sometimes|string',
         "sections"   => 'required|array',
         "subjects"   => 'required|array',
@@ -75,7 +76,7 @@ class TeacherController extends Controller
 
 
         $this->teacher->create(
-          $request->only(['user_id', 'coupon_id','bio','channel_name']),
+          $request->only(['user_id', 'coupon_id','bio','channel_name','cloud_chat']),
           $request->sections,
           $request->subjects
         );
@@ -109,6 +110,7 @@ class TeacherController extends Controller
           "image"       => 'sometimes|mimes:jpeg,png,jpg,gif',
           "phone"       => 'sometimes|unique:users,phone',
           "channel_name" => 'sometimes|string',
+          "cloud_chat" => 'sometimes|in:active,inactive',
           "bio"         => 'sometimes|string',
         ]);
 
@@ -149,7 +151,7 @@ class TeacherController extends Controller
         $pathImage = $imageTeacher;
       }
 
-        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio']));
+        $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
         $dataTeacher = array_replace([
           'name' => $request->name,
           'image' => $pathImage,
