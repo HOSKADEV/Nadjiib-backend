@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\Course;
 
+use App\Http\Resources\Course\CourseInfoResource;
 use Exception;
 use App\Models\Course;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use App\Http\Traits\uploadImage;
+use App\Http\Traits\uploadFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class CourseController extends Controller
   private $course;
   private $courseSection;
   private $courseLevel;
-  use uploadImage;
+  use uploadFile;
 
   public function __construct(CourseRepository $course, CourseSectionRepository $courseSection, CourseLevelRepository $courseLevel)
   {
@@ -350,4 +351,40 @@ class CourseController extends Controller
     }
 
   }
+
+  public function info(Request $request){
+    $validation = Validator::make($request->all(), [
+      'course_id' => 'required|exists:courses,id'
+    ]);
+
+    if ($validation->fails()) {
+      return response()->json([
+        'status' => false,
+        'message' => $validation->errors()->first(),
+        //'message' => 'Invalid coupon',
+        //'errors' => $validation->errors()
+      ], 422);
+    }
+
+    try {
+
+      $course = Course::find($request->course_id);
+      $user = $this->get_user_from_token($request->bearerToken());
+      $request->merge(['user' => $user]);
+
+      return response()->json([
+        'status' => true,
+        'message' => 'success',
+        'data' => new CourseInfoResource($course)
+      ]);
+
+    } catch (Exception $e) {
+      return response()->json([
+        'status' => false,
+        'message' => $e->getMessage()
+      ]);
+    }
+  }
 }
+
+

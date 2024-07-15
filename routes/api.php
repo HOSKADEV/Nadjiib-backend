@@ -1,11 +1,14 @@
 <?php
 
 
+use App\Http\Controllers\API\Payment\PaymentController;
+use App\Models\PurchaseCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\API\Ad\AdController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\User\UserController;
-use App\Http\Controllers\API\Ad\AdController;
 use App\Http\Controllers\API\Levels\LevelController;
 use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Lesson\LessonController;
@@ -15,6 +18,7 @@ use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
 use App\Http\Controllers\API\Teacher\TeacherController;
+use App\Http\Controllers\API\Purchase\PurchaseController;
 use App\Http\Controllers\API\Wishlist\WishlistController;
 use App\Http\Controllers\API\Notification\NotificationController;
 
@@ -46,9 +50,14 @@ Route::prefix('v1')->group(function () {
   Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/auth/logout', [AuthController::class,'logout']);
     Route::get('/notification/get', [NotificationController::class, 'get']);
-    Route::get('/course/purchase', [CourseController::class, 'purchase']);
-
+    Route::post('/purchase/create', [PurchaseController::class, 'create']);
+    Route::post('/purchase/update', [PurchaseController::class, 'update']);
+    Route::post('/payment/get', [PaymentController::class, 'get']);
+    Route::post('/payment/info', [PaymentController::class, 'info']);
   });
+
+  Route::post('/course/info', [CourseController::class, 'info']);
+  Route::post('/user/info', [UserController::class, 'info']);
 
   Route::post('/section/get', [SectionController::class,'get']);
   Route::post('/level/get',   [LevelController::class,'get']);
@@ -82,6 +91,12 @@ Route::prefix('v1')->group(function () {
   Route::post('/coupon/validate', [CouponController::class, 'validateCoupon']);
 
   Route::post('/ad/get', [AdController::class, 'get']);
+
+  Route::get('/info', [SettingsController::class, 'info']);
+
+  Route::post('/test', function(Request $request){
+    return 'success';
+  });
 });
 
 

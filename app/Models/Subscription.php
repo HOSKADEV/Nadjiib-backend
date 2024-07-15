@@ -17,6 +17,8 @@ class Subscription extends Model
      */
     protected $fillable = [
         'purchase_id',
+        'student_id',
+        'subject_id',
         'start_date',
         'end_date',
     ];

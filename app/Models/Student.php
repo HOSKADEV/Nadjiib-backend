@@ -90,4 +90,12 @@ class Student extends Model
     {
         return $this->hasManyThrough(Subscription::class, Purchase::class);
     }
+
+    public function purchased($course){
+      return boolval($this->purchases()->where('course_id',$course->id)->count());
+    }
+
+    public function owns($course){
+      return boolval($this->purchases()->where('course_id',$course->id)->where('status','success')->count());
+    }
 }

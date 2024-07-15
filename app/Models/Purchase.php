@@ -34,11 +34,6 @@ class Purchase extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
-
     public function transaction()
     {
         return $this->hasOne(Transaction::class);
@@ -62,5 +57,89 @@ class Purchase extends Model
     public function bonuses()
     {
         return $this->hasMany(PurchaseBonus::class);
+    }
+
+    public function apply_coupons($coupon_code,$invitation_code){
+
+      $coupons = [];
+
+      if($coupon_code){
+        $percentage = $coupon_code->discount?? 0;
+        $amount = $this->price * $percentage/ 100;
+        array_push($coupons,[
+          'purchase_id' => $this->id,
+          'coupon_id' => $coupon_code->id,
+          'percentage' => $percentage,
+          'amount' => $amount,
+        ]);
+
+        $this->total -= $amount;
+      }
+
+      if($invitation_code){
+        $percentage = 5;
+        $amount = $this->price * $percentage/ 100;
+        array_push($coupons,[
+          'purchase_id' => $this->id,
+          'coupon_id' => $invitation_code->id,
+          'percentage' => $percentage,
+          'amount' => $amount,
+        ]);
+
+        $this->total -= $amount;
+      }
+
+      PurchaseCoupon::insert($coupons);
+      $this->save();
+
+    }
+
+    public function apply_bonuses($teacher,$invitation_code){
+      $bonuses = [];
+
+      $percentage = 30;
+      $amount = $this->price * $percentage/ 100;
+
+      array_push($bonuses,[
+        'purchase_id' => $this->id,
+        'percentage' => $percentage,
+        'amount' => $amount,
+        'type' => 1
+      ]);
+
+      if($teacher->cloud_tasks_completed()){
+        $percentage = 5;
+        $amount = $this->price * $percentage/ 100;
+        array_push($bonuses,[
+          'purchase_id' => $this->id,
+          'percentage' => $percentage,
+          'amount' => $amount,
+          'type' => 2
+        ]);
+      }
+
+      if($teacher->community_tasks_completed()){
+        $percentage = 5;
+        $amount = $this->price * $percentage/ 100;
+        array_push($bonuses,[
+          'purchase_id' => $this->id,
+          'percentage' => $percentage,
+          'amount' => $amount,
+          'type' => 3
+        ]);
+      }
+
+      if($invitation_code){
+        $percentage = 5;
+        $amount = $this->price * $percentage/ 100;
+        array_push($bonuses,[
+          'purchase_id' => $this->id,
+          'percentage' => $percentage,
+          'amount' => $amount,
+          'type' => 4
+        ]);
+      }
+
+      PurchaseBonus::insert($bonuses);
     }
 }

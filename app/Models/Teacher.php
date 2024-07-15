@@ -53,6 +53,10 @@ class Teacher extends Model
     {
         return $this->hasMany(Course::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     public function posts()
     {
@@ -77,5 +81,17 @@ class Teacher extends Model
     public function ads()
     {
         return $this->hasManyThrough(Ad::class, TeacherAd::class);
+    }
+
+    public function purchases(){
+      return $this->hasManyThrough(Purchase::class,Course::class);
+    }
+
+    public function cloud_tasks_completed(){
+      return false;
+    }
+
+    public function community_tasks_completed(){
+      return false;
     }
 }

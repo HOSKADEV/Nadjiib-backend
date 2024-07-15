@@ -20,7 +20,7 @@ class AdController extends Controller
 
     if ($validator->fails()){
       return response()->json([
-          'status' => 0,
+          'status' => false,
           'message' => $validator->errors()->first()
         ]
       );

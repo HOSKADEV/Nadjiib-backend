@@ -7,14 +7,14 @@ use App\Models\CourseAd;
 use App\Models\TeacherAd;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Traits\uploadImage;
+use App\Http\Traits\uploadFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class AdController extends Controller
 {
 
-  use uploadImage;
+  use uploadFile;
   public function index(Request $request)
   {
     $ads = Ad::orderBy("created_at", "desc");

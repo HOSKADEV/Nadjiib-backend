@@ -17,6 +17,9 @@ class Transaction extends Model
      */
     protected $fillable = [
         'purchase_id',
+        'account',
+        'receipt',
+        'data'
     ];
 
     public function purchase()

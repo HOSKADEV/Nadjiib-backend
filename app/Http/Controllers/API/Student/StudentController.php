@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Student;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Http\Traits\uploadImage;
+use App\Http\Traits\uploadFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Resources\User\UserResource;
@@ -18,7 +18,7 @@ class StudentController extends Controller
 {
   private $student;
   private $user;
-  use uploadImage;
+  use uploadFile;
 
   public function __construct(StudentRepository $student, UserRepository $user)
   {
@@ -120,7 +120,7 @@ class StudentController extends Controller
       $dataStudent = array_replace($request->except(['student_id','level_id']), [
         'image' => $pathImage,
       ]);
-      
+
       $student = $this->student->update($request->student_id, $request->only('level_id'));
 
       $user = $this->user->update($student->user_id,$dataStudent);

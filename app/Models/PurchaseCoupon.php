@@ -18,7 +18,8 @@ class PurchaseCoupon extends Model
     protected $fillable = [
         'purchase_id',
         'coupon_id',
-        'discount_amount',
+        'percentage',
+        'amount',
     ];
 
     public function purchase()

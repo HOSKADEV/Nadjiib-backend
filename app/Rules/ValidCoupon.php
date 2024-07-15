@@ -35,18 +35,22 @@ class ValidCoupon implements Rule
     try{
 
 
-      $coupon = Coupon::where('code', $value)->first();
+      $coupon = Coupon::withTrashed()->where('code', $value)->first();
 
+      if($coupon->deleted_at){
+        $this->message = 'this '. $attribute .' is no longer valid';
+        return false;
+      }
 
       if ($attribute == 'invitation_code') {
 
         if ($coupon->type != 'invitation') {
-          $this->message = 'this code is not an invitation code';
+          $this->message = 'this '. $attribute .' is not an invitation code';
           return false;
         }
         $course = Course::findOrFail($this->request->course_id);
         if ($coupon->id != $course->teacher->coupon_id) {
-          $this->message = 'this code does not belong to the course teacher';
+          $this->message = 'this '. $attribute .' does not belong to the course teacher';
           return false;
         }
 
@@ -55,17 +59,17 @@ class ValidCoupon implements Rule
       if ($attribute == 'coupon_code') {
 
         if ($coupon->type != 'limited') {
-          $this->message = 'this code is not a limited code';
+          $this->message = 'this '. $attribute .' is not a limited code';
           return false;
         }
 
         if(!Carbon::now()->between($coupon->start_date, $coupon->end_date)){
-          $this->message = 'this code has expired';
+          $this->message = 'this '. $attribute .' has expired';
           return false;
         }
 
         /* if($coupon->usages()->count() >= $coupon->max){
-          $this->message = 'this code has reached its maximum limit';
+          $this->message = 'this '. $attribute .' has reached its maximum limit';
           return false;
         } */
 

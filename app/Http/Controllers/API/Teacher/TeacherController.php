@@ -10,7 +10,7 @@ use App\Models\LevelSubject;
 use Illuminate\Http\Request;
 use App\Models\TeacherSection;
 use App\Models\TeacherSubject;
-use App\Http\Traits\uploadImage;
+use App\Http\Traits\uploadFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
@@ -28,7 +28,7 @@ class TeacherController extends Controller
     private $teacher;
     private $user;
     private $coupon;
-    use uploadImage;
+    use uploadFile;
 
     public function __construct(TeacherRepository $teacher, UserRepository $user, CouponRepository $coupon)
     {

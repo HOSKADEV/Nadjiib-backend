@@ -17,7 +17,8 @@ class PurchaseBonus extends Model
      */
     protected $fillable = [
         'purchase_id',
-        'bonus_amount',
+        'percentage',
+        'amount',
         'type',
     ];
 

@@ -16,17 +16,24 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'purchase_id',
+        'teacher_id',
         'amount',
-        'type',
+        'date',
         'is_paid',
         'paid_at',
         'is_confirmed',
         'confirmed_at',
         'payment_method',
+        'receipt',
     ];
-    public function purchase()
+    public function teacher()
     {
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(Teacher::class);
+    }
+
+    public function refresh_amount(){
+      $purchases = $this->teacher->purchases()->where('purchases.status','success')->pluck('purchases.id')->toArray();
+      $this->amount = PurchaseBonus::whereIn('purchase_id',$purchases)->sum('amount');
+      $this->save();
     }
 }
