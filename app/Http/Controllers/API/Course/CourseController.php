@@ -375,7 +375,7 @@ class CourseController extends Controller
       return response()->json([
         'status' => true,
         'message' => 'success',
-        'data' => new CourseInfoResource($course)
+        'data' => new CourseResource($course)
       ]);
 
     } catch (Exception $e) {
