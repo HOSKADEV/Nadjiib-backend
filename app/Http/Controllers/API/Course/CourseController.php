@@ -75,8 +75,8 @@ class CourseController extends Controller
       'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
       'video' => 'required',
       'thumbnail' => 'required',
-      'sections_ids' => 'required',
-      'levels_ids' => 'sometimes',
+      'sections_ids' => 'required|array',
+      'levels_ids' => 'sometimes|array',
       'name_subject' => 'sometimes',
       'type_subject' => 'sometimes|in:academic,extracurricular',
     ]);

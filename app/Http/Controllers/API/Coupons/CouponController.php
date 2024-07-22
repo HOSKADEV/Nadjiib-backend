@@ -41,8 +41,8 @@ class CouponController extends Controller
     public function validateCoupon(Request $request){
       $validation = Validator::make($request->all(), [
         'course_id' => 'required_with:invitation_code|exists:courses,id',
-        'coupon_code' => ['prohibits:invitation_code','exists:coupons,code', new ValidCoupon($request)],
-        'invitation_code' => ['prohibits:coupon_code','exists:coupons,code', new ValidCoupon($request)],
+        'coupon_code' => ['exists:coupons,code', new ValidCoupon($request)],
+        'invitation_code' => ['exists:coupons,code', new ValidCoupon($request)],
       ]);
 
       if ($validation->fails()) {
@@ -51,7 +51,7 @@ class CouponController extends Controller
           'message' => $validation->errors()->first(),
           //'message' => 'Invalid coupon',
           //'errors' => $validation->errors()
-        ], 422);
+        ]);
       }else{
         return response()->json([
           'status' => true,

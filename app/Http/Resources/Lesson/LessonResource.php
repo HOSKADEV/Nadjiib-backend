@@ -20,7 +20,7 @@ class LessonResource extends JsonResource
         'title'     => $this->title,
         'description' => $this->description,
         'created'     => $this->created_at->format('d-m-Y'),
-        'videos'      => $this->videos()->count() === 0 ? null : new LessonVideoCollection($this->videos),
+        'videos'      => $this->videos()->count() === 0 ? null : new LessonVideoCollection($this->videos()->oldest()->limit(1)->get()),
         'files'       => $this->files()->count()  === 0 ? null : new LessonFileCollection($this->files),
       ];
     }

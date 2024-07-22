@@ -125,7 +125,9 @@ class WishlistController extends Controller
     public function delete(Request $request)
     {
         $validtion = Validator::make($request->all(),[
-          'wishlist_id'  => 'required|exists:wishlists,id',
+          //'wishlist_id'  => 'required|exists:wishlists,id',
+          'course_id'  => 'required|exists:courses,id',
+          'student_id' => 'required|exists:students,id',
         ]);
         if ($validtion->fails()) {
             return response()->json([
@@ -135,7 +137,12 @@ class WishlistController extends Controller
         }
 
         try {
-            $wishlist = $this->wishlist->delete($request->wishlist_id);
+
+            //$wishlist = $this->wishlist->delete($request->wishlist_id);
+
+            $wishlist = Wishlist::where($validtion->validated())->first();
+
+            $wishlist?->delete();
 
             if (!$wishlist) {
                 return response()->json([

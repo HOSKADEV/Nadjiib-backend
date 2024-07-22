@@ -86,6 +86,7 @@ class LessonController extends Controller
 
         try
         {
+          DB::beginTransaction();
             // ** create a new data for lesson if necessary
             $lesson = $this->lesson->create($request->only(['course_id','title','description']));
 
@@ -97,18 +98,22 @@ class LessonController extends Controller
                     'lesson_id' => $lesson->id,
                     'filename'  => $request->video_filename,
                     'extension' => $request->video_extension,
-                    'duartion'  => $request->video_duartion
+                    'duration'  => $request->video_duartion
                 ]);
                 //  ** create a new data for lesson File
                 $dataFile = array_replace($request->only([]),[
                   'lesson_id' => $lesson->id,
                 ]);
 
+
+
                 $lessonVideo = $this->lessonVideo->create($dataVideo);
                 $lessonFile  = $this->lessonFile->create($dataFile,
                                       $request->file_url,
                                       $request->file_filename,
                                       $request->file_extension);
+
+          DB::commit();
                 return response()->json([
                   'status'   => true,
                   'message'  => 'Lesson Create Successfully',
@@ -116,18 +121,15 @@ class LessonController extends Controller
                 ]);
             }
             else {
+              DB::rollBack();
                 return response()->json([
                   'status'   => false,
                   'message'  => 'Lesson Create Failed',
                 ]);
             }
-            return response()->json([
-              'status'   => true,
-              'message'  => 'Lesson Create Successfully',
-              'data'     => $lesson
-            ]);
         }
         catch(Exception $e){
+          DB::rollBack();
           return response()->json([
             'status'  => false,
             'message' => $e->getMessage()

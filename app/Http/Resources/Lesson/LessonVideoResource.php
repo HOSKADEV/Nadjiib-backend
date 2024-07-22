@@ -20,7 +20,7 @@ class LessonVideoResource extends JsonResource
             'video_url' => $this->video_url,
             'filename'  => $this->filename,
             'extension' => $this->extension,
-            'duartion'  => $this->duartion,
+            'duration'  => $this->duration,
             'created'   => $this->created_at->format('d-m-Y'),
         ];
     }

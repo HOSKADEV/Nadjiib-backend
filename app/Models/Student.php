@@ -98,4 +98,8 @@ class Student extends Model
     public function owns($course){
       return boolval($this->purchases()->where('course_id',$course->id)->where('status','success')->count());
     }
+
+    public function wished($course){
+      return boolval($this->wishlists()->where('course_id',$course->id)->count());
+    }
 }

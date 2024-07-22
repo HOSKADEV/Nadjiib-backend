@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\API\Payment\PaymentController;
+use App\Models\LessonVideo;
 use App\Models\PurchaseCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -95,7 +96,16 @@ Route::prefix('v1')->group(function () {
   Route::get('/info', [SettingsController::class, 'info']);
 
   Route::post('/test', function(Request $request){
-    return 'success';
+    $data = [
+      "video_url" => "http://127.0.0.1:8000/video",
+    "lesson_id" => 1,
+    "filename" => "first video  lesson",
+    "extension" => "mp4",
+    "duartion" => "2:30:50"
+    ];
+
+    $lessonvideo = LessonVideo::create($data);
+    return($lessonvideo->refresh());
   });
 });
 

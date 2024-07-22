@@ -44,7 +44,9 @@ class CourseResource extends JsonResource
           'sections'     => new SectionCollection($this->sections),
           'vidoes'      => $this->videos()->count(),
           'lessons'     => $this->lessons()->count(),
-          'is_wished'   => empty($user) ? false : in_array($this->id, $user->student?->wishlists()->pluck('course_id')->toArray()),
+          'is_wished'   => empty($user) ? false : $user->student?->wished($this),
+          'is_purchased'   => empty($user) ? false : $user->student?->purchased($this),
+          'is_owned'   => empty($user) ? false : $user->student?->owns($this),
         ];
     }
 }
