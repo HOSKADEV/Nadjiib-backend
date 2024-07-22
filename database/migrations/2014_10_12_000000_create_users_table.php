@@ -25,7 +25,7 @@ return new class extends Migration {
       $table->rememberToken();
       $table->smallInteger('role')->default(1);
       // $table->smallInteger('status')->default(1);
-      $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+      $table->enum('status',['ACTIVE','INACTIVE','DELETED'])->default('ACTIVE');
       $table->timestamps();
     });
   }

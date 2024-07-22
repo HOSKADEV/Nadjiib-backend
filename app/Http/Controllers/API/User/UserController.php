@@ -59,4 +59,28 @@ class UserController extends Controller
       ]);
     }
   }
+
+  public function deactivate(Request $request){
+    try{
+
+      $user = $request->user();
+
+      $user->update(['status' => 'DELETED' , 'email' => 'deleted_user#'.$user->id.'@mail.com' , 'fcm_token' => null]);
+
+      $user->tokens()->delete();
+
+      //$user->delete();
+
+      return response()->json([
+        'status'=> 1,
+        'message' => 'success',
+      ]);
+    }catch(Exception $e){
+      return response()->json([
+        'status'=> 0,
+        'message' => $e->getMessage(),
+      ]);
+    }
+
+  }
 }

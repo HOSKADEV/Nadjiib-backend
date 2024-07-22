@@ -72,7 +72,7 @@ class EloquentUser implements UserRepository
      */
     public function paginate($perPage, $search = null, $status = null)
     {
-        $query = User::query()->whereNot('role',0)->with('student', 'teacher');
+        $query = User::query()->whereNot('role',0)->whereNot('status','DELETED')->with('student', 'teacher');
 
         if ($status) {
             $query->where('status', $status);

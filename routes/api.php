@@ -56,6 +56,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/purchase/update', [PurchaseController::class, 'update']);
     Route::post('/payment/get', [PaymentController::class, 'get']);
     Route::post('/payment/info', [PaymentController::class, 'info']);
+    Route::post('/user/deactivate', [UserController::class, 'deactivate']);
 
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
   });

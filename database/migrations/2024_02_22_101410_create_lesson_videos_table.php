@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('video_url')->nullable()->default(null);
             $table->string('filename')->nullable()->default(null);
             $table->string('extension')->nullable()->default(null);
-            $table->time('duartion')->nullable()->default(null);
+            $table->time('duration')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
