@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\API\Payment\PaymentController;
+use App\Http\Controllers\CompletedLessonController;
 use App\Models\LessonVideo;
 use App\Models\PurchaseCoupon;
 use Illuminate\Http\Request;
@@ -55,6 +56,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/purchase/update', [PurchaseController::class, 'update']);
     Route::post('/payment/get', [PaymentController::class, 'get']);
     Route::post('/payment/info', [PaymentController::class, 'info']);
+
+    Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
   });
 
   Route::post('/course/info', [CourseController::class, 'info']);
@@ -79,6 +82,7 @@ Route::prefix('v1')->group(function () {
   Route::post('/lesson/create', [LessonController::class, 'create']);
   Route::post('/lesson/update', [LessonController::class, 'update']);
   Route::post('/lesson/delete', [LessonController::class, 'delete']);
+
   //  ** Router for Reviews
   Route::post('/review/get', [ReviewController::class, 'get']);
   Route::post('/review/create', [ReviewController::class, 'create']);
@@ -96,16 +100,7 @@ Route::prefix('v1')->group(function () {
   Route::get('/info', [SettingsController::class, 'info']);
 
   Route::post('/test', function(Request $request){
-    $data = [
-      "video_url" => "http://127.0.0.1:8000/video",
-    "lesson_id" => 1,
-    "filename" => "first video  lesson",
-    "extension" => "mp4",
-    "duartion" => "2:30:50"
-    ];
-
-    $lessonvideo = LessonVideo::create($data);
-    return($lessonvideo->refresh());
+    return ;
   });
 });
 

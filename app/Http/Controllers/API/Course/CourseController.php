@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Course;
 
-use App\Http\Resources\Course\CourseInfoResource;
 use Exception;
 use App\Models\Course;
 use App\Models\Subject;
@@ -13,10 +12,13 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Course\CourseResource;
 use App\Repositories\Course\CourseRepository;
+use App\Http\Resources\Course\CourseInfoResource;
 use App\Http\Resources\Wishlist\WishlistCollection;
 use App\Http\Resources\Course\PaginateCourseCollection;
 use App\Repositories\CourseLevel\CourseLevelRepository;
 use App\Repositories\CourseSection\CourseSectionRepository;
+use App\Http\Resources\Course\PaginatedCourseStudentStatsCollection;
+use App\Http\Resources\Course\PaginatedCourseTeacherStatsCollection;
 
 class CourseController extends Controller
 {
@@ -274,7 +276,7 @@ class CourseController extends Controller
     $validation = Validator::make($request->all(), [
       'teacher_id' => 'sometimes|exists:teachers,id',
       'subject_id' => 'sometimes|exists:subjects,id',
-      'type' => 'sometimes|in:best_sellers,suggestions,recommended,wishlist',
+      'type' => 'sometimes|in:best_sellers,suggestions,recommended,wishlist,owned,published',
       'status' => 'sometimes|in:PENDING,ACCEPTED,REFUSED',
       'search' => 'sometimes|string',
     ]);
@@ -303,6 +305,13 @@ class CourseController extends Controller
         }
         if ($request->type == 'wishlist') {
           $courses = new WishlistCollection($user?->student?->wishlists);
+        }
+        if ($request->type == 'owned') {
+          $courses = $user?->student ?  new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(5)) : [];
+        }
+        if ($request->type == 'published') {
+          $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->paginate(5)) : [];
+
         }
 
         return response()->json([

@@ -68,7 +68,7 @@ class EloquentLesson implements LessonRepository
         if ($search) {
             (new LessonKeywordSearch)($query, $search);
         }
-        $result = $query->whereCourseId($courseId)->orderBy('id', 'desc')
+        $result = $query->whereCourseId($courseId)->orderBy('id', 'asc')
                   ->paginate($perPage);
         if ($search) {
             $result->appends(['search' => $search]);

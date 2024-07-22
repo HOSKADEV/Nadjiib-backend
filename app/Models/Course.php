@@ -110,4 +110,8 @@ class Course extends Model
     {
         return $this->through('lessons')->has('files');
     }
+
+    public function bonuses(){
+      return $this->hasManyThrough(PurchaseBonus::class,Purchase::class);
+    }
 }

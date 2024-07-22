@@ -51,6 +51,15 @@ class Student extends Model
         return $this->belongsToMany(Course::class, 'purchases');
     }
 
+    public function completed_lessons()
+    {
+        return $this->hasMany(CompletedLesson::class);
+    }
+
+    public function owned_courses(){
+      return $this->purchased_courses()->where('purchases.status', 'success');
+    }
+
     public function reviewed_courses()
     {
         return $this->belongsToMany(Course::class, 'reviews');
@@ -101,5 +110,9 @@ class Student extends Model
 
     public function wished($course){
       return boolval($this->wishlists()->where('course_id',$course->id)->count());
+    }
+
+    public function completed($course){
+      return $this->completed_lessons()->whereIn('lesson_id',$course->lessons()->get('id')->pluck('id')->toArray())->count();
     }
 }
