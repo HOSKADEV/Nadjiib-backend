@@ -157,6 +157,7 @@ class CourseController extends Controller
       'price' => 'required|numeric|min:0',
       'image' => 'sometimes|mimes:jpeg,png,jpg,gif,svg',
       'video' => 'sometimes',
+      'thumbnail' => 'sometimes',
     ]);
 
     if ($validation->fails()) {
@@ -179,6 +180,7 @@ class CourseController extends Controller
         // ** Delete old image from folder when updating the course.
         $imageCourse = $course->image;
         $videoCourse = $course->video;
+        $thumbnailCourse = $course->thumbnail;
         if ($request->has('image')) {
           if ($imageCourse != null && File::exists($imageCourse)) {
             // !! Delete image from public folder
@@ -207,11 +209,27 @@ class CourseController extends Controller
           // ** retun the same video
           $pathVideo = $videoCourse;
         }
+        if ($request->has('thumbnail')) {
+          if ($thumbnailCourse != null && File::exists($thumbnailCourse)) {
+            // !! Delete image from public folder
+            File::delete($thumbnailCourse);
+            // ** Save new image in public folder and return path image save
+            $pathThumbnail = $this->SaveImage($request->thumbnail, 'images/courses/thumbnail/');
+          } else {
+            // ** Save new image in public folder and return path image save
+            $pathThumbnail = $this->SaveImage($request->thumbnail, 'images/courses/thumbnail/');
+          }
+        } else {
+          // ** retun the same image
+          $pathThumbnail = $thumbnailCourse;
+        }
+
 
         // ** data array append subject ID after save new  and iamge
         $data = array_replace($request->all(), [
           'image' => $pathImage,
           'video' => $pathVideo,
+          'thumbnail' => $pathThumbnail
         ]);
         $courseupdate = $this->course->update($request->course_id, $data);
         if (!$courseupdate) {
@@ -277,7 +295,7 @@ class CourseController extends Controller
       'teacher_id' => 'sometimes|exists:teachers,id',
       'subject_id' => 'sometimes|exists:subjects,id',
       'type' => 'sometimes|in:best_sellers,suggestions,recommended,wishlist,owned,published',
-      'status' => 'sometimes|in:PENDING,ACCEPTED,REFUSED',
+      //'status' => 'sometimes|in:PENDING,ACCEPTED,REFUSED',
       'search' => 'sometimes|string',
     ]);
 
@@ -310,7 +328,7 @@ class CourseController extends Controller
           $courses = $user?->student ?  new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(5)) : [];
         }
         if ($request->type == 'published') {
-          $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->paginate(5)) : [];
+          $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->where('status', 'ACCEPTED')->paginate(5)) : [];
 
         }
 
@@ -322,7 +340,8 @@ class CourseController extends Controller
       } else {
 
         if ($request->has('teacher_id') && $request->teacher_id == $user?->teacher?->id) {
-          $courses = Course::orderBy('created_at', 'DESC')->where('status', $request->status?? 'ACCEPTED');
+          /* $courses = Course::orderBy('created_at', 'DESC')->where('status', $request->status?? 'ACCEPTED'); */
+          $courses = Course::orderBy('created_at', 'DESC');
         } else {;
           $courses = Course::orderBy('created_at', 'DESC')->where('status', 'ACCEPTED');
         }

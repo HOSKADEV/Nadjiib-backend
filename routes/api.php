@@ -59,6 +59,9 @@ Route::prefix('v1')->group(function () {
     Route::post('/user/deactivate', [UserController::class, 'deactivate']);
 
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
+
+    Route::get('/progress', [SettingsController::class, 'progress']);
+    Route::get('/stats', [SettingsController::class, 'stats']);
   });
 
   Route::post('/course/info', [CourseController::class, 'info']);

@@ -19,7 +19,7 @@ class CourseTeacherStatsResource extends JsonResource
     $user = $request->user;
     $teacher = $this->teacher;
     $total_purchases = $this->purchases()->where('status', 'success')->count();
-    $invited_purchases = PurchaseCoupon::whereIn('purchase_id', $this->purchases()->get('id')->pluck('id')->toArray())
+    $invited_purchases = PurchaseCoupon::whereIn('purchase_id', $this->purchases()->where('purchases.status', 'success')->select('purchases.id')->get()->pluck('id')->toArray())
       ->where('coupon_id', $teacher->coupon_id)->count();
     $normal_purchases = $total_purchases - $invited_purchases;
 

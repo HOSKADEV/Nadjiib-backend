@@ -31,9 +31,9 @@ class HomePageResource extends JsonResource
       'notifications' => empty($user) ? 0 : $user->notifications()->count(),
       'wishlist' => empty($user) ? 0 : $user->student?->wishlists()->count(),
       'ads' => new AdCollection(Ad::inRandomOrder()->limit(5)->get()),
-      'best_sellers' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
-      'suggestions' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
-      'recommended' => new CourseInfoCollection(Course::inRandomOrder()->limit(5)->get()),
+      'best_sellers' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
+      'suggestions' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
+      'recommended' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
     ];
   }
 }
