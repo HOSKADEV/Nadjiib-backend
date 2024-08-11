@@ -126,6 +126,12 @@ class Course extends Model
         $total_discount += Controller::invitation_discount_amount();
       }
 
-      return $this->price * (1 - $total_discount / 100);
+
+
+      return [
+        'old_price' => $this->price,
+        'new_price' => $this->price * (1 - $total_discount / 100),
+        'discount' => $total_discount
+      ];
     }
 }
