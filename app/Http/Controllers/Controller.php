@@ -43,4 +43,24 @@ class Controller extends BaseController
       return null;
 
     }
+
+    public static function standard_bonus_amount(){
+      return 30;
+    }
+
+    public static function cloud_bonus_amount(){
+      return 10;
+    }
+
+    public static function community_bonus_amount(){
+      return 10;
+    }
+
+    public static function invitation_bonus_amount(){
+      return 5;
+    }
+
+    public static function invitation_discount_amount(){
+      return 5;
+    }
 }

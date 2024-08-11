@@ -25,7 +25,7 @@ class Coupon extends Model
 
     public function setCodeAttribute($value)
     {
-        $this->attributes['code'] = strtoupper($value); 
+        $this->attributes['code'] = strtoupper($value);
     }
 
     public function teacher()

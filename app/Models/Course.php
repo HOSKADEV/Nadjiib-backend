@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\CourseLevel;
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -113,5 +114,18 @@ class Course extends Model
 
     public function bonuses(){
       return $this->hasManyThrough(PurchaseBonus::class,Purchase::class);
+    }
+
+    public function price($invitation_code = null, $coupon_code = null){
+      $total_discount = 0;
+      if($coupon_code){
+        $total_discount += Coupon::where('code',$coupon_code)->first()->discount;
+      }
+
+      if($invitation_code){
+        $total_discount += Controller::invitation_discount_amount();
+      }
+
+      return $this->price * (1 - $total_discount / 100);
     }
 }

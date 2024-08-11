@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -77,7 +78,7 @@ class Purchase extends Model
       }
 
       if($invitation_code){
-        $percentage = 5;
+        $percentage = Controller::invitation_discount_amount();
         $amount = $this->price * $percentage/ 100;
         array_push($coupons,[
           'purchase_id' => $this->id,
@@ -97,7 +98,7 @@ class Purchase extends Model
     public function apply_bonuses($teacher,$invitation_code){
       $bonuses = [];
 
-      $percentage = 30;
+      $percentage = Controller::standard_bonus_amount();
       $amount = $this->price * $percentage/ 100;
 
       array_push($bonuses,[
@@ -108,7 +109,7 @@ class Purchase extends Model
       ]);
 
       if($teacher->cloud_tasks_completed()){
-        $percentage = 5;
+        $percentage = Controller::cloud_bonus_amount();
         $amount = $this->price * $percentage/ 100;
         array_push($bonuses,[
           'purchase_id' => $this->id,
@@ -119,7 +120,7 @@ class Purchase extends Model
       }
 
       if($teacher->community_tasks_completed()){
-        $percentage = 5;
+        $percentage = Controller::community_bonus_amount();
         $amount = $this->price * $percentage/ 100;
         array_push($bonuses,[
           'purchase_id' => $this->id,
@@ -130,7 +131,7 @@ class Purchase extends Model
       }
 
       if($invitation_code){
-        $percentage = 5;
+        $percentage = Controller::invitation_bonus_amount();
         $amount = $this->price * $percentage/ 100;
         array_push($bonuses,[
           'purchase_id' => $this->id,

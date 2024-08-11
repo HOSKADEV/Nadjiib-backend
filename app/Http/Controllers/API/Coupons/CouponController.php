@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Coupons;
 
 use Exception;
 use App\Models\Coupon;
+use App\Models\Course;
 use App\Rules\ValidCoupon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,7 +41,7 @@ class CouponController extends Controller
 
     public function validateCoupon(Request $request){
       $validation = Validator::make($request->all(), [
-        'course_id' => 'required_with:invitation_code|exists:courses,id',
+        'course_id' => 'required|exists:courses,id',
         'coupon_code' => ['exists:coupons,code', new ValidCoupon($request)],
         'invitation_code' => ['exists:coupons,code', new ValidCoupon($request)],
       ]);
@@ -53,9 +54,13 @@ class CouponController extends Controller
           //'errors' => $validation->errors()
         ]);
       }else{
+
+        $course = Course::find($request->course_id);
+
         return response()->json([
           'status' => true,
-          'message' => 'Valid coupon'
+          'message' => 'Valid coupon',
+          'data' => $course->price($request->invitation_code, $request->coupon_code)
         ]);
       }
     }

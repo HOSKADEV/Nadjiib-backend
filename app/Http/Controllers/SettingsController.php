@@ -42,6 +42,11 @@ class SettingsController extends Controller
           'threshold' => 30,
           'percentage' => 0.3,
         ],
+        'total' => [
+          'progress' => 0.4,
+          'amount' => 200,
+          'percentage' => 10,
+        ],
       ];
 
       return response()->json([
