@@ -226,7 +226,13 @@ class PostController extends Controller
 
     try {
 
-      PostLike::create($request->all());
+      $like = PostLike::where($request->all())->first();
+
+      if($like){
+        $like->delete();
+      }else{
+        PostLike::create($request->all());
+      }
 
       return response()->json([
         'status' => true,

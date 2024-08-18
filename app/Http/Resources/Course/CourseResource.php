@@ -30,6 +30,7 @@ class CourseResource extends JsonResource
           'id'          => $this->id,
           'teacher_id'  => $this->teacher_id,
           'teacher_name' => $this->teacher->user->name,
+          'teacher_image' => is_null($this->teacher->user->image) ? null : url($this->teacher->user->image),
           'subject'     => new SubjectResource($this->subject),
           'name'        => $this->name,
           'description' => $this->description,

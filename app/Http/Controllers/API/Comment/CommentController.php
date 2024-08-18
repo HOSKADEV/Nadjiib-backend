@@ -199,7 +199,15 @@ class CommentController extends Controller
 
     try {
 
-      CommentLike::create($request->all());
+      $like = CommentLike::where($request->all())->first();
+
+      if($like){
+        $like->delete();
+      }else{
+        CommentLike::create($request->all());
+      }
+
+
 
       return response()->json([
         'status' => true,
