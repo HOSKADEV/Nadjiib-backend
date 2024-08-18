@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -46,5 +48,23 @@ class Post extends Model
     public function likers()
     {
         return $this->belongsToMany(Student::class, 'post_likes');
+    }
+
+    public function is_complement()
+    {
+
+      $posts_number = Setting::where('name','posts_number')->value('value');
+
+      $previuos_posts = $this->teacher->posts()->where(DB::raw('DATE(created_at)'), '>=', Carbon::now()->startOfMonth())
+      ->where(DB::raw('DATE(created_at)'), '<=', Carbon::now()->endOfMonth())->whereNot('id',$this->id)->count();
+
+      $current_posts = $previuos_posts + 1;
+
+      if ($previuos_posts < $posts_number && $current_posts >= $posts_number) {
+        return true;
+      }
+
+
+      return false;
     }
 }

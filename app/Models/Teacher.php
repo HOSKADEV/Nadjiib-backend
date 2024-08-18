@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -88,10 +90,25 @@ class Teacher extends Model
     }
 
     public function cloud_tasks_completed(){
-      return false;
+
+      $calls_duration = Setting::where('name','calls_duration')->value('value');
+
+      $calls_duration = empty($calls_duration) ? 0 : intval($calls_duration);
+
+      $teacher_calls = $this->calls()->where(DB::raw('DATE(created_at)'), '>=', Carbon::now()->startOfMonth())
+      ->where(DB::raw('DATE(created_at)'), '<=', Carbon::now()->endOfMonth())->sum('duration');
+
+
+      return $teacher_calls >= $calls_duration ? true : false;
     }
 
     public function community_tasks_completed(){
-      return false;
+
+      $posts_number = Setting::where('name','posts_number')->value('value');
+
+      $teacher_posts = $this->posts()->where(DB::raw('DATE(created_at)'), '>=', Carbon::now()->startOfMonth())
+      ->where(DB::raw('DATE(created_at)'), '<=', Carbon::now()->endOfMonth())->count();
+
+      return $teacher_posts >= $posts_number ? true : false;
     }
 }

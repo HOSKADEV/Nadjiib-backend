@@ -313,22 +313,22 @@ class CourseController extends Controller
 
       if ($request->has("type")) {
         if ($request->type == 'best_sellers') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(5));
+          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
         }
         if ($request->type == 'suggestions') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(5));
+          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
         }
         if ($request->type == 'recommended') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(5));
+          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
         }
         if ($request->type == 'wishlist') {
-          $courses = new WishlistCollection($user?->student?->wishlists);
+          $courses = new WishlistCollection($user?->student?->wishlists()->paginate(10));
         }
         if ($request->type == 'owned') {
-          $courses = $user?->student ?  new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(5)) : [];
+          $courses = $user?->student ?  new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(10)) : [];
         }
         if ($request->type == 'published') {
-          $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->where('status', 'ACCEPTED')->paginate(5)) : [];
+          $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->where('status', 'ACCEPTED')->paginate(10)) : [];
 
         }
 
@@ -365,7 +365,7 @@ class CourseController extends Controller
 
         return response()->json([
           'status' => true,
-          'data' => new PaginateCourseCollection($courses->paginate(5))
+          'data' => new PaginateCourseCollection($courses->paginate(10))
         ], 201);
 
 

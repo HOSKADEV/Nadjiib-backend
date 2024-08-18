@@ -81,6 +81,28 @@
                 <div>{{ trans('menu.courses') }}</div>
             </a>
         </li>
-    </ul>
+
+      <li class="menu-item {{ str_contains(request()->route()->getName(),'dashboard.documentation') ? 'active open' : '' }}">
+        <a class="menu-link menu-toggle" >
+            <i class="menu-icon tf-icons bx bxs-info-square"></i>
+            <div>{{ trans('menu.documantation') }}</div>
+        </a>
+
+
+        <ul class="menu-sub">
+          <li class="menu-item {{request()->routeIs('dashboard.documentation.policy') ? 'active' : ''}}">
+            <a href="{{ route('dashboard.documentation.policy') }}" class="menu-link" >
+                    <div>{{ trans('menu.documantation.policy') }}</div>
+            </a>
+          </li>
+
+          <li class="menu-item {{request()->routeIs('dashboard.documentation.about') ? 'active' : ''}}">
+            <a href="{{ route('dashboard.documentation.about') }}" class="menu-link" >
+                    <div>{{ trans('menu.documantation.about') }}</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+
 
 </aside>

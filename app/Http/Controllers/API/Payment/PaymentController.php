@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Payment;
 
-use App\Http\Resources\Purchase\PurchaseCollection;
 use Exception;
 use App\Models\Payment;
 use App\Models\Purchase;
@@ -12,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Payment\PaymentCollection;
+use App\Http\Resources\Purchase\PurchaseCollection;
+use App\Http\Resources\Payment\PaginatedPaymentCollection;
 
 class PaymentController extends Controller
 {
@@ -37,12 +38,12 @@ class PaymentController extends Controller
           throw new Exception('no teacher selected');
         }
 
-        $payments = $teacher->payments()->where(DB::raw('YEAR(date)'),$request->year)->orderBy('date','DESC')->get();
+        $payments = $teacher->payments()->where(DB::raw('YEAR(date)'),$request->year)->orderBy('date','DESC')->paginate(10);
 
         return response()->json([
           'status' => true,
           'message' => 'success',
-          'data' => new PaymentCollection($payments),
+          'data' => new PaginatedPaymentCollection($payments),
         ]);
 
       } catch (Exception $e) {

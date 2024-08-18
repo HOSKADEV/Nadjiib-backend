@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -45,22 +46,27 @@ class Controller extends BaseController
     }
 
     public static function standard_bonus_amount(){
-      return 30;
+    $standard_bonus = Setting::where('name','standard_bonus')->value('value');
+    return empty($standard_bonus) ? 0 : $standard_bonus;
     }
 
     public static function cloud_bonus_amount(){
-      return 10;
+      $cloud_bonus = Setting::where('name','cloud_bonus')->value('value');
+      return empty($cloud_bonus) ? 0 : $cloud_bonus;
     }
 
     public static function community_bonus_amount(){
-      return 10;
+      $community_bonus = Setting::where('name','community_bonus')->value('value');
+      return empty($community_bonus) ? 0 : $community_bonus;
     }
 
     public static function invitation_bonus_amount(){
-      return 5;
+      $invitation_bonus = Setting::where('name','invitation_bonus')->value('value');
+      return empty($invitation_bonus) ? 0 : $invitation_bonus;
     }
 
     public static function invitation_discount_amount(){
-      return 5;
+      $invitation_discount = Setting::where('name','invitation_discount')->value('value');
+      return empty($invitation_discount) ? 0 : $invitation_discount;
     }
 }

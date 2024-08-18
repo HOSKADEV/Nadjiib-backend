@@ -1,25 +1,29 @@
 <?php
 
 
-use App\Http\Controllers\API\Payment\PaymentController;
-use App\Http\Controllers\CompletedLessonController;
 use App\Models\LessonVideo;
-use App\Models\PurchaseCoupon;
 use Illuminate\Http\Request;
+use App\Models\PurchaseCoupon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\API\Ad\AdController;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Call\CallController;
+use App\Http\Controllers\API\Post\PostController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\CompletedLessonController;
 use App\Http\Controllers\API\Levels\LevelController;
 use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Lesson\LessonController;
 use App\Http\Controllers\API\Review\ReviewController;
 use App\Http\Controllers\API\Coupons\CouponController;
+use App\Http\Controllers\API\Comment\CommentController;
+use App\Http\Controllers\API\Payment\PaymentController;
 use App\Http\Controllers\API\Section\SectionController;
 use App\Http\Controllers\API\Student\StudentController;
 use App\Http\Controllers\API\Subject\SubjectController;
 use App\Http\Controllers\API\Teacher\TeacherController;
+use App\Http\Controllers\API\Version\VersionController;
 use App\Http\Controllers\API\Purchase\PurchaseController;
 use App\Http\Controllers\API\Wishlist\WishlistController;
 use App\Http\Controllers\API\Notification\NotificationController;
@@ -60,6 +64,11 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
 
+    Route::post('/notifications', [NotificationController::class, 'get']);
+
+    Route::post('/notification/create', [NotificationController::class, 'create']);
+    Route::post('/notification/read', [NotificationController::class, 'read']);
+
     Route::get('/progress', [SettingsController::class, 'progress']);
     Route::get('/stats', [SettingsController::class, 'stats']);
   });
@@ -97,11 +106,34 @@ Route::prefix('v1')->group(function () {
   Route::post('/wishlist/create', [WishlistController::class, 'create']);
   Route::post('/wishlist/delete', [WishlistController::class, 'delete']);
 
+  Route::post('/post/get', [PostController::class, 'get']);
+  Route::post('/post/create', [PostController::class, 'create']);
+  Route::post('/post/update', [PostController::class, 'update']);
+  Route::post('/post/delete', [PostController::class, 'delete']);
+  Route::post('/post/restore', [PostController::class, 'restore']);
+  Route::post('/post/like', [PostController::class, 'like']);
+
+  Route::post('/comment/get', [CommentController::class, 'get']);
+  Route::post('/comment/create', [CommentController::class, 'create']);
+  Route::post('/comment/update', [CommentController::class, 'update']);
+  Route::post('/comment/delete', [CommentController::class, 'delete']);
+  Route::post('/comment/restore', [CommentController::class, 'restore']);
+  Route::post('/comment/like', [CommentController::class, 'like']);
+
+  Route::post('/call/create', [CallController::class, 'create']);
+  Route::post('/call/update', [CallController::class, 'update']);
+
   Route::post('/coupon/validate', [CouponController::class, 'validateCoupon']);
 
   Route::post('/ad/get', [AdController::class, 'get']);
 
   Route::get('/info', [SettingsController::class, 'info']);
+
+  Route::get('/policy', [SettingsController::class, 'policy']);
+
+  Route::get('/about', [SettingsController::class, 'about']);
+
+  Route::get('/version', [VersionController::class, 'get']);
 
   Route::post('/test', function(Request $request){
     return ;

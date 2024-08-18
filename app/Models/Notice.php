@@ -34,4 +34,22 @@ class Notice extends Model
     {
         return $this->hasManythrough(User::class, Notification::class);
     }
+
+    public function title($lang = 'ar'){
+      return match($lang){
+        'ar' => $this->title_ar,
+        'en' => $this->title_en,
+        'fr' => $this->title_fr,
+        'default' => $this->title_ar,
+      };
+    }
+
+    public function content($lang = 'ar'){
+      return match($lang){
+        'ar' => $this->content_ar,
+        'en' => $this->content_en,
+        'fr' => $this->content_fr,
+        'default' => $this->content_ar,
+      };
+    }
 }

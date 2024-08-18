@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Dashboard\Ad\AdController;
 use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
 use App\Http\Controllers\Dashboard\Course\CourseController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
+use App\Http\Controllers\Dashboard\Setting\SettingController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
 use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
@@ -65,4 +67,16 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);
+
+    Route::get('/settings', [SettingController::class,'index']);
+
+    Route::post('/setting/version/update', [SettingController::class,'version']);
+    Route::post('/setting/misc/update', [SettingController::class,'misc']);
+    Route::post('/setting/contact/update', [SettingController::class,'contact']);
+    Route::post('/setting/bank/update', [SettingController::class,'bank']);
+
+    Route::get('/documentation/policy',[SettingController::class,'doc_index'])->name('documentation.policy');
+    Route::get('/documentation/about',[SettingController::class,'doc_index'])->name('documentation.about');
+
+    Route::post('/documentation/update',[SettingController::class,'documentation']);
 });

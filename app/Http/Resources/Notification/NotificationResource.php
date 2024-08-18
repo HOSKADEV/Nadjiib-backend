@@ -14,6 +14,14 @@ class NotificationResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+          'id' => $this->id,
+          'title' => $this->notice?->title($request->header('Accept-Language', 'ar')),
+          'content' => $this->notice?->content($request->header('Accept-Language', 'ar')),
+          'type' => $this->notice->type,
+          'created_at' => $this->created_at,
+          'is_read' => $this->is_read == 'yes' ? true : false,
+          'read_at' => $this->read_at,
+        ];
     }
 }

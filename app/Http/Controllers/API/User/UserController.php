@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Http\Resources\User\AvatarUserResource;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,16 +41,16 @@ class UserController extends Controller
     try {
 
       $user = User::find($request->user_id);
-      $data = [
+      /* $data = [
         "name" => $user->name,
         "image" => is_null($user->image) ? null : url($user->image),
         "role" => $user->role,
-      ];
+      ]; */
 
       return response()->json([
         'status' => true,
         'message' => 'success',
-        'data' => $data
+        'data' => new AvatarUserResource($user)
       ]);
 
     } catch (Exception $e) {
