@@ -77,11 +77,11 @@ class SettingsController extends Controller
 
       $teacher_bonuses_amount = PurchaseBonus::whereIn('purchase_id',$teacher_purchases->pluck('purchases.id')->toArray())->whereIn('type',[2,3])->sum('amount');
 
-      $teacher_bonuses_percentage = $teacher_bonuses_amount / $teacher_total_amount;
+      $teacher_bonuses_percentage = $teacher_total_amount ? $teacher_bonuses_amount / $teacher_total_amount : 0;
 
-      $cloud_percentage = min(1, $teacher_calls / $calls_duration);
+      $cloud_percentage = $calls_duration ? min(1, $teacher_calls / $calls_duration) : 0;
 
-      $community_percentage = min(1, $teacher_posts / $posts_number);
+      $community_percentage = $posts_number ? min(1, $teacher_posts / $posts_number) : 0;
 
       $data = [
         'cloud' => [
