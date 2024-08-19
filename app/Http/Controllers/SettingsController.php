@@ -61,6 +61,9 @@ class SettingsController extends Controller
       $posts_number = Setting::where('name','posts_number')->value('value');
       $calls_duration = Setting::where('name','calls_duration')->value('value');
 
+      $cloud_bonus = Setting::where('name','cloud_bonus')->value('value');
+      $community_bonus = Setting::where('name','community_bonus')->value('value');
+
       $posts_number = empty($posts_number) ? 0 : intval($posts_number);
       $calls_duration = empty($calls_duration) ? 0 : intval($calls_duration);
 
@@ -88,11 +91,13 @@ class SettingsController extends Controller
           'progress' => intval($teacher_calls),
           'threshold' => $calls_duration,
           'percentage' => $cloud_percentage,
+          'bonus' => $cloud_bonus
         ],
         'community' => [
           'progress' => $teacher_posts,
           'threshold' => $posts_number,
           'percentage' => $community_percentage,
+          'bonus' => $community_bonus
         ],
         'total' => [
           'progress' => ($community_percentage + $cloud_percentage ) / 2,
