@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\Post\PostResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -77,7 +79,7 @@ class Student extends Model
 
     public function liked_comments()
     {
-        return $this->belongsToMany(Comment::class, 'comment_likes');
+        return $this->hasManyThrough(Comment::class, CommentLike::class, 'student_id', 'id', 'id', 'comment_id');
     }
 
     public function followings()
@@ -92,7 +94,7 @@ class Student extends Model
 
     public function liked_posts()
     {
-        return $this->belongsToMany(Post::class, 'post_likes');
+        return $this->hasManyThrough(Post::class, PostLike::class, 'student_id', 'id', 'id', 'post_id');
     }
 
     public function subscriptions()
@@ -114,5 +116,18 @@ class Student extends Model
 
     public function completed($course){
       return $this->completed_lessons()->whereIn('lesson_id',$course->lessons()->get('id')->pluck('id')->toArray())->count();
+    }
+
+    public function liked($object){
+      $likes = 0;
+      if(get_class($object) == PostResource::class){
+        $likes = $this->liked_posts()->where('posts.id',$object->id)->count();
+      }
+
+      if(get_class($object) == CommentResource::class){
+        $likes = $this->liked_comments()->where('comments.id',$object->id)->count();
+      }
+
+      return boolval($likes);
     }
 }

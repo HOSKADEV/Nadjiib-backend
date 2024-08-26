@@ -18,6 +18,7 @@ class AvatarUserResource extends JsonResource
           "name" => $this->name,
           "image" => is_null($this->image) ? null : url($this->image),
           "role" => $this->role,
+          "fcm_token" => $this->fcm_token
         ];
     }
 }

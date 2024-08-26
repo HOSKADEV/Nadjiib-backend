@@ -28,7 +28,7 @@ class HomePageResource extends JsonResource
       'image' => empty($user) ? null : (empty($user->image) ? null : url($user->image)),
       'level' => empty($user) ? null : new LevelResource($user->student->level),
       'subjects' => empty($user) ? null : new SubjectCollection($user->student->level->subjects),
-      'notifications' => empty($user) ? 0 : $user->notifications()->count(),
+      'notifications' => empty($user) ? 0 : $user->notifications()->where('is_read','no')->count(),
       'wishlist' => empty($user) ? 0 : $user->student?->wishlists()->count(),
       'ads' => new AdCollection(Ad::inRandomOrder()->limit(5)->get()),
       'best_sellers' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),

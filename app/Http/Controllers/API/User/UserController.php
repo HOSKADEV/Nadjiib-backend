@@ -84,4 +84,16 @@ class UserController extends Controller
     }
 
   }
+  public function image($id){
+    try{
+      $user = User::findOrFail($id);
+      if(empty($user->image)) {
+        throw new Exception('no image');
+      }
+      return redirect(url($user->image));
+    }catch(Exception $e){
+      return redirect(url('assets/img/avatars/avatar.png'));
+    }
+
+  }
 }

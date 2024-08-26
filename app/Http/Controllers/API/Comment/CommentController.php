@@ -165,6 +165,9 @@ class CommentController extends Controller
 
     try {
 
+      $user = $this->get_user_from_token($request->bearerToken());
+      $request->merge(['user' => $user]);
+
       $post = Post::find($request->post_id);
 
       $comments = $post->comments()->latest()->paginate(10);

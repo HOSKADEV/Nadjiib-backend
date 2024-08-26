@@ -192,6 +192,9 @@ class PostController extends Controller
 
     try {
 
+      $user = $this->get_user_from_token($request->bearerToken());
+      $request->merge(['user' => $user]);
+
       $teacher = Teacher::find($request->teacher_id);
 
       $posts = $teacher->posts()->latest()->paginate(10);

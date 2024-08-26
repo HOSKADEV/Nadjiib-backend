@@ -135,12 +135,18 @@ Route::prefix('v1')->group(function () {
 
   Route::get('/version', [VersionController::class, 'get']);
 
-  Route::post('/test', function(Request $request){
-    return ;
-  });
+  Route::get('/user/{id}/image/', [UserController::class, 'image']);
+
 });
 
+Route::post('/test', function(Request $request){
+  $date_time_1 = \Illuminate\Support\Carbon::createFromDate('2024-08-16 17:10:22');
 
+  $date_time_2 = \Illuminate\Support\Carbon::createFromDate('2024-08-16 17:11:25');
+
+
+  return $date_time_1->format('Y-m-d h:i');
+});
 
 
 

@@ -15,6 +15,7 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
+      $user = $request->user;
         return [
           'id' => $this->id,
           'teacher_id' => $this->teacher_id,
@@ -26,6 +27,7 @@ class PostResource extends JsonResource
           'created_at' => $this->created_at,
           'likes' => $this->likes()->count(),
           'comments' => $this->comments()->count(),
+          'is_liked' => empty($user) ? false : $user->student?->liked($this),
         ];
     }
 }

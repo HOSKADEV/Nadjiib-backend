@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\Call;
 
 use Exception;
 use App\Models\Call;
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -15,10 +17,10 @@ class CallController extends Controller
 {
     public function create(Request $request){
       $validation = Validator::make($request->all(), [
-        'teacher_id' => 'required|exists:teachers,id',
-        'student_id' => 'required|exists:students,id',
-        'start_time' => 'sometimes|date',
-        'end_time' => 'sometimes|date',
+        'teacher_id' => 'required|exists:users,id',
+        'student_id' => 'required|exists:users,id',
+        'start_time' => 'required|date',
+        'end_time' => 'required|date',
         'duration' => 'sometimes',
         'rating' => 'sometimes|in:like,dislike',
       ]);
@@ -33,25 +35,50 @@ class CallController extends Controller
 
       try {
 
-        $call = Call::create($request->all());
+        $teacher_id = Teacher::where('user_id',$request->teacher_id)->first()?->id;
 
-        if($call->is_complement()){
-          $teacher = $call->teacher;
-          if($teacher->cloud_tasks_completed()){
-            $teacher_purchases = $teacher->purchases()->where(DB::raw('DATE(purchases.created_at)'), '>=', Carbon::now()->startOfMonth())
-              ->where(DB::raw('DATE(purchases.created_at)'), '<=', Carbon::now()->endOfMonth())->where('purchases.status','success')->get();
+        $student_id = Student::where('user_id',$request->student_id)->first()?->id;
 
-              foreach($teacher_purchases as $purchase){
-                $purchase->apply_bonuses($teacher,null);
-              }
+        if(empty($teacher_id) || empty($student_id)){
+          throw new Exception('invalid users');
+        }
+
+
+        $duplicate_call = Call::where('student_id', $student_id)->where('teacher_id',$teacher_id)
+        ->Where(function ($query) use ($request) {
+          return $query->where(DB::raw("ABS(TIMEDIFF(start_time, '".$request->start_time."'))"), '<', 60)
+                    ->orWhere(DB::raw("ABS(TIMEDIFF(end_time, '".$request->end_time."'))"), '<', 60);
+        })->first();
+
+        if(empty($duplicate_call)){
+
+          $request->merge([
+            'teacher_id' => $teacher_id,
+            'student_id' => $student_id,
+          ]);
+
+          $call = Call::create($request->all());
+
+          $call->refresh();
+
+          if($call->is_complement()){
+            $teacher = $call->teacher;
+            if($teacher->cloud_tasks_completed()){
+              $teacher_purchases = $teacher->purchases()->where(DB::raw('DATE(purchases.created_at)'), '>=', Carbon::now()->startOfMonth())
+                ->where(DB::raw('DATE(purchases.created_at)'), '<=', Carbon::now()->endOfMonth())->where('purchases.status','success')->get();
+
+                foreach($teacher_purchases as $purchase){
+                  $purchase->apply_bonuses($teacher,null);
+                }
+            }
+
           }
-
         }
 
         return response()->json([
           'status' => true,
           'message' => 'success',
-          'data' => new CallResource($call->refresh())
+          //'data' => new CallResource($call)
         ]);
 
       } catch (Exception $e) {
@@ -85,6 +112,7 @@ class CallController extends Controller
 
         $call->update($request->all());
 
+        $call->refresh();
 
         if($call->is_complement()){
           $teacher = $call->teacher;

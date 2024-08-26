@@ -15,6 +15,7 @@ class CommentResource extends JsonResource
      */
     public function toArray($request)
     {
+      $user = $request->user;
         return [
           'id' => $this->id,
           'student_id' => $this->student_id,
@@ -23,6 +24,7 @@ class CommentResource extends JsonResource
           'content' => $this->content,
           'created_at' => $this->created_at,
           'likes' => $this->likes()->count(),
+          'is_liked' => empty($user) ? false : $user->student?->liked($this),
         ];
     }
 }

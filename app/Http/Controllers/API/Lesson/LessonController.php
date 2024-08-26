@@ -49,7 +49,7 @@ class LessonController extends Controller
 
             return response()->json([
               'status' => true,
-              'data'   => new PaginateLessonCollection($lessons)
+              'data'   => new LessonCollection($lessons)
             ]);
         }
         catch(Exception $e){

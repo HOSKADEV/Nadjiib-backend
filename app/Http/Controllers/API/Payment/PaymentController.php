@@ -38,12 +38,12 @@ class PaymentController extends Controller
           throw new Exception('no teacher selected');
         }
 
-        $payments = $teacher->payments()->where(DB::raw('YEAR(date)'),$request->year)->orderBy('date','DESC')->paginate(10);
+        $payments = $teacher->payments()->where(DB::raw('YEAR(date)'),$request->year)->orderBy('date','DESC')->get();
 
         return response()->json([
           'status' => true,
           'message' => 'success',
-          'data' => new PaginatedPaymentCollection($payments),
+          'data' => new PaymentCollection($payments),
         ]);
 
       } catch (Exception $e) {
