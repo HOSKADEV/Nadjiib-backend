@@ -167,7 +167,7 @@ class SettingsController extends Controller
       $privacy_policy = Documentation::privacy_policy();
 
       return response()->json([
-        'status' => 1,
+        'status' => true,
         'message' => 'success',
         'data' => ['content' => $privacy_policy->content($lang)]
       ]);
@@ -175,7 +175,7 @@ class SettingsController extends Controller
     } catch (Exception $e) {
       return response()->json(
         [
-          'status' => 0,
+          'status' => false,
           'message' => $e->getMessage()
         ]
       );
@@ -190,7 +190,7 @@ class SettingsController extends Controller
       $about = Documentation::about();
 
       return response()->json([
-        'status' => 1,
+        'status' => true,
         'message' => 'success',
         'data' => ['content' => $about->content($lang)]
       ]);
@@ -198,7 +198,7 @@ class SettingsController extends Controller
     } catch (Exception $e) {
       return response()->json(
         [
-          'status' => 0,
+          'status' => false,
           'message' => $e->getMessage()
         ]
       );

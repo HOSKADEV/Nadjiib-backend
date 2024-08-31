@@ -16,14 +16,14 @@ class VersionController extends Controller
       $version = new VersionResource(null);
 
       return response()->json([
-        'status' => 1,
+        'status' => true,
         'message' => 'success',
         'data' => $version,
       ]);
 
     }catch(Exception $e){
       return response()->json([
-        'status' => 0,
+        'status' => false,
         'message' => $e->getMessage()
       ]
     );
