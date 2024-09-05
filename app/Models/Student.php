@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Http\Resources\Comment\CommentResource;
-use App\Http\Resources\Post\PostResource;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\Post\PostResource;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Comment\CommentResource;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -89,7 +91,7 @@ class Student extends Model
 
     public function followed_teachers()
     {
-        return $this->belongsToMany(Teacher::class, 'followings');
+      return $this->hasManyThrough(Teacher::class, Following::class, 'student_id', 'id', 'id', 'teacher_id');
     }
 
     public function liked_posts()
@@ -100,6 +102,11 @@ class Student extends Model
     public function subscriptions()
     {
         return $this->hasManyThrough(Subscription::class, Purchase::class);
+    }
+
+    public function active_subs(){
+      return $this->subscriptions()->where(DB::raw('DATE(start_date)'), '<=', Carbon::now())
+                                  ->where(DB::raw('DATE(end_date)'), '>=', Carbon::now());
     }
 
     public function purchased($course){
@@ -129,5 +136,12 @@ class Student extends Model
       }
 
       return boolval($likes);
+    }
+
+    public function followed($teacher){
+
+      $followings = $this->followings()->where('teacher_id',$teacher->id)->count();
+      return boolval($followings);
+
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Course\CourseResource;
 use App\Repositories\Course\CourseRepository;
+use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseInfoResource;
 use App\Http\Resources\Wishlist\WishlistCollection;
 use App\Http\Resources\Course\PaginateCourseCollection;
@@ -313,13 +314,24 @@ class CourseController extends Controller
 
       if ($request->has("type")) {
         if ($request->type == 'best_sellers') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
+          $courses = new CourseCollection(
+            Course::best_sellers(10)->count() > 0 ?
+            Course::best_sellers(10)->get()->shuffle() :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+          );
         }
         if ($request->type == 'suggestions') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
-        }
-        if ($request->type == 'recommended') {
-          $courses = new PaginateCourseCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10));
+          $courses = new CourseCollection(
+            Course::suggestions(10, $user)->count() > 0 ?
+            Course::suggestions(10, $user)->get()->shuffle() :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+          );
+        }if ($request->type == 'recommended') {
+          $courses = new CourseCollection(
+            Course::recommended(10, $user)->count() > 0 ?
+            Course::recommended(10, $user)->get()->shuffle() :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+          );
         }
         if ($request->type == 'wishlist') {
           $courses = new WishlistCollection($user?->student?->wishlists()->paginate(10));

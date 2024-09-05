@@ -109,6 +109,7 @@ class TeacherController extends Controller
           "name"        => 'sometimes|string',
           "image"       => 'sometimes|mimes:jpeg,png,jpg,gif',
           "phone"       => 'sometimes|unique:users,phone',
+          "gender"     => 'sometimes|in:male,female',
           "channel_name" => 'sometimes|string',
           "cloud_chat" => 'sometimes|in:active,inactive',
           "bio"         => 'sometimes|string',
@@ -153,7 +154,7 @@ class TeacherController extends Controller
 
 
       $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
-      $user = $this->user->update($teacher->user_id, $request->only('name','phone'));
+      $user = $this->user->update($teacher->user_id, $request->only('name','phone','gender'));
       $user->image = $pathImage;
       $user->save();
 

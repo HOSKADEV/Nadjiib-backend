@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Teacher;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Section\SectionCollection;
 use App\Http\Resources\Subject\SubjectCollection;
@@ -16,6 +17,11 @@ class TeacherResource extends JsonResource
      */
     public function toArray($request)
     {
+
+      $controller = new Controller();
+
+      $user = $request->user() ?? $controller->get_user_from_token($request->bearerToken());
+
         return [
           'teacher_id' => $this->id,
           'coupon_code' => $this->coupon->code,
@@ -26,6 +32,7 @@ class TeacherResource extends JsonResource
           'subjects' => new SubjectCollection($this->subjects),
           'num_posts' => $this->posts()->count(),
           'num_likes' => $this->likes()->count(),
+          'is_followed' => empty($user) ? false : $user->student?->followed($this),
         ];
     }
 }

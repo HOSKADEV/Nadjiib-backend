@@ -70,7 +70,7 @@ class LessonController extends Controller
           'video_filename'  => 'sometimes',
           'video_extension' => 'sometimes',
           'video_duartion'  => 'sometimes',
-          'file_url'        => 'required',
+          'file_url'        => 'sometimes',
           'file_filename'   => 'sometimes',
           'file_extension'  => 'sometimes',
           'file_duartion'   => 'sometimes',

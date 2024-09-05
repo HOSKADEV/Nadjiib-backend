@@ -9,6 +9,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\API\Ad\AdController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Call\CallController;
+use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Post\PostController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\CompletedLessonController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\API\Teacher\TeacherController;
 use App\Http\Controllers\API\Version\VersionController;
 use App\Http\Controllers\API\Purchase\PurchaseController;
 use App\Http\Controllers\API\Wishlist\WishlistController;
+use App\Http\Controllers\API\Following\FollowingController;
 use App\Http\Controllers\API\Notification\NotificationController;
 
 /*
@@ -71,6 +73,12 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/progress', [SettingsController::class, 'progress']);
     Route::get('/stats', [SettingsController::class, 'stats']);
+
+    Route::post('/following/create', [FollowingController::class, 'create']);
+    Route::post('/following/get', [FollowingController::class, 'get']);
+
+    Route::post('/chat/create', [ChatController::class, 'create']);
+    Route::post('/chat/get', [ChatController::class, 'get']);
   });
 
   Route::post('/course/info', [CourseController::class, 'info']);

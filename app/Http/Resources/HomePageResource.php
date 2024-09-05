@@ -28,12 +28,24 @@ class HomePageResource extends JsonResource
       'image' => empty($user) ? null : (empty($user->image) ? null : url($user->image)),
       'level' => empty($user) ? null : new LevelResource($user->student->level),
       'subjects' => empty($user) ? null : new SubjectCollection($user->student->level->subjects),
-      'notifications' => empty($user) ? 0 : $user->notifications()->where('is_read','no')->count(),
+      'notifications' => empty($user) ? 0 : $user->notifications()->where('is_read', 'no')->count(),
       'wishlist' => empty($user) ? 0 : $user->student?->wishlists()->count(),
       'ads' => new AdCollection(Ad::inRandomOrder()->limit(5)->get()),
-      'best_sellers' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
-      'suggestions' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
-      'recommended' => new CourseInfoCollection(Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()),
+      'best_sellers' => new CourseInfoCollection(
+        Course::best_sellers(5)->count() > 0 ?
+        Course::best_sellers(5)->get()->shuffle() :
+        Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()
+      ),
+      'suggestions' => new CourseInfoCollection(
+        Course::suggestions(5, $user)->count() > 0 ?
+        Course::suggestions(5, $user)->get()->shuffle() :
+        Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()
+      ),
+      'recommended' => new CourseInfoCollection(
+        Course::recommended(5, $user)->count() > 0 ?
+        Course::recommended(5, $user)->get()->shuffle() :
+        Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(5)->get()
+      ),
     ];
   }
 }

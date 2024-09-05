@@ -46,8 +46,8 @@ class CallController extends Controller
 
         $duplicate_call = Call::where('student_id', $student_id)->where('teacher_id',$teacher_id)
         ->Where(function ($query) use ($request) {
-          return $query->where(DB::raw("ABS(TIMEDIFF(start_time, '".$request->start_time."'))"), '<', 60)
-                    ->orWhere(DB::raw("ABS(TIMEDIFF(end_time, '".$request->end_time."'))"), '<', 60);
+          return $query->where(DB::raw("ABS(TIMEDIFF(start_time, '".$request->start_time."'))"), '<', 5)
+                    ->orWhere(DB::raw("ABS(TIMEDIFF(end_time, '".$request->end_time."'))"), '<', 5);
         })->first();
 
         if(empty($duplicate_call)){
