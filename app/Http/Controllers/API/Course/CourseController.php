@@ -314,23 +314,23 @@ class CourseController extends Controller
 
       if ($request->has("type")) {
         if ($request->type == 'best_sellers') {
-          $courses = new CourseCollection(
+          $courses = new PaginateCourseCollection(
             Course::best_sellers(10)->count() > 0 ?
-            Course::best_sellers(10)->get()->shuffle() :
-            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+            Course::best_sellers(10)->get()->shuffle()->paginate(10) :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10)
           );
         }
         if ($request->type == 'suggestions') {
-          $courses = new CourseCollection(
+          $courses = new PaginateCourseCollection(
             Course::suggestions(10, $user)->count() > 0 ?
-            Course::suggestions(10, $user)->get()->shuffle() :
-            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+            Course::suggestions(10, $user)->get()->shuffle()->paginate(10) :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10)
           );
         }if ($request->type == 'recommended') {
-          $courses = new CourseCollection(
+          $courses = new PaginateCourseCollection(
             Course::recommended(10, $user)->count() > 0 ?
-            Course::recommended(10, $user)->get()->shuffle() :
-            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->get()
+            Course::recommended(10, $user)->get()->shuffle()->paginate(10) :
+            Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10)
           );
         }
         if ($request->type == 'wishlist') {

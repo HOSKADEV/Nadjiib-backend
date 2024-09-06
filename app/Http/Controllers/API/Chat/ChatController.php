@@ -85,7 +85,7 @@ public function get(Request $request){
       ->orWhere('chats.teacher_id', $user?->teacher?->id);
     })
 
-
+    ->orderBy('chats.created_at' , 'DESC')
     ->select('students.user_id AS student_id', 'teachers.user_id AS teacher_id')->get();
 
     $user_ids = array_merge($chats->pluck('student_id')->toArray(), $chats->pluck('teacher_id')->toArray());
