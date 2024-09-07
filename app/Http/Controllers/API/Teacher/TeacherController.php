@@ -193,7 +193,7 @@ class TeacherController extends Controller
       try
       {
 
-        $user = $request->user();
+        $user = $this->get_user_from_token($request->bearerToken());
 
         $teachers = User::join('teachers','users.id','teachers.user_id')
                         ->leftjoin('posts','teachers.id','posts.teacher_id')
@@ -210,7 +210,7 @@ class TeacherController extends Controller
 
         //return($teachers->get());
 
-        if($user?->teacher){
+        if($user){
           $teachers = $teachers->whereNot('users.id',$user->id);
         }
 
