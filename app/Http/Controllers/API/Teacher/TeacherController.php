@@ -193,6 +193,8 @@ class TeacherController extends Controller
       try
       {
 
+        $user = $request->user();
+
         $teachers = User::join('teachers','users.id','teachers.user_id')
                         ->leftjoin('posts','teachers.id','posts.teacher_id')
                         ->groupBy('teachers.id')
@@ -203,9 +205,14 @@ class TeacherController extends Controller
                         'teachers.channel_name',
                         DB::raw('COUNT(posts.id) as num_posts'))
                         ->where('users.status','ACTIVE')
+                        ->where('teachers.status',1)
                         ->where('role', '2');
 
         //return($teachers->get());
+
+        if($user?->teacher){
+          $teachers = $teachers->whereNot('users.id',$user->id);
+        }
 
         if($request->has('subjects')){
           $teacher_ids = TeacherSubject::whereIn('subject_id',$request->subjects)->distinct('teacher_id')->pluck('teacher_id')->toArray();
@@ -224,6 +231,7 @@ class TeacherController extends Controller
                 ->orWhere('bio', 'like', '%' . $request->search . '%')
                 ->orWhere('channel_name', 'like', '%' . $request->search . '%');
         });
+
         }
 
         if($request->has('type')){

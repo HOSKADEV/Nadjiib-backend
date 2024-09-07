@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->users->paginate($perPage = 10, $request->search, $request->status);
+        $users = $this->users->paginate($perPage = 10, $request->search, $request->status, $request->role);
 
         return view('dashboard.user.index', compact('users'));
     }

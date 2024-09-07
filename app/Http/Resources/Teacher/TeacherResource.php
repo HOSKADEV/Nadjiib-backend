@@ -28,6 +28,7 @@ class TeacherResource extends JsonResource
           'channel_name' => $this->channel_name,
           'bio' => $this->bio,
           'cloud_chat' => $this->cloud_chat,
+          'status' => boolval($this->status),
           'sections' => new SectionCollection($this->sections),
           'subjects' => new SubjectCollection($this->subjects),
           'num_posts' => $this->posts()->count(),

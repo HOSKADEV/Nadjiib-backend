@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Teacher;
+namespace App\Http\Controllers\Dashboard\Teacher;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -25,7 +25,15 @@ class TeacherController extends Controller
     $this->coupon = $coupon;
   }
 
-  public function create(Request $request)
+  public function changeStatus(Request $request)
+  {
+      $teacher = $this->teacher->find($request->id);
+      $teacher->update(['status' => !boolval($teacher->status)]);
+      toastr()->success(trans('message.success.update'));
+      return redirect()->route('dashboard.users.index');
+  }
+
+ /*  public function create(Request $request)
   {
     $validator = Validator::make($request->all(), [
       'user_id' => 'required|exists:users,id',
@@ -116,5 +124,5 @@ class TeacherController extends Controller
         'message' => $e->getMessage()
       ]);
     }
-  }
+  } */
 }

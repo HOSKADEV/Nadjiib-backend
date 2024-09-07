@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\Course\CourseController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Setting\SettingController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
+use App\Http\Controllers\Dashboard\Teacher\TeacherController;
 use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
 
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
 
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
+    Route::put('teachers/status', [TeacherController::class, 'changeStatus'])->name('teachers.changeStatus');
     Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);

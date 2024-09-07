@@ -70,13 +70,17 @@ class EloquentUser implements UserRepository
      * @param $searchTo
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
      */
-    public function paginate($perPage, $search = null, $status = null)
+    public function paginate($perPage, $search = null, $status = null, $role = null)
     {
         $query = User::query()->whereNot('role',0)->whereNot('status','DELETED')->with('student', 'teacher');
 
         if ($status) {
             $query->where('status', $status);
         }
+
+        if ($role) {
+          $query->where('role', $role);
+      }
 
         if ($search) {
             (new UserKeywordSearch)($query, $search);

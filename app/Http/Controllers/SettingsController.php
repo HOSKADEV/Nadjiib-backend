@@ -27,6 +27,7 @@ class SettingsController extends Controller
       $data = [
         'ccp' => $ccp,
         'baridi_mob' => $baridi_mob,
+        //'form_image'
         'email' => $email,
         'whatsapp' => $whatsapp,
         'facebook' => $facebook,

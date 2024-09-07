@@ -68,6 +68,14 @@ class User extends Authenticatable
     }
   }
 
+  public function role(){
+    if($this->role == 2 && empty($this->teacher?->status)){
+      return 3;
+    }
+
+    return intval($this->role);
+  }
+
   public function student()
   {
     return $this->hasOne(Student::class);

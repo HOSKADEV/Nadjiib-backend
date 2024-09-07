@@ -29,15 +29,15 @@
 
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                         <label for="type" class="form-label">{{ trans('ad.label.type') }}</label>
-                        <select class="form-select" id="type" name="type" aria-label="Default select example">
-                            <option value="{{ Request::get('type') != '' ? Request::get('type') : '' }}"
+                        <select class="form-select" id="type_filter" name="type" aria-label="Default select example">
+                            {{-- <option value="{{ Request::get('type') != '' ? Request::get('type') : '' }}"
                                 {{ Request::get('type') != '' ? 'selected' : '' }}>
                                 {{ Request::get('type') != '' ? trans('ad.' . Request::get('type') . 'type') : trans('ad.select.type') }}
-                            </option>
-                            <option value="">{{ trans('app.all') }}</option>
-                            <option value="url">{{ trans('ad.urltype') }}</option>
-                            <option value="course">{{ trans('ad.coursetype') }}</option>
-                            <option value="teacher">{{ trans('ad.teachertype') }}</option>
+                            </option> --}}
+                            <option value="" {{ Request::get('type') == '' ? 'selected' : '' }}>{{ trans('app.all') }}</option>
+                            <option value="url" {{ Request::get('type') == 'url' ? 'selected' : '' }}>{{ trans('ad.urltype') }}</option>
+                            <option value="course" {{ Request::get('type') == 'course' ? 'selected' : '' }}>{{ trans('ad.coursetype') }}</option>
+                            <option value="teacher" {{ Request::get('type') == 'teacher' ? 'selected' : '' }}>{{ trans('ad.teachertype') }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
@@ -139,12 +139,12 @@
 
 
 
-            $('#type').on('change', function(event) {
+            $('#type_filter').on('change', function(event) {
                 // $("#name").focus();
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 1000);
+                }, 500);
 
             });
 

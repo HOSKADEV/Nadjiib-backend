@@ -43,4 +43,7 @@ return [
         'DZ' => 'DZD',
         'US' => 'USD',
     ],
+
+    'addimage' => 'Add image',
+    'reset' => 'Reset'
 ];

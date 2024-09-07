@@ -22,24 +22,25 @@
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                         <label for="name" class="form-label">{{ trans('user.label.status') }}</label>
                         <select class="form-select" id="status" name="status" aria-label="Default select example">
-                            <option value="{{ Request::get('status') != '' ? Request::get('status') : '' }}"
+                            {{-- <option value="{{ Request::get('status') != '' ? Request::get('status') : '' }}"
                                 {{ Request::get('status') != '' ? 'selected' : '' }}>
-                                {{ Request::get('status') != '' ? (Request::get('status') == 'ACTIVE' ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.status') }}
+                                {{ Request::get('status') != '' ? (Request::get('status') == 'ACTIVE' ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.status') }} --}}
                             </option>
-                            <option value="">{{ trans('app.all') }}</option>
-                            <option value="ACTIVE">{{ trans('user.statuss.active') }}</option>
-                            <option value="INACTIVE">{{ trans('user.statuss.inactive') }}</option>
+                            <option value="" {{ Request::get('status') == '' ? 'selected' : '' }}>{{ trans('app.all') }}</option>
+                            <option value="ACTIVE" {{ Request::get('status') == 'ACTIVE' ? 'selected' : '' }}>{{ trans('user.statuss.active') }}</option>
+                            <option value="INACTIVE" {{ Request::get('status') == 'INACTIVE' ? 'selected' : '' }}>{{ trans('user.statuss.inactive') }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                         <label for="role" class="form-label">{{ trans('user.label.role') }}</label>
                         <select class="form-select" id="role" name="role" aria-label="Default select example">
-                            <option value="{{ Request::get('role') != '' ? Request::get('role') : '' }}"
+                            {{-- <option value="{{ Request::get('role') != '' ? Request::get('role') : '' }}"
                                 {{ Request::get('role') != '' ? 'selected' : '' }}>
                                 {{ Request::get('role') != '' ? (Request::get('role') == 1 ? trans('user.statuss.active') : trans('user.statuss.inactive')) : trans('user.select.role') }}
-                            </option>
-                            <option value="1">{{ trans('user.statuss.active') }}</option>
-                            <option value="2">{{ trans('user.statuss.inactive') }}</option>
+                            </option> --}}
+                            <option value="" {{ Request::get('role') == '' ? 'selected' : '' }}>{{ trans('app.all') }}</option>
+                            <option value="1" {{ Request::get('role') == '1' ? 'selected' : '' }}>{{ trans('app.student') }}</option>
+                            <option value="2" {{ Request::get('role') == '2' ? 'selected' : '' }}>{{ trans('app.teacher') }}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
@@ -75,7 +76,11 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
                             <td>
-                                {{ $user->account }}
+                                <span
+                                    class="badge rounded-pill text-capitalize bg-{{ match($user->role()){ 1 => 'info', 2 => 'primary', 3 => 'warning'} }}">
+                                    {{ match($user->role()){ 1 => trans('app.student'), 2 => trans('teacher.active'), 3 => trans('teacher.inactive')} }}
+                                </span>
+                            </td>
                             </td>
                             <td>
                                 <span
@@ -109,9 +114,14 @@
                                         @if ($user->teacher)
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                         data-bs-target="#createAdModal{{$user->teacher->id}}">
-                                        <i class='bx bxs-offer me-2'></i>
+                                        <i class='bx bx-bell me-2'></i>
                                         {{ trans('ad.create') }}
-                                </a>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                            data-bs-target="#UpdateTeacherStatusModal{{ $user->id }}">
+                                            <i class='bx bx-analyse me-2'></i>
+                                            {{ $user->role() == 3 ? trans('teacher.activate') : trans('teacher.deactivate') }}
+                                        </a>
                                         @endif
 
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
@@ -129,6 +139,7 @@
                         @include('dashboard.user.delete')
                         @if ($user->teacher)
                           @include('dashboard.user.create')
+                          @include('dashboard.user.update-teacher-status')
                         @endif
                     @endforeach
                 </tbody>
@@ -147,7 +158,16 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 1000);
+                }, 500);
+
+            });
+
+            $('#role').on('change', function(event) {
+                // $("#name").focus();
+
+                timer = setTimeout(function() {
+                    submitForm();
+                }, 500);
 
             });
 
