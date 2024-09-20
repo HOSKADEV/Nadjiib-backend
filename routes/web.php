@@ -54,6 +54,16 @@ Route::post('/auth/login-action', 'App\Http\Controllers\authentications\LoginBas
 Route::get('/auth/forgot-password-basic', 'App\Http\Controllers\authentications\ForgotPasswordBasic@index')->name('auth-reset-password-basic');
 Route::get('/auth/logout', 'App\Http\Controllers\authentications\LogoutBasic@logout')->name('auth-logout');
 
+
+Route::get('/error', 'App\Http\Controllers\pages\MiscError@index')->name('error');
+Route::get('/under-maintenance', 'App\Http\Controllers\pages\MiscUnderMaintenance@index')->name('under-maintenance');
+
+Route::get('/chargily/success', 'App\Http\Controllers\API\Purchase\PurchaseController@chargily')->name('chargily-success');
+Route::get('/chargily/failed', 'App\Http\Controllers\API\Purchase\PurchaseController@chargily')->name('chargily-failed');
+
+Route::get('/purchase/success', 'App\Http\Controllers\API\Purchase\PurchaseController@success')->name('purchase-success');
+Route::get('/purchase/failed', 'App\Http\Controllers\API\Purchase\PurchaseController@failed')->name('purchase-failed');
+
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth']], function () {
     Route::resource('sections', SectionController::class);
     Route::resource('levels', LevelController::class);

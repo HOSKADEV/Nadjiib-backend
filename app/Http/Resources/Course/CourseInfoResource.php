@@ -21,6 +21,7 @@ class CourseInfoResource extends JsonResource
       'description' => $this->description,
       'price' => $this->price,
       'image' => is_null($this->image) ? null : url($this->image),
+      'teacher_id' => $this->teacher_id,
       'teacher_name' => $this->teacher->user->name,
       'vidoes' => $this->videos()->count(),
       'lessons' => $this->lessons()->count(),

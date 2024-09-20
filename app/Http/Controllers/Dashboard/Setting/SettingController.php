@@ -29,10 +29,11 @@ class SettingController extends Controller
     $instagram = Setting::where('name','instagram')->value('value');
     $ccp = Setting::where('name','ccp')->value('value');
     $baridi_mob = Setting::where('name','baridi_mob')->value('value');
-
+    $form_image = Setting::where('name','form_image')->value('value');
     $calls_duration = Setting::where('name','calls_duration')->value('value');
 
     $calls_duration = CarbonInterval::seconds($calls_duration)->cascade();
+    $form_image = $form_image ? url($form_image) : null;
 
     $duration_hours = $calls_duration->h;
     $duration_minutes = $calls_duration->i;
@@ -56,6 +57,7 @@ class SettingController extends Controller
     ->with('duration_hours',$duration_hours)
     ->with('duration_minutes',$duration_minutes)
     ->with('duration_seconds',$duration_seconds)
+    ->with('form_image', $form_image)
     ;
 
 
@@ -193,7 +195,12 @@ class SettingController extends Controller
 
     try {
 
-      foreach ($request->keys() as $key) {
+      if($request->hasFile('image')){
+        $form_image = $request->image->store('images', 'upload');
+        $request->merge(['form_image' => $form_image]);
+      }
+
+      foreach (array_keys($request->except('image')) as $key) {
         Setting::updateOrInsert(['name' => $key], ['value' => $request[$key]]);
       }
 

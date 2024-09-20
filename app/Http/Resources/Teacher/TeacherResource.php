@@ -33,6 +33,7 @@ class TeacherResource extends JsonResource
           'subjects' => new SubjectCollection($this->subjects),
           'num_posts' => $this->posts()->count(),
           'num_likes' => $this->likes()->count(),
+          'num_followings' => $this->followings()->count(),
           'is_followed' => empty($user) ? false : $user->student?->followed($this),
         ];
     }

@@ -23,15 +23,18 @@ class SettingsController extends Controller
       $instagram = Setting::where('name', 'instagram')->value('value');
       $ccp = Setting::where('name', 'ccp')->value('value');
       $baridi_mob = Setting::where('name', 'baridi_mob')->value('value');
+      $form_image = Setting::where('name', 'form_image')->value('value');
 
       $data = [
         'ccp' => $ccp,
         'baridi_mob' => $baridi_mob,
-        //'form_image'
+        'form_image' => $form_image ? url($form_image) : null,
         'email' => $email,
         'whatsapp' => $whatsapp,
         'facebook' => $facebook,
         'instagram' => $instagram,
+        'success_url' => route('chargily-success'),
+        'failure_url' => route('chargily-failed')
       ];
 
       return response()->json([

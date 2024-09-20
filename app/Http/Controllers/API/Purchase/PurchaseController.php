@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Coupon;
 use App\Models\Course;
 use App\Models\Payment;
+use App\Models\Setting;
 use App\Models\Purchase;
 use App\Rules\ValidCoupon;
 use App\Models\Transaction;
@@ -30,7 +31,7 @@ class PurchaseController extends Controller
       'payment_method' => 'required|in:baridimob,poste,chargily',
       'account' => 'required_if:payment_method,baridimob',
       'receipt' => 'required_if:payment_method,baridimob|required_if:payment_method,poste',
-      'data' => 'json|required_if:payment_method,chargily'
+      'checkout_id' => 'required_if:payment_method,chargily|string'
     ]);
 
     if ($validation->fails()) {
@@ -77,7 +78,7 @@ class PurchaseController extends Controller
 
       $purchase->apply_bonuses($teacher, $invitation_code);
 
-      $transaction = Transaction::create($request->only('account', 'data') + ['purchase_id' => $purchase->id]);
+      $transaction = Transaction::create($request->only('account', 'checkout_id') + ['purchase_id' => $purchase->id]);
 
       if ($request->hasFile('receipt')) {
         $path = $this->SaveDocument($request->receipt, 'documents/purchase/receipt/');
@@ -129,33 +130,7 @@ class PurchaseController extends Controller
 
       if ($request->status == 'success') {
 
-
-        $student = $purchase->student;
-        $course = $purchase->course;
-        $subject = $course->subject;
-        $teacher = $course->teacher;
-
-        $month = Carbon::createFromDate($purchase->created_at)->firstOfMonth()->format('Y-m-d');
-
-        $payment_data = [
-          'teacher_id' => $teacher->id,
-          'date' => $month,
-          'is_paid' => 'no'
-        ];
-
-        $this_month_payment = Payment::firstOrCreate($payment_data, $payment_data);
-
-        $this_month_payment->refresh_amount();
-
-        if ($subject->type == 'academic') {
-          Subscription::create([
-            'purchase_id' => $purchase->id,
-            'student_id' => $student->id,
-            'subject_id' => $subject->id,
-            'start_date' => Carbon::now(),
-            'end_date' => Carbon::now()->addMonth()
-          ]);
-        }
+        $purchase->apply_subscription();
 
       }
 
@@ -173,4 +148,88 @@ class PurchaseController extends Controller
       ]);
     }
   }
+
+  public function chargily(Request $request)
+  {
+    try {
+      //dd(empty($request->checkout_id));
+
+      if (empty($request->checkout_id)) {
+        throw new Exception('no checkout id');
+      }
+
+
+      $credentials = new \Chargily\ChargilyPay\Auth\Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')), true));
+      $chargily_pay = new \Chargily\ChargilyPay\ChargilyPay($credentials);
+      $checkout = $chargily_pay->checkouts()->get($request->checkout_id);
+
+      if (empty($checkout)) {
+        throw new Exception('invalid checkout id');
+      }
+
+      $transaction = Transaction::where('checkout_id', $checkout->getId())->first();
+
+      if (empty($transaction)) {
+        throw new Exception('no transaction found');
+      }
+
+      $purchase = $transaction->purchase;
+
+      if($purchase->status != 'pending'){
+        throw new Exception('purchase already settled');
+      }
+
+      $diff_customer = $purchase->student->user->customer_id != $checkout->getCustomerId();
+
+      $diff_course = $purchase->course_id != $checkout->getMetadata()[0]['course_id'];
+
+      //dd($checkout);
+
+      if ($diff_customer || $diff_course) {
+        throw new Exception('conflicted informations');
+      }
+
+
+      /*     if($checkout->getStatus() != 'success'){
+            throw new Exception('checkout is not success');
+          } */
+
+      if ($request->routeIs('chargily-failed')) {
+
+        $purchase->status = 'failed';
+        $purchase->save();
+
+        return redirect()->route('purchase-failed');
+
+      } else {
+
+        DB::beginTransaction();
+
+        $purchase->status = 'success';
+        $purchase->save();
+        $purchase->apply_subscription();
+
+        DB::commit();
+
+        return redirect()->route('purchase-success');
+
+      }
+
+
+    } catch (Exception $e) {
+      DB::rollBack();
+      //dd($e->getMessage());
+      return redirect()->route('error');
+    }
+  }
+
+  public function success(){
+    return view('content.purchase.success');
+  }
+
+  public function failed(){
+    $number = Setting::where('name', 'whatsapp')->value('value');
+    return view('content.purchase.failed')->with('number', $number);
+  }
+
 }

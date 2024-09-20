@@ -25,6 +25,18 @@ class Controller extends BaseController
       return implode($pass);
     }
 
+    function random_phone_number()
+    {
+      $alphabet = '1234567890';
+      $pass = array();
+      $alphaLength = strlen($alphabet) - 1;
+      for ($i = 0; $i < 9; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+      }
+      return '0' . implode($pass);
+    }
+
     public function get_user_from_token($api_token)
     {
       if ($api_token) {

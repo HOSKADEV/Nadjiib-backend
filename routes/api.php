@@ -147,13 +147,25 @@ Route::prefix('v1')->group(function () {
 
 });
 
-Route::post('/test', function(Request $request){
-  $date_time_1 = \Illuminate\Support\Carbon::createFromDate('2024-08-16 17:10:22');
+Route::post('v1/test', function(Request $request){
 
-  $date_time_2 = \Illuminate\Support\Carbon::createFromDate('2024-08-16 17:11:25');
+  $credentials = new \Chargily\ChargilyPay\Auth\Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')),true));
+
+$chargily_pay = new \Chargily\ChargilyPay\ChargilyPay($credentials);
+
+/* return response()->json([
+'data' => $chargily_pay->checkouts()->all()
+]); */
+
+dd($chargily_pay->checkouts()->all());
+
+/* $original_array = array('id' => 1, 'name' => 'John', 'email' => 'john@example.com', 'phone' => '123-456-7890');
+$allowed_keys = array('id', 'name');
+$filtered_array = array_intersect_key($original_array, array_flip($allowed_keys));
+
+return(count($filtered_array)); */
 
 
-  return $date_time_1->format('Y-m-d h:i');
 });
 
 

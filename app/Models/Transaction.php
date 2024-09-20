@@ -17,6 +17,7 @@ class Transaction extends Model
      */
     protected $fillable = [
         'purchase_id',
+        'checkout_id',
         'account',
         'receipt',
         'data'
