@@ -24,7 +24,6 @@ class PurchaseController extends Controller
   use uploadFile;
   public function create(Request $request)
   {
-    $request->has('data') ? $request->mergeIfMissing(['checkout_id' => $request->data]) : null;
 
     $validation = Validator::make($request->all(), [
       'course_id' => 'required|exists:courses,id',
@@ -33,7 +32,7 @@ class PurchaseController extends Controller
       'payment_method' => 'required|in:baridimob,poste,chargily',
       'account' => 'required_if:payment_method,baridimob',
       'receipt' => 'required_if:payment_method,baridimob|required_if:payment_method,poste',
-      'checkout_id' => 'required_if:payment_method,chargily|string'
+      'checkout_id' => 'required_if:payment_method,chargily|string|unique:transactions'
     ]);
 
     if ($validation->fails()) {
@@ -73,7 +72,8 @@ class PurchaseController extends Controller
         'course_id' => $course->id,
         'price' => $course->price,
         'total' => $course->price,
-        'status' => 'pending'
+        'status' => 'pending',
+        'payment_method' => $request->payment_method
       ]);
 
       $purchase->apply_coupons($coupon_code, $invitation_code);
@@ -220,7 +220,7 @@ class PurchaseController extends Controller
 
     } catch (Exception $e) {
       DB::rollBack();
-      //dd($e->getMessage());
+      dd($e->getMessage());
       return redirect()->route('error');
     }
   }

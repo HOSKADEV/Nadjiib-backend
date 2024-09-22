@@ -110,7 +110,14 @@ class Student extends Model
     }
 
     public function purchased($course){
-      return boolval($this->purchases()->where('course_id',$course->id)->count());
+      return boolval($this->purchases()
+      ->where(function($query) use ($course){
+        $query->where('course_id',$course->id)->where('payment_method','chargily')->where('status','success');
+      })
+      ->orWhere(function($query) use ($course){
+        $query->where('course_id',$course->id)->whereNot('payment_method','chargily')->whereNot('status','failed');
+      })
+      ->count());
     }
 
     public function owns($course){

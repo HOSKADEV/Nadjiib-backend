@@ -70,7 +70,7 @@ public function get(Request $request){
 
   $chats = Chat::join('students', 'chats.student_id', 'students.id')
       ->join('teachers', 'chats.teacher_id', 'teachers.id')
-/*       ->join('subscriptions' , 'subscriptions.student_id' , 'students.id')
+      ->join('subscriptions' , 'subscriptions.student_id' , 'students.id')
       ->join('purchases' , 'subscriptions.purchase_id' , 'purchases.id')
       ->join('courses' , function($join){
         $join->on('courses.id', '=', 'purchases.course_id');
@@ -79,7 +79,7 @@ public function get(Request $request){
     ->Where(function ($query){
       return $query->where(DB::raw('DATE(subscriptions.start_date)'), '<=', Carbon::now())
       ->where(DB::raw('DATE(subscriptions.end_date)'), '>=', Carbon::now());
-    }) */
+    })
     ->Where(function ($query) use ($user) {
       return $query->where('chats.student_id', $user?->student?->id)
       ->orWhere('chats.teacher_id', $user?->teacher?->id);

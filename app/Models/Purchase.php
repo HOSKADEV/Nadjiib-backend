@@ -25,6 +25,7 @@ class Purchase extends Model
     'price',
     'total',
     'status',
+    'payment_method'
   ];
 
 
