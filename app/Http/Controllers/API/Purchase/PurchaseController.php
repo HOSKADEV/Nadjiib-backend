@@ -24,6 +24,8 @@ class PurchaseController extends Controller
   use uploadFile;
   public function create(Request $request)
   {
+    $request->has('data') ? $request->mergeIfMissing(['checkout_id' => $request->data]) : null;
+
     $validation = Validator::make($request->all(), [
       'course_id' => 'required|exists:courses,id',
       'coupon_code' => ['sometimes', 'exists:coupons,code', new ValidCoupon($request)],
