@@ -86,4 +86,36 @@ class EloquentLevel implements LevelRepository
         }
         return $result;
     }
+
+
+    /**
+     * @param $perPage
+     * @param null $status
+     * @param null $searchFrom
+     * @param $searchTo
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
+     */
+    public function years($perPage, $search = null, $section_id = null)
+    {
+      $query = Level::query();
+
+      if($section_id){
+        $query = $query->where('section_id', $section_id);
+      }
+
+        $query = $query->groupBy('year','section_id','name_ar','name_fr','name_en')
+                      ->select('year','section_id','name_ar','name_fr','name_en');
+
+        if ($search) {
+            (new LevelKeywordSearch)($query, $search);
+        }
+
+        $result = $query->orderBy('id', 'desc')
+            ->paginate($perPage);
+
+        if ($search) {
+            $result->appends(['search' => $search]);
+        }
+        return $result;
+    }
 }

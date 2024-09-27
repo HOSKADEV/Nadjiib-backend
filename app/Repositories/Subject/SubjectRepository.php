@@ -41,5 +41,5 @@ interface SubjectRepository
      * @param null $status
      * @return mixed
      */
-    public function paginate($perPage, $search = null);
+    public function paginate($perPage, $search = null, $type = null);
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Laravel\Sanctum\PersonalAccessToken;
+use Kreait\Firebase\Messaging\CloudMessage;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Kreait\Firebase\Exception\FirebaseException;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -56,6 +58,63 @@ class Controller extends BaseController
       return null;
 
     }
+
+    public function send_fcm_device($title, $content, $fcm_token)
+  {
+    try {
+      $messaging = app('firebase.messaging');
+
+      $notification = \Kreait\Firebase\Messaging\Notification::fromArray([
+        'title' => $title,
+        'body' => $content,
+        //'image' => $imageUrl,
+      ]);
+
+      $deviceToken = $fcm_token;
+
+      if(!empty($deviceToken)){
+
+        $message = CloudMessage::withTarget('token', $deviceToken)
+          ->withNotification($notification) // optional
+          //->withData($data) // optional
+        ;
+
+        $messaging->send($message);
+      }
+
+      return;
+    } catch (FirebaseException $e) {
+      return $e;
+    }
+
+
+  }
+  public function send_fcm_multi($title, $content, $fcm_tokens)
+  {
+    try {
+      $messaging = app('firebase.messaging');
+
+      $notification = \Kreait\Firebase\Messaging\Notification::fromArray([
+        'title' => $title,
+        'body' => $content,
+        //'image' => $imageUrl,
+      ]);
+
+      $deviceTokens = $fcm_tokens;
+
+      $message = CloudMessage::new()
+        ->withNotification($notification) // optional
+        //->withData($data) // optional
+      ;
+
+      $messaging->sendMulticast($message, $deviceTokens);
+
+      return;
+    } catch (FirebaseException $e) {
+      return $e;
+    }
+
+  }
 
     public static function standard_bonus_amount(){
     $standard_bonus = Setting::where('name','standard_bonus')->value('value');

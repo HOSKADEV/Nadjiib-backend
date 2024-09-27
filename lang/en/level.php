@@ -11,14 +11,15 @@ return [
     'specialty_ar' =>  'Name of Specialty in Arabic',
     'specialty_en' =>  'Name of Specialty in English',
     'specialty_fr' =>  'Name of Specialty in French',
-    
+
     'image'     => 'Image',
     'actions'   => 'Actions',
-    
+    'name'     => 'Name',
+
     'create'    => 'Create Level',
     'edit'      => 'Edit Level',
-    'update'    => 'Update Level',   
-    'delete'    => 'Delete Level', 
+    'update'    => 'Update Level',
+    'delete'    => 'Delete Level',
 
     'delete_confirmation' => 'Are you sure you want to delete this level ?',
 
@@ -43,7 +44,8 @@ return [
             'one'   => 'First Year',
             'two'   => 'Second Year',
             'there' => 'Third Year',
-            'foor'  => 'Fourth Year'
+            'foor'  => 'Fourth Year',
+            'five'  => 'Fivth Year'
         ],
     ],
 

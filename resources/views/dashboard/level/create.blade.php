@@ -17,7 +17,7 @@
                                 @foreach ($sections as $section)
                                 <option value="{{ $section->id }}">{{ $section->{'name_' . config('app.locale')} }}</option>
                                 @endforeach
-                            </select>                        
+                            </select>
                         </div>
                         <div class="col-6 mb-3">
                             <label for="year" class="form-label">{{ trans('level.label.year') }}</label>
@@ -27,7 +27,8 @@
                                 <option value="2">{{ trans('level.option.year.two') }}</option>
                                 <option value="3">{{ trans('level.option.year.there') }}</option>
                                 <option value="4">{{ trans('level.option.year.foor') }}</option>
-                            </select>                        
+                                <option value="4">{{ trans('level.option.year.five') }}</option>
+                            </select>
                         </div>
 
                         <div class="col-12 m-0 p-0 row">

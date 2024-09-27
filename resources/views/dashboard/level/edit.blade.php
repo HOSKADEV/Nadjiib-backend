@@ -25,7 +25,7 @@
                         <div class="col-6 mb-3">
                             <label for="year" class="form-label">{{ trans('level.label.year') }}</label>
                             <select class="form-select" id="year" name="year" aria-label="Default select example">
-                                <option selected value="{{ $level->year }}">
+                                {{-- <option selected value="{{ $level->year }}">
                                     @if ($level->year == 1)
                                         {{ trans('level.option.year.one') }}
                                     @elseif ($level->year == 2)
@@ -34,12 +34,15 @@
                                         {{ trans('level.option.year.there') }}
                                     @elseif ($level->year == 4)
                                         {{ trans('level.option.year.foor') }}
+                                    @elseif ($level->year == 5)
+                                        {{ trans('level.option.year.five') }}
                                     @endif
-                                </option>
-                                <option value="1">{{ trans('level.option.year.one') }}</option>
-                                <option value="2">{{ trans('level.option.year.two') }}</option>
-                                <option value="3">{{ trans('level.option.year.there') }}</option>
-                                <option value="4">{{ trans('level.option.year.foor') }}</option>
+                                </option> --}}
+                                <option value="1" {{$level->year == 1 ? 'selected' : ''}}>{{ trans('level.option.year.one') }}</option>
+                                <option value="2" {{$level->year == 2 ? 'selected' : ''}}>{{ trans('level.option.year.two') }}</option>
+                                <option value="3" {{$level->year == 3 ? 'selected' : ''}}>{{ trans('level.option.year.there') }}</option>
+                                <option value="4" {{$level->year == 4 ? 'selected' : ''}}>{{ trans('level.option.year.foor') }}</option>
+                                <option value="5" {{$level->year == 5 ? 'selected' : ''}}>{{ trans('level.option.year.five') }}</option>
                             </select>
                         </div>
 

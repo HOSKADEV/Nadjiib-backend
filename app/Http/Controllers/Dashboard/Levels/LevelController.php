@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers\Dashboard\Levels;
 
+use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Level\LevelRepository;
 use App\Repositories\Section\SectionRepository;
+use App\Repositories\Subject\SubjectRepository;
 
 class LevelController extends Controller
 {
     private $sections;
     private $levels;
+    private $subjects;
 
     /**
      * LevelController constructor.
      * @param SectionRepository $sections
      * @param LevelRepository $levels
+     * @param SubjectRepository $subjects
      */
-    public function __construct(SectionRepository $sections , LevelRepository $levels)
+    public function __construct(SectionRepository $sections , LevelRepository $levels, SubjectRepository $subjects)
     {
         $this->sections = $sections;
         $this->levels = $levels;
+        $this->subjects = $subjects;
     }
 
     /**
@@ -31,8 +36,10 @@ class LevelController extends Controller
     public function index(Request $request)
     {
         $sections = $this->sections->all();
-        $levels = $this->levels->paginate($perPage = 10, $request->search);
-        return view('dashboard.level.index',compact('levels','sections'));
+        $subjects = $this->subjects->table()->where('type','academic')->get();
+        //$levels = $this->levels->paginate($perPage = 10, $request->search);
+        $years = $this->levels->years($perPage = 10, $request->search, $request->section_id);
+        return view('dashboard.level.index',compact('years','sections', 'subjects'));
     }
 
     /**

@@ -92,8 +92,8 @@ class SettingsController extends Controller
 
       $data = [
         'cloud' => [
-          'progress' => intval($teacher_calls),
-          'threshold' => $calls_duration,
+          'progress' => intdiv(intval($teacher_calls),60),
+          'threshold' => intdiv($calls_duration, 60),
           'percentage' => $cloud_percentage,
           'bonus' => $cloud_bonus
         ],

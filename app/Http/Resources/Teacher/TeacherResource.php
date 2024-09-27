@@ -24,7 +24,7 @@ class TeacherResource extends JsonResource
 
         return [
           'teacher_id' => $this->id,
-          'coupon_code' => $this->coupon->code,
+          'coupon_code' => $this->coupon?->code,
           'channel_name' => $this->channel_name,
           'bio' => $this->bio,
           'cloud_chat' => $this->cloud_chat,

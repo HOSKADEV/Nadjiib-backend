@@ -105,8 +105,8 @@ class Student extends Model
     }
 
     public function active_subs(){
-      return $this->subscriptions()->where(DB::raw('DATE(start_date)'), '<=', Carbon::now())
-                                  ->where(DB::raw('DATE(end_date)'), '>=', Carbon::now());
+      return $this->subscriptions()->where('subscriptions.start_date', '<=', Carbon::now())
+                                  ->where('subscriptions.end_date', '>=', Carbon::now());
     }
 
     public function purchased($course){

@@ -40,4 +40,15 @@ interface LevelRepository
      */
     public function paginate($perPage, $search = null);
 
+
+    /**
+     * Paginate Years.
+     *
+     * @param $perPage
+     * @param null $search
+     * @param null $status
+     * @return mixed
+     */
+    public function years($perPage, $search = null, $section_id = null);
+
 }

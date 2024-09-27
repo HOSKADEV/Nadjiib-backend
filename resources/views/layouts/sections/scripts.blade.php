@@ -4,6 +4,8 @@
 <script src="{{ asset(mix('assets/vendor/js/bootstrap.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
+<script src="{{ asset('assets/vendor/js/jquery.repeater.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
 
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->

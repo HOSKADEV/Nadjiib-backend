@@ -58,14 +58,21 @@ class LevelSubjectController extends Controller
      */
     public function store(StoreLevelSubjectRequest $request)
     {
+      $level = $this->levels->find($request->level_id);
+
+      $level->level_subjects()->delete();
+
         $data = [];
         foreach ($request->list_level_subjects as $list_level_subject) {
-            $data['level_id'] = $list_level_subject['level'];
-            $data['subject_id'] = $list_level_subject['subject'];
+            $data['level_id'] = $request->level_id /* $list_level_subject['level'] */ ;
+            $data['subject_id'] = $list_level_subject['subject_id'];
             $this->levelSubjects->create($data);
         }
-        toastr()->success(trans('message.success.create'));
-        return redirect()->route('dashboard.level-subjects.index');
+
+        //toastr()->success(trans('message.success.create'));
+        //return redirect()->route('dashboard.level-subjects.index');
+        //return redirect()->route('dashboard.levels.index');
+        return redirect()->back();
     }
 
     /**

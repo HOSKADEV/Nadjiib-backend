@@ -10,5 +10,9 @@ return [
     'coupons'        => 'Coupons',
     'users'          => 'Users',
     'courses'        => 'Courses',
-    'ads'            => 'Ads'
+    'ads'            => 'Ads',
+    'notices' => 'Notices',
+    'documentation' => 'Documentation',
+    'policy' => 'Privacy policy',
+    'about' => 'Terms of use'
 ];

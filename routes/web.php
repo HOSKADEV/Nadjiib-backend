@@ -15,6 +15,7 @@ use App\Http\Controllers\Dashboard\Subject\SubjectController;
 use App\Http\Controllers\Dashboard\Teacher\TeacherController;
 use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
+use App\Http\Controllers\Dashboard\Notification\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +72,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('level-subjects', LevelSubjectController::class);
     Route::resource('coupons', CouponController::class);
     Route::resource('ads', AdController::class);
-    //Route::post('coupons/store', [CouponController::class, 'store'])->name('coupons.store');
+    Route::resource('notices', NotificationController::class);
+    Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
 
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');

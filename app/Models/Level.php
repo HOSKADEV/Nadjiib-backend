@@ -41,9 +41,19 @@ class Level extends Model
         return $this->belongsToMany(Course::class, 'course_levels');
     }
 
+    public function level_subjects()
+    {
+        return $this->HasMany(LevelSubject::class);
+    }
+
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'level_subjects');
+    }
+
+    public function subjectsArray()
+    {
+        return $this->level_subjects()->get(['subject_id'])->toArray();
     }
 
     public function name($lang = 'ar'){
@@ -63,4 +73,22 @@ class Level extends Model
         'default' => $this->specialty_ar,
       };
     }
+
+    public function fullname($lang = 'ar'){
+      return $this->name($lang) . ' ' . $this->specialty($lang);
+    }
+
+    public function hasLevels(){
+      return $this->levels()->count() > 1;
+    }
+
+    public function levels(){
+      return Level::where(column: $this->only(["section_id","year","name_ar","name_fr","name_en"]));
+    }
+
+    public function level(){
+      return $this->levels()->first();
+    }
+
+
 }

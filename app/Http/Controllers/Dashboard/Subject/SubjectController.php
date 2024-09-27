@@ -27,7 +27,7 @@ class SubjectController extends Controller
 
     public function index(Request $request)
     {
-        $subjects = $this->subjects->paginate($perPage = 10, $request->search);
+        $subjects = $this->subjects->paginate($perPage = 10, $request->search, $request->type);
         return view('dashboard.subject.index',compact('subjects'));
     }
 

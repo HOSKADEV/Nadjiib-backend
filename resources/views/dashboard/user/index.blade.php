@@ -114,7 +114,7 @@
                                         @if ($user->teacher)
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                         data-bs-target="#createAdModal{{$user->teacher->id}}">
-                                        <i class='bx bx-bell me-2'></i>
+                                        <i class='bx bxs-megaphone me-2'></i>
                                         {{ trans('ad.create') }}
                                         </a>
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"

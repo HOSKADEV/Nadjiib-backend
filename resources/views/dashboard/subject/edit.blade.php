@@ -24,6 +24,13 @@
                             <label for="name_fr" class="form-label">{{ trans('subject.label.name_fr') }}</label>
                             <input type="text" id="name_fr" name="name_fr" class="form-control" value="{{ $subject->name_fr }}">
                         </div>
+                        <div class="col-12 mb-3">
+                          <label for="type" class="form-label">{{ trans('subject.label.type') }}</label>
+                          <select id="type" name="type" class="form-select">
+                              <option value="academic" {{$subject->type == 'academic' ? 'selected' : ''}}> {{ trans('subject.academic') }} </option>
+                              <option value="extracurricular" {{$subject->type == 'extracurricular' ? 'selected' : ''}}> {{ trans('subject.extracurricular') }} </option>
+                          </select>
+                      </div>
                     </div>
                 </div>
                 <div class="modal-footer">

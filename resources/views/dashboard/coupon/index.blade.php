@@ -22,26 +22,26 @@
                         <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('coupon.create') }}
                     </button>
                 </div>
-                <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
+                {{-- <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                     <form action="" method="GET" id="searchSectionForm">
                         <label for="name" class="form-label">{{ trans('section.label.name') }}</label>
                         <input type="text" id="name" name="search" value="{{ Request::get('search') }}"
                             class="form-control input-solid"
                             placeholder="{{ Request::get('search') != '' ? '' : trans('section.placeholder.name') }}">
                     </form>
-                </div>
+                </div> --}}
             </div>
-            
+
         </h5>
         <div class="table-responsive text-nowrap">
-            
+
             <table class="table mb-2">
                 <thead>
                     <tr class="text-nowrap">
                         <th>#</th>
                         <th>{{ trans('coupon.code') }}</th>
                         <th>{{ trans('coupon.discount') }}</th>
-                        <th>{{ trans('coupon.type') }}</th>
+                        {{-- <th>{{ trans('coupon.type') }}</th> --}}
                         <th>{{ trans('coupon.start_date') }}</th>
                         <th>{{ trans('coupon.end_date') }}</th>
                         <th>{{ trans('app.actions') }}</th>
@@ -52,10 +52,10 @@
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $coupon->code }}</td>
-                            <td>{{ $coupon->discount }}</td>
-                            <td>{{ $coupon->type }}</td>
-                            <td>{{ $coupon->start_date }}</td>
-                            <td>{{ $coupon->end_date }}</td>
+                            <td>{{ $coupon->discount . '%' }}</td>
+                            {{-- <td>{{ $coupon->type }}</td> --}}
+                            <td>{{ $coupon->start_date() }}</td>
+                            <td>{{ $coupon->end_date() }}</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-info mx-1"
                                     data-bs-toggle="modal" data-bs-target="#editCouponModal{{ $coupon->id }}"
@@ -94,12 +94,12 @@
                 return randomString;
             }
             $("#code").val(randomString(8));
-            
 
-            
+
+
             $('#generate').on('click',function(){
                 console.log(randomString(8));
-                $("#code").val(randomString(8));                
+                $("#code").val(randomString(8));
             });
 
             $('#name').on('keyup', function(event) {

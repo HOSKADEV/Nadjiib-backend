@@ -10,6 +10,7 @@ return [
     'edit'      => 'Edit',
     'update'    => 'Update',
     'delete'    => 'Delete',
+    'send' => 'Send',
 
     'all' => 'All',
     'status' => [

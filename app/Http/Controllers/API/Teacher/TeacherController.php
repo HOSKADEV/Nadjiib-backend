@@ -195,6 +195,10 @@ class TeacherController extends Controller
 
         $user = $this->get_user_from_token($request->bearerToken());
 
+        $request->mergeIfMissing([
+          'subjects' => $user?->student?->active_subs()->pluck('subject_id')->toArray() ?? []
+        ]);
+
         $teachers = User::join('teachers','users.id','teachers.user_id')
                         ->leftjoin('posts','teachers.id','posts.teacher_id')
                         ->groupBy('teachers.id')

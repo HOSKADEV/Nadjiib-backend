@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -41,5 +42,15 @@ class Coupon extends Model
     public function purchases()
     {
         return $this->belongsToMany(Purchase::class, 'purchase_coupons');
+    }
+
+    public function start_date(){
+      $start_date = Carbon::createFromDate($this->srart_date);
+      return $start_date->format('Y-m-d');
+    }
+
+    public function end_date(){
+      $end_date = Carbon::createFromDate($this->end_date);
+      return $end_date->format('Y-m-d');
     }
 }

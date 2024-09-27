@@ -24,10 +24,15 @@ class StoreLevelSubjectRequest extends FormRequest
 
     public function rules()
     {
+        /* return [
+            'list_level_subjects.*.level_id'   => 'required',
+            'list_level_subjects.*.subject_id' => 'required',
+        ]; */
+
         return [
-            'list_level_subjects.*.level'   => 'required',
-            'list_level_subjects.*.subject' => 'required',
-        ];
+          'level_id'   => 'required',
+          'list_level_subjects.*.subject_id' => 'required',
+      ];
     }
     public function attributes() {
         return [

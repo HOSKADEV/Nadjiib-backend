@@ -52,7 +52,7 @@ class PurchaseController extends Controller
       $course = Course::findOrFail($request->course_id);
 
       if (empty($student)) {
-        throw new Exception('no student selected');
+        throw new Exception('no student found');
       }
 
       if ($student->purchased($course)) {
