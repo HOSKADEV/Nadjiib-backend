@@ -3,9 +3,10 @@
 namespace App\Repositories\Coupon;
 
 use App\Models\Coupon;
+use Random\Randomizer;
+use App\Enums\CouponType;
 use App\Http\Filters\LevelKeywordSearch;
 use App\Repositories\Coupon\CouponRepository;
-use Random\Randomizer;
 
 class EloquentCoupon implements CouponRepository
 {
@@ -44,7 +45,10 @@ class EloquentCoupon implements CouponRepository
           $code = $this->random(10);
         }while(Coupon::whereCode($code)->count());
 
-        $coupon = Coupon::create(['code' => $code]);
+        $coupon = Coupon::create([
+          'code' => $code,
+          'type' => CouponType::INVITATION,
+        ]);
 
         return $coupon;
     }
