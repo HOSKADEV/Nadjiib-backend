@@ -90,6 +90,13 @@
         </a>
     </li>
 
+    <li class="menu-item {{ request()->routeIs('dashboard.purchases.index') ? 'active' : '' }}">
+      <a href="{{ route('dashboard.purchases.index') }}" class="menu-link">
+          <i class='menu-icon bx bxs-purchase-tag'></i>
+          <div>{{ trans('menu.purchases') }}</div>
+      </a>
+  </li>
+
       <li class="menu-item {{ str_contains(request()->route()->getName(),'dashboard.documentation') ? 'active open' : '' }}">
         <a class="menu-link menu-toggle" >
             <i class="menu-icon tf-icons bx bxs-info-square"></i>

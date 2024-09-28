@@ -4,6 +4,7 @@
 use App\Models\LessonVideo;
 use Illuminate\Http\Request;
 use App\Models\PurchaseCoupon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\API\Ad\AdController;
@@ -156,8 +157,30 @@ $chargily_pay = new \Chargily\ChargilyPay\ChargilyPay($credentials);
 /* return response()->json([
 'data' => $chargily_pay->checkouts()->all()
 ]); */
+$checkout = $chargily_pay->checkouts()->get('01j8fhf5mg1drhgprgkf89cbf4');
 
-dd($chargily_pay->checkouts()->all());
+/* $data = [
+  'id' => $checkout->getId(),
+  'customer' => $checkout->getCustomerId(),
+  'invoice' => $checkout->getInvoiceId(),
+  'payment_method' => $checkout->getPaymentMethod(),
+  'amount' => $checkout->getAmount(),
+  'status' => $checkout->getStatus(),
+  'description' => $checkout->getDescription(),
+  'success_url' => $checkout->getSuccessUrl(),
+  'failure_url' => $checkout->getFailureUrl(),
+  'fees' => $checkout->getFees(),
+  'pass_fees_to_customer' => $checkout->getPassFeesToCustomer(),
+  'locale' => $checkout->getLocale(),
+  'url' => $checkout->getUrl(),
+  'created_at' => $checkout->getCreatedAt()->toDateTimeString(),
+  'updated_at' => $checkout->getUpdatedAt()->toDateTimeString(),
+]; */
+
+$pdf = Pdf::loadView('checkout.pdf', compact('checkout'));
+//return $pdf->download('checkout.pdf');
+
+return Storage::put('document/purchase/checkout', $pdf->output());
 
 /* $original_array = array('id' => 1, 'name' => 'John', 'email' => 'john@example.com', 'phone' => '123-456-7890');
 $allowed_keys = array('id', 'name');

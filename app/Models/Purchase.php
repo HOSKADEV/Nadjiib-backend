@@ -4,16 +4,21 @@ namespace App\Models;
 
 use Exception;
 use Illuminate\Support\Carbon;
+use App\Http\Traits\uploadFile;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Chargily\ChargilyPay\ChargilyPay;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Chargily\ChargilyPay\Auth\Credentials;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Purchase extends Model
 {
-  use HasFactory, SoftDeletes, SoftCascadeTrait;
+  use HasFactory, SoftDeletes, SoftCascadeTrait, uploadFile;
   /**
    * The attributes that are mass assignable.
    *
@@ -234,5 +239,33 @@ class Purchase extends Model
         'end_date' => Carbon::now()->addMonth()
       ]);
     }
+  }
+
+  public function created_at(){
+    $created_at = Carbon::createFromDate($this->created_at);
+    return $created_at->format('Y-m-d');
+  }
+
+  public function receipt(){
+    $transaction = $this->transaction;
+    if($this->payment_method=='chargily' && $transaction->checkout_id && empty($transaction?->receipt) ){
+      $credentials = new Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')),true));
+      $chargily_pay = new ChargilyPay($credentials);
+      $checkout = $chargily_pay->checkouts()->get($transaction->checkout_id);
+
+      if($checkout){
+        $pdf = Pdf::loadView('checkout.pdf', compact('checkout'));
+        $pdf->render();
+        $filePath = 'documents/purchase/checkout/' . md5($transaction->checkout_id) . '.pdf';
+        Storage::put($filePath, $pdf->output());
+        $transaction->receipt = $filePath;
+        $transaction->save();
+      }
+
+
+
+    }
+
+    return $transaction?->receipt ? url($transaction->receipt) : null;
   }
 }

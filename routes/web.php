@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Setting\SettingController;
 use App\Http\Controllers\Dashboard\Subject\SubjectController;
 use App\Http\Controllers\Dashboard\Teacher\TeacherController;
+use App\Http\Controllers\Dashboard\Purchase\PurchaseController;
 use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
@@ -73,6 +74,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('coupons', CouponController::class);
     Route::resource('ads', AdController::class);
     Route::resource('notices', NotificationController::class);
+    Route::resource('purchases', PurchaseController::class);
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
 
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');

@@ -10,6 +10,7 @@
   "require": {
     "php": "^8.0.2",
     "askedio/laravel-soft-cascade": "^10.0",
+    "barryvdh/laravel-dompdf": "^3.0",
     "chargily/chargily-pay": "^2.0",
     "guzzlehttp/guzzle": "^7.2",
     "illuminate/support": "*",

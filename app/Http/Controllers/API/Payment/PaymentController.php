@@ -35,7 +35,7 @@ class PaymentController extends Controller
         $teacher = $user?->teacher;
 
         if (empty($teacher)) {
-          throw new Exception('no teacher found');
+          throw new Exception('no teacher selected');
         }
 
         $payments = $teacher->payments()->where(DB::raw('YEAR(date)'),$request->year)->orderBy('date','DESC')->get();
