@@ -266,6 +266,23 @@ class Purchase extends Model
 
     }
 
-    return $transaction?->receipt ? url($transaction->receipt) : null;
+    return $transaction?->receipt;
+  }
+
+  public function receipt_is(){
+    $filePath = $this->transaction?->receipt;
+
+    if(empty($filePath)){
+      return null;
+    }
+
+    $fileExtension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    if (in_array($fileExtension, $imageExtensions)){
+      return 'image';
+    }else{
+      return $fileExtension;
+    }
   }
 }

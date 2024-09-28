@@ -6,10 +6,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row align-items-stretch">
                     <div class="col-xl">
-                        <div class="card mb-4">
-                            <div class="card-body">
+                        <div class="card mb-4 h-100">
+                            <div class="card-body d-flex flex-column justify-content-center">
                                 <div class="mb-3">
                                     <label class="form-label"
                                         for="android_version_number">{{ trans('purchase.price') }}</label>
@@ -32,38 +32,62 @@
                                 </div>
 
                                 <div class="mb-3">
-                                  <label class="form-label"
-                                      for="android_priority">{{ trans('purchase.payment_method') }}</label>
-                                  <input type="text" class="form-control" value="{{ $purchase->payment_method }}"
-                                      disabled />
-                              </div>
+                                    <label class="form-label"
+                                        for="android_priority">{{ trans('purchase.payment_method') }}</label>
+                                    <input type="text" class="form-control" value="{{ $purchase->payment_method }}"
+                                        disabled />
+                                </div>
 
-                              <div class="mb-3">
-                                <label class="form-label"
-                                    for="android_priority">{{ trans('purchase.account') }}</label>
-                                <input type="text" class="form-control" value="{{ $purchase->transaction?->account }}"
-                                    disabled />
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label"
+                                        for="android_priority">{{ trans('purchase.account') }}</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $purchase->transaction?->account }}" disabled />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-
                     <div class="col-xl">
-                        <div class="card mb-4">
-                            <div class="card-body">
+                        <div class="card mb-4 h-100 d-flex justify-content-center align-items-center">
+                            @php
+                                $filePath = $purchase->receipt();
+                                $fileExtension = $purchase->receipt_is();
+                            @endphp
 
-                                <embed class="pdf"
-                                    src="{{$purchase->receipt()}}{{-- https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf --}}"
-                                    width="100%" height="500">
-                            </div>
+                            @if ($fileExtension === 'image')
+                                <!-- Restrict the size of the image container and prevent scaling up -->
+                                <div
+                                    style="max-width: 400px; max-height: 500px; width: auto; height: auto; display: flex; justify-content: center; align-items: center;">
+                                    <img src="{{ url($filePath) }}" alt="Receipt Image"
+                                        style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                </div>
+                            @elseif ($fileExtension === 'pdf')
+                                <!-- Display PDF -->
+                                <embed class="pdf" src="{{ url($filePath) }}" width="100%" height="100%">
+                            @elseif($fileExtension)
+                                <!-- Unsupported file type -->
+                                <i class='bx bxs-file bx-lg' style="color: orange;"></i>
+                                <p>
+                                    Unsupported file type.
+                                    <a href="{{ url($filePath) }}" target="_blank" style="text-decoration: underline;">
+                                        View the file here.
+                                    </a>
+                                </p>
+                            @else
+                                <!-- No file exists -->
+                                <i class='bx bxs-error bx-lg' style="color: red;"></i>
+                                <p>No file is available for this purchase.</p>
+                            @endif
+
                         </div>
                     </div>
                 </div>
             </div>
+
+
             {{--  <div class="modal-footer">
               </div> --}}
         </div>
-        </form>
     </div>
 </div>

