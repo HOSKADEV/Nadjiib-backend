@@ -77,22 +77,22 @@
 
                         <tr data-toggle="collapse" data-target="#demo{{ $key }}" class="accordion-toggle"
                             onclick="toggleIcon(this)">
-                            <td style="width:60px !important;">
+                            <td class="td-1">
                                 @if ($attempts->count() > 1)
                                     <i class='bx bx-chevron-down toggle-icon'></i>
                                 @endif
                             </td>
-                            <td style="width:230px !important;">{{ $purchase->course_name }}</td>
-                            <td style="width:200px !important;">{{ $purchase->user_name }}</td>
-                            <td style="width:200px !important;">{{ $purchase->created_at() }}</td>
+                            <td class="td-2">{{ $purchase->course_name }}</td>
+                            <td class="td-3">{{ $purchase->user_name }}</td>
+                            <td class="td-4">{{ $purchase->created_at() }}</td>
                             @if ($attempts->count() > 1)
-                                <td style="width:100px !important;"></td>
-                                <td style="width:60px !important;"></td>
+                                <td class="td-5"></td>
+                                <td class="td-6"></td>
                             @else
                                 @php
                                     $purchase = $attempts->first();
                                 @endphp
-                                <td style="width:100px !important;">
+                                <td class="td-5">
                                     @if ($purchase->status == 'pending')
                                         <span class="badge rounded-pill text-capitalize bg-warning">
                                             {{ trans('purchase.pending') }}
@@ -107,7 +107,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td style="width:60px !important;">
+                                <td class="td-6">
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
@@ -166,11 +166,11 @@
                                             <tbody>
                                                 @foreach ($attempts as $key => $attempt)
                                                     <tr class="table-secondary">
-                                                        <td style="width:60px !important;"></td>
-                                                        <td style="width:230px !important;">{{ $attempt->course->name }}</td>
-                                                        <td style="width:200px !important;">{{ $attempt->student->user->name }}</td>
-                                                        <td style="width:200px !important;">{{ $attempt->created_at() }}</td>
-                                                        <td style="width:100px !important;">
+                                                        <td class="td-1"></td>
+                                                        <td class="td-2">{{ $attempt->course->name }}</td>
+                                                        <td class="td-3">{{ $attempt->student->user->name }}</td>
+                                                        <td class="td-4">{{ $attempt->created_at() }}</td>
+                                                        <td class="td-5">
                                                             @if ($attempt->status == 'pending')
                                                                 <span class="badge rounded-pill text-capitalize bg-warning">
                                                                     {{ trans('purchase.pending') }}
@@ -185,7 +185,7 @@
                                                                 </span>
                                                             @endif
                                                         </td>
-                                                        <td style="width:60px !important;">
+                                                        <td class="td-6">
                                                             <div class="dropdown">
                                                                 <button type="button"
                                                                     class="btn p-0 dropdown-toggle hide-arrow"
@@ -206,7 +206,8 @@
                                                                         {{ trans('purchase.transaction') }}
                                                                     </a>
                                                                     @if ($purchase->used_coupons()->count())
-                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                        <a class="dropdown-item"
+                                                                            href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#usedCouponsModal{{ $attempt->id }}">
                                                                             <i class='bx bxs-discount me-2'></i>
@@ -215,7 +216,8 @@
                                                                     @endif
 
                                                                     @if ($purchase->status != 'success')
-                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                        <a class="dropdown-item"
+                                                                            href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#acceptPurchaseModal{{ $attempt->id }}">
                                                                             <i class="bx bxs-check-square me-2"></i>
@@ -224,7 +226,8 @@
                                                                     @endif
 
                                                                     @if ($purchase->status == 'pending')
-                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                        <a class="dropdown-item"
+                                                                            href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#refusePurchaseModal{{ $attempt->id }}">
                                                                             <i class="bx bxs-x-square me-2"></i>
@@ -283,6 +286,42 @@
             function submitForm() {
                 $("#searchForm").submit();
             }
+
+            function adjustColumnWidths() {
+                // Iterate through each column class
+                for (let i = 1; i <= 6; i++) {
+                    let maxWidth = 0;
+                    let className = `td-${i}`;
+
+                    // Find the maximum width for this column class
+                    $(`.${className}`).each(function() {
+                        // Temporarily remove any existing width to get the natural width
+                        $(this).css('width', '');
+                        let width = $(this).outerWidth();
+                        if (width > maxWidth) {
+                            maxWidth = width;
+                        }
+                    });
+
+                    // Apply the maximum width to all elements of this class
+                    $(`.${className}`).each(function() {
+                        $(this).css({
+                            'width': `${maxWidth}px`,
+                            'min-width': `${maxWidth}px`,
+                            'max-width': `${maxWidth}px`
+                        });
+                        // Force a reflow
+                        void this.offsetWidth;
+                    });
+                }
+            }
+
+            // Call the function when the page loads
+            adjustColumnWidths();
+
+            // Optionally, call the function when the window is resized
+            $(window).resize(adjustColumnWidths);
+        });
     </script>
 
 @endsection
