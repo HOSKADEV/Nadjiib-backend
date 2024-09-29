@@ -2,7 +2,7 @@
     <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">{{ trans('purchase.info') }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">{{ trans('purchase.transaction') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -34,7 +34,7 @@
                                 <div class="mb-3">
                                     <label class="form-label"
                                         for="android_priority">{{ trans('purchase.payment_method') }}</label>
-                                    <input type="text" class="form-control" value="{{ $purchase->payment_method }}"
+                                    <input type="text" class="form-control" value="{{ trans('purchase.'.$purchase->payment_method) }}"
                                         disabled />
                                 </div>
 
@@ -69,15 +69,15 @@
                                 <!-- Unsupported file type -->
                                 <i class='bx bxs-file bx-lg' style="color: orange;"></i>
                                 <p>
-                                    Unsupported file type.
+                                    {{trans('purchase.unsupported_file')}}
                                     <a href="{{ url($filePath) }}" target="_blank" style="text-decoration: underline;">
-                                        View the file here.
+                                      {{trans('purchase.view_file')}}
                                     </a>
                                 </p>
                             @else
                                 <!-- No file exists -->
                                 <i class='bx bxs-error bx-lg' style="color: red;"></i>
-                                <p>No file is available for this purchase.</p>
+                                <p>{{trans('purchase.no_file')}}</p>
                             @endif
 
                         </div>

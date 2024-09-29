@@ -4,7 +4,20 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
-    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0"
+        integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+@endsection
+
+@section('vendor-style')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css" />
+    <style>
+        .hiddenRow {
+            padding: 0 !important;
+        }
+    </style>
 @endsection
 
 @section('page-header')
@@ -16,10 +29,10 @@
 @section('content')
     <div class="card">
         <h5 class="card-header pt-0 mt-2">
-            <form action="" method="GET" id="searchCourseForm">
+            <form action="" method="GET" id="searchForm">
                 <div class="row">
-                    <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="name" class="form-label">{{ trans('purchase.label.status') }}</label>
+                    {{-- <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
+                        <label for="name" class="form-label">{{ trans('purchase.status') }}</label>
                         <select class="form-select" id="status" name="status" aria-label="Default select example">
                             <option value="">{{ trans('app.all') }}</option>
                             <option value="pending" {{ Request::get('status') == 'pending' ? 'selected' : '' }}>
@@ -29,40 +42,13 @@
                             <option value="failed" {{ Request::get('status') == 'failed' ? 'selected' : '' }}>
                                 {{ trans('app.status.Refused') }}</option>
                         </select>
-                    </div>
-
-                    {{-- <div class="form-group col-md-3">
-                        <label for="subject" class="form-label">{{ trans('purchase.label.subject') }}</label>
-                        <select class="form-select" id="subject" name="subject" aria-label="Default select example">
-                            <option value="">{{ trans('purchase.select.subject') }}</option>
-                            <option value="">{{ trans('app.all') }}</option>
-
-                            @foreach ($subjects as $item => $subject)
-                                <option value="{{ $subject->{'name_' . config('app.locale')} }}"
-                                    {{ $subject->{'name_' . config('app.locale')} == Request::get('subject') ? 'selected' : '' }}>
-                                    {{ $subject->{'name_' . config('app.locale')} }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                        <label for="teacher" class="form-label">{{ trans('purchase.label.teacher') }}</label>
-                        <select class="form-select" id="teacher" name="teacher" aria-label="Default select example">
-                            <option value="">{{ trans('purchase.select.teacher') }}</option>
-                            <option value="">{{ trans('app.all') }}</option>
-
-                            @foreach ($teachers as $item => $teacher)
-                                <option value="{{ $teacher->user->name }}"
-                                    {{ $teacher->user->name == Request::get('teacher') ? 'selected' : '' }}>
-                                    {{ $teacher->user->name }}</option>
-                            @endforeach
-                        </select>
                     </div> --}}
+
                     <div class="form-group col-md-3">
                         <label for="search" class="form-label">{{ trans('user.label.search') }}</label>
                         <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
                             class="form-control input-solid"
-                            placeholder="{{ Request::get('search') != '' ? '' : trans('user.placeholder.search') }}">
+                            placeholder="{{ Request::get('search') != '' ? '' : trans('purchase.search_placeholder') }}">
                     </div>
                 </div>
             </form>
@@ -73,99 +59,194 @@
             <table class="table mb-2">
                 <thead>
                     <tr class="text-nowrap">
-                        <th>#</th>
+                        <th></th>
                         <th>{{ trans('purchase.course') }}</th>
                         <th>{{ trans('purchase.student') }}</th>
-{{--                         <th>{{ trans('purchase.teacher') }}</th>
+                        {{--                         <th>{{ trans('purchase.teacher') }}</th>
                         <th>{{ trans('purchase.price') }}</th> --}}
                         <th>{{ trans('purchase.created') }}</th>
                         <th>{{ trans('purchase.status') }}</th>
-                        <th>{{ trans('app.actions') }}</th>
+                        <th>{{-- {{ trans('app.actions') }} --}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($purchases as $key => $purchase)
-                        <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $purchase->course->name }}</td>
-                            <td>{{ $purchase->student->user->name}}</td>
-{{--                             <td>{{ $purchase->course->teacher->user->name }}</td>
-                            <td>{{ $purchase->total }}</td> --}}
-                            <td>{{ $purchase->created_at() }}</td>
-                            {{-- <td class="align-middle" style="direction: ltr">@money($purchase->price)</td> --}}
-                            <td>
-                                @if ($purchase->status == 'pending')
-                                    <span class="badge rounded-pill text-capitalize bg-warning">
-                                        {{ trans('app.status.Pending') }}
-                                    </span>
-                                @elseif($purchase->status == 'success')
-                                    <span class="badge rounded-pill text-capitalize bg-success">
-                                        {{ trans('app.status.Accepted') }}
-                                    </span>
-                                @else
-                                    <span class="badge rounded-pill text-capitalize bg-danger">
-                                        {{ trans('app.status.Refused') }}
-                                    </span>
+                        @php
+                            $attempts = $purchase->attempts();
+                        @endphp
+
+                            <tr data-toggle="collapse" data-target="#demo{{ $key }}" class="accordion-toggle"
+                                onclick="toggleIcon(this)">
+                                <th scope="row" style="width:8%;">@if($attempts->count() > 1) <i class='bx bx-chevron-down toggle-icon'></i>  @endif</th>
+                                <td style="width:26%;">{{ $purchase->course_name }}</td>
+                                <td style="width:26%;">{{ $purchase->user_name }}</td>
+                                <td style="width:20%;">{{ $purchase->created_at() }}</td>
+
+                                @if ($attempts->count() <= 1)
+                                @php
+                                  $purchase = $attempts->first();
+                                @endphp
+                                  <td style="width:12%;">
+                                      @if ($purchase->status == 'pending')
+                                          <span class="badge rounded-pill text-capitalize bg-warning">
+                                              {{ trans('purchase.pending') }}
+                                          </span>
+                                      @elseif($purchase->status == 'success')
+                                          <span class="badge rounded-pill text-capitalize bg-success">
+                                              {{ trans('purchase.accepted') }}
+                                          </span>
+                                      @else
+                                          <span class="badge rounded-pill text-capitalize bg-danger">
+                                              {{ trans('purchase.refused') }}
+                                          </span>
+                                      @endif
+                                  </td>
+                                  <td style="width:8%;">
+                                      <div class="dropdown">
+                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                              data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                      data-bs-target="#infoModal{{ $purchase->id }}">
+                                                      <i class='bx bxs-info-circle me-2'></i>
+                                                      {{ trans('purchase.info') }}
+                                                  </a>
+                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                      data-bs-target="#transactionModal{{ $purchase->id }}">
+                                                      <i class='bx bxs-credit-card me-2'></i>
+                                                      {{ trans('purchase.transaction') }}
+                                                  </a>
+                                              @if ($purchase->used_coupons()->count())
+                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                      data-bs-target="#usedCouponsModal{{ $purchase->id }}">
+                                                      <i class='bx bxs-discount me-2'></i>
+                                                      {{ trans('purchase.coupons') }}
+                                                  </a>
+
+                                              @endif
+
+                                              @if ($purchase->status != 'success')
+                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                      data-bs-target="#acceptPurchaseModal{{ $purchase->id }}">
+                                                      <i class="bx bxs-check-square me-2"></i>
+                                                      {{ trans('purchase.accept') }}
+                                                  </a>
+                                              @endif
+
+                                              @if ($purchase->status == 'pending')
+                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                      data-bs-target="#refusePurchaseModal{{ $purchase->id }}">
+                                                      <i class="bx bxs-x-square me-2"></i>
+                                                      {{ trans('purchase.refuse') }}
+                                                  </a>
+                                              @endif
+
+                                          </div>
+                                          @include('dashboard.purchase.coupons')
+                                          @include('dashboard.purchase.info')
+                                          @include('dashboard.purchase.transaction')
+                                          @include('dashboard.purchase.accept')
+                                          @include('dashboard.purchase.refuse')
+                                      </div>
+                                  </td>
+
                                 @endif
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                      <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#infoModal{{ $purchase->id }}">
-                                                <i class='bx bxs-info-circle me-2'></i>
-                                                {{ trans('purchase.info') }}
-                                            </a>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#transactionModal{{ $purchase->id }}">
-                                                <i class='bx bxs-credit-card me-2'></i>
-                                                {{ trans('purchase.transaction') }}
-                                            </a>
-                                        @if ($purchase->used_coupons()->count())
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#usedCouponsModal{{ $purchase->id }}">
-                                                <i class='bx bxs-discount me-2'></i>
-                                                {{ trans('purchase.coupons') }}
-                                            </a>
+                            </tr>
+                            @if ($attempts->count() > 1)
+                            <tr>
+                                <td colspan="6" class="hiddenRow">
+                                    <div class="accordian-body collapse" id="demo{{ $key }}">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                                @foreach ($attempts as $key => $attempt)
+                                                <tr class="table-secondary">
+                                                        <th scope="row" style="width:8%;"></th>
+                                                        <td style="width:26%;">{{ $attempt->course->name }}</td>
+                                                        <td style="width:26%;">{{ $attempt->student->user->name }}</td>
+                                                        <td style="width:20%;">{{ $attempt->created_at() }}</td>
+                                                        <td style="width:12%;">
+                                                            @if ($attempt->status == 'pending')
+                                                                <span class="badge rounded-pill text-capitalize bg-warning">
+                                                                    {{ trans('purchase.pending') }}
+                                                                </span>
+                                                            @elseif($attempt->status == 'success')
+                                                                <span class="badge rounded-pill text-capitalize bg-success">
+                                                                    {{ trans('purchase.accepted') }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge rounded-pill text-capitalize bg-danger">
+                                                                    {{ trans('purchase.refused') }}
+                                                                </span>
+                                                            @endif
+                                                        </td>
+                                                        <td style="width:8%;">
+                                                            <div class="dropdown">
+                                                                <button type="button"
+                                                                    class="btn p-0 dropdown-toggle hide-arrow"
+                                                                    data-bs-toggle="dropdown">
+                                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#infoModal{{ $attempt->id }}">
+                                                                        <i class='bx bxs-info-circle me-2'></i>
+                                                                        {{ trans('purchase.info') }}
+                                                                    </a>
+                                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#transactionModal{{ $attempt->id }}">
+                                                                        <i class='bx bxs-credit-card me-2'></i>
+                                                                        {{ trans('purchase.transaction') }}
+                                                                    </a>
+                                                                    @if ($purchase->used_coupons()->count())
+                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#usedCouponsModal{{ $attempt->id }}">
+                                                                            <i class='bx bxs-discount me-2'></i>
+                                                                            {{ trans('purchase.coupons') }}
+                                                                        </a>
+                                                                    @endif
 
-                                        @endif
+                                                                    @if ($purchase->status != 'success')
+                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#acceptPurchaseModal{{ $attempt->id }}">
+                                                                            <i class="bx bxs-check-square me-2"></i>
+                                                                            {{ trans('purchase.accept') }}
+                                                                        </a>
+                                                                    @endif
 
-                                        {{-- @if ($purchase->status != 'success')
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCourseModal{{ $purchase->id }}">
-                                                <i class="bx bx-trash me-2"></i>
-                                                {{ trans('purchase.delete') }}
-                                            </a>
-                                        @endif
+                                                                    @if ($purchase->status == 'pending')
+                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#refusePurchaseModal{{ $attempt->id }}">
+                                                                            <i class="bx bxs-x-square me-2"></i>
+                                                                            {{ trans('purchase.refuse') }}
+                                                                        </a>
+                                                                    @endif
 
-                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#createAdModal{{$purchase->id}}">
-                                                <i class='bx bxs-megaphone me-2'></i>
-                                                {{ trans('ad.create') }}
-                                        </a>
-
-                                        <a class="dropdown-item" href="{{ route('dashboard.purchases.show', $purchase->id) }}">
-                                            <i class="bx bx-show me-2"></i>
-                                            {{ trans('purchase.show') }}
-                                        </a> --}}
-
-
+                                                                </div>
+                                                                @include('dashboard.purchase.coupons' , ['purchase' => $attempt])
+                                                                @include('dashboard.purchase.info' , ['purchase' => $attempt])
+                                                                @include('dashboard.purchase.transaction' , ['purchase' => $attempt])
+                                                                @include('dashboard.purchase.accept' , ['purchase' => $attempt])
+                                                                @include('dashboard.purchase.refuse' , ['purchase' => $attempt])
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    @include('dashboard.purchase.coupons')
-                                    @include('dashboard.purchase.info')
-                                    @include('dashboard.purchase.transaction')
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
-                        {{-- @include('dashboard.purchase.create')
-                        @include('dashboard.purchase.delete')
-                        @include('dashboard.purchase.approved')
-                        @include('dashboard.purchase.reject') --}}
+
+                        @endif
+
                     @endforeach
                 </tbody>
             </table>
@@ -178,60 +259,19 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#status').on('change', function(event) {
-                // $("#name").focus();
 
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-
-            $('#subject').on('change', function(event) {
-                // $("#name").focus();
-
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-            $('#teacher').on('change', function(event) {
-                // $("#name").focus();
-
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
             // search
-            $('#search').on('keyup', function(event) {
+            $('#search').on('keyup change blur', function(event) {
                 $("#search").focus();
                 timer = setTimeout(function() {
                     submitForm();
-                }, 4000);
+                }, 1000);
 
             })
 
             function submitForm() {
-                $("#searchCourseForm").submit();
+                $("#searchForm").submit();
             }
-
-            $('.image-input').on('change', function(event) {
-                const id = $(this).attr('id').replace('image', '');
-                //const fileInput = document.querySelector('.image-input');
-                const fileInput = document.getElementById('image' + id);
-                if (fileInput.files[0]) {
-                    document.getElementById('uploaded-image' + id).src = window.URL.createObjectURL(fileInput
-                        .files[0]);
-                }
-            });
-            $('.image-reset').on('click', function(event) {
-                const id = $(this).attr('id').replace('reset', '');
-                //const fileInput = document.querySelector('.image-input');
-                const fileInput = document.getElementById('image' + id);
-                fileInput.value = '';
-                document.getElementById('uploaded-image' + id).src = document.getElementById('old-image' + id).src;
-            });
         });
     </script>
 

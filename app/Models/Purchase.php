@@ -243,7 +243,11 @@ class Purchase extends Model
 
   public function created_at(){
     $created_at = Carbon::createFromDate($this->created_at);
-    return $created_at->format('Y-m-d');
+    return $created_at->format('Y-m-d H:i');
+  }
+
+  public function attempts(){
+    return Purchase::where($this->only(['student_id','course_id']))->get();
   }
 
   public function receipt(){
