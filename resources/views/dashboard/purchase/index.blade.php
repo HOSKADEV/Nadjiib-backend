@@ -56,7 +56,7 @@
         </h5>
         <div class="table-responsive text-nowrap">
 
-            <table class="table mb-2">
+            <table class="table mb-2" id="shown_table">
                 <thead>
                     <tr class="text-nowrap">
                         <th></th>
@@ -75,98 +75,102 @@
                             $attempts = $purchase->attempts();
                         @endphp
 
-                            <tr data-toggle="collapse" data-target="#demo{{ $key }}" class="accordion-toggle"
-                                onclick="toggleIcon(this)">
-                                <th scope="row" style="width:8%;">@if($attempts->count() > 1) <i class='bx bx-chevron-down toggle-icon'></i>  @endif</th>
-                                <td style="width:26%;">{{ $purchase->course_name }}</td>
-                                <td style="width:26%;">{{ $purchase->user_name }}</td>
-                                <td style="width:20%;">{{ $purchase->created_at() }}</td>
-
-                                @if ($attempts->count() <= 1)
-                                @php
-                                  $purchase = $attempts->first();
-                                @endphp
-                                  <td style="width:12%;">
-                                      @if ($purchase->status == 'pending')
-                                          <span class="badge rounded-pill text-capitalize bg-warning">
-                                              {{ trans('purchase.pending') }}
-                                          </span>
-                                      @elseif($purchase->status == 'success')
-                                          <span class="badge rounded-pill text-capitalize bg-success">
-                                              {{ trans('purchase.accepted') }}
-                                          </span>
-                                      @else
-                                          <span class="badge rounded-pill text-capitalize bg-danger">
-                                              {{ trans('purchase.refused') }}
-                                          </span>
-                                      @endif
-                                  </td>
-                                  <td style="width:8%;">
-                                      <div class="dropdown">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                              data-bs-toggle="dropdown">
-                                              <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
-                                          <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                      data-bs-target="#infoModal{{ $purchase->id }}">
-                                                      <i class='bx bxs-info-circle me-2'></i>
-                                                      {{ trans('purchase.info') }}
-                                                  </a>
-                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                      data-bs-target="#transactionModal{{ $purchase->id }}">
-                                                      <i class='bx bxs-credit-card me-2'></i>
-                                                      {{ trans('purchase.transaction') }}
-                                                  </a>
-                                              @if ($purchase->used_coupons()->count())
-                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                      data-bs-target="#usedCouponsModal{{ $purchase->id }}">
-                                                      <i class='bx bxs-discount me-2'></i>
-                                                      {{ trans('purchase.coupons') }}
-                                                  </a>
-
-                                              @endif
-
-                                              @if ($purchase->status != 'success')
-                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                      data-bs-target="#acceptPurchaseModal{{ $purchase->id }}">
-                                                      <i class="bx bxs-check-square me-2"></i>
-                                                      {{ trans('purchase.accept') }}
-                                                  </a>
-                                              @endif
-
-                                              @if ($purchase->status == 'pending')
-                                                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                      data-bs-target="#refusePurchaseModal{{ $purchase->id }}">
-                                                      <i class="bx bxs-x-square me-2"></i>
-                                                      {{ trans('purchase.refuse') }}
-                                                  </a>
-                                              @endif
-
-                                          </div>
-                                          @include('dashboard.purchase.coupons')
-                                          @include('dashboard.purchase.info')
-                                          @include('dashboard.purchase.transaction')
-                                          @include('dashboard.purchase.accept')
-                                          @include('dashboard.purchase.refuse')
-                                      </div>
-                                  </td>
-
+                        <tr data-toggle="collapse" data-target="#demo{{ $key }}" class="accordion-toggle"
+                            onclick="toggleIcon(this)">
+                            <td style="width:60px !important;">
+                                @if ($attempts->count() > 1)
+                                    <i class='bx bx-chevron-down toggle-icon'></i>
                                 @endif
-                            </tr>
+                            </td>
+                            <td style="width:230px !important;">{{ $purchase->course_name }}</td>
+                            <td style="width:200px !important;">{{ $purchase->user_name }}</td>
+                            <td style="width:200px !important;">{{ $purchase->created_at() }}</td>
                             @if ($attempts->count() > 1)
+                                <td style="width:100px !important;"></td>
+                                <td style="width:60px !important;"></td>
+                            @else
+                                @php
+                                    $purchase = $attempts->first();
+                                @endphp
+                                <td style="width:100px !important;">
+                                    @if ($purchase->status == 'pending')
+                                        <span class="badge rounded-pill text-capitalize bg-warning">
+                                            {{ trans('purchase.pending') }}
+                                        </span>
+                                    @elseif($purchase->status == 'success')
+                                        <span class="badge rounded-pill text-capitalize bg-success">
+                                            {{ trans('purchase.accepted') }}
+                                        </span>
+                                    @else
+                                        <span class="badge rounded-pill text-capitalize bg-danger">
+                                            {{ trans('purchase.refused') }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td style="width:60px !important;">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#infoModal{{ $purchase->id }}">
+                                                <i class='bx bxs-info-circle me-2'></i>
+                                                {{ trans('purchase.info') }}
+                                            </a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#transactionModal{{ $purchase->id }}">
+                                                <i class='bx bxs-credit-card me-2'></i>
+                                                {{ trans('purchase.transaction') }}
+                                            </a>
+                                            @if ($purchase->used_coupons()->count())
+                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#usedCouponsModal{{ $purchase->id }}">
+                                                    <i class='bx bxs-discount me-2'></i>
+                                                    {{ trans('purchase.coupons') }}
+                                                </a>
+                                            @endif
+
+                                            @if ($purchase->status != 'success')
+                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#acceptPurchaseModal{{ $purchase->id }}">
+                                                    <i class="bx bxs-check-square me-2"></i>
+                                                    {{ trans('purchase.accept') }}
+                                                </a>
+                                            @endif
+
+                                            @if ($purchase->status == 'pending')
+                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#refusePurchaseModal{{ $purchase->id }}">
+                                                    <i class="bx bxs-x-square me-2"></i>
+                                                    {{ trans('purchase.refuse') }}
+                                                </a>
+                                            @endif
+
+                                        </div>
+                                        @include('dashboard.purchase.coupons')
+                                        @include('dashboard.purchase.info')
+                                        @include('dashboard.purchase.transaction')
+                                        @include('dashboard.purchase.accept')
+                                        @include('dashboard.purchase.refuse')
+                                    </div>
+                                </td>
+                            @endif
+                        </tr>
+                        @if ($attempts->count() > 1)
                             <tr>
                                 <td colspan="6" class="hiddenRow">
                                     <div class="accordian-body collapse" id="demo{{ $key }}">
-                                        <table class="table table-condensed">
+                                        <table class="table table-condensed hidden_table">
                                             <tbody>
                                                 @foreach ($attempts as $key => $attempt)
-                                                <tr class="table-secondary">
-                                                        <th scope="row" style="width:8%;"></th>
-                                                        <td style="width:26%;">{{ $attempt->course->name }}</td>
-                                                        <td style="width:26%;">{{ $attempt->student->user->name }}</td>
-                                                        <td style="width:20%;">{{ $attempt->created_at() }}</td>
-                                                        <td style="width:12%;">
+                                                    <tr class="table-secondary">
+                                                        <td style="width:60px !important;"></td>
+                                                        <td style="width:230px !important;">{{ $attempt->course->name }}</td>
+                                                        <td style="width:200px !important;">{{ $attempt->student->user->name }}</td>
+                                                        <td style="width:200px !important;">{{ $attempt->created_at() }}</td>
+                                                        <td style="width:100px !important;">
                                                             @if ($attempt->status == 'pending')
                                                                 <span class="badge rounded-pill text-capitalize bg-warning">
                                                                     {{ trans('purchase.pending') }}
@@ -181,7 +185,7 @@
                                                                 </span>
                                                             @endif
                                                         </td>
-                                                        <td style="width:8%;">
+                                                        <td style="width:60px !important;">
                                                             <div class="dropdown">
                                                                 <button type="button"
                                                                     class="btn p-0 dropdown-toggle hide-arrow"
@@ -229,11 +233,21 @@
                                                                     @endif
 
                                                                 </div>
-                                                                @include('dashboard.purchase.coupons' , ['purchase' => $attempt])
-                                                                @include('dashboard.purchase.info' , ['purchase' => $attempt])
-                                                                @include('dashboard.purchase.transaction' , ['purchase' => $attempt])
-                                                                @include('dashboard.purchase.accept' , ['purchase' => $attempt])
-                                                                @include('dashboard.purchase.refuse' , ['purchase' => $attempt])
+                                                                @include('dashboard.purchase.coupons', [
+                                                                    'purchase' => $attempt,
+                                                                ])
+                                                                @include('dashboard.purchase.info', [
+                                                                    'purchase' => $attempt,
+                                                                ])
+                                                                @include('dashboard.purchase.transaction', [
+                                                                    'purchase' => $attempt,
+                                                                ])
+                                                                @include('dashboard.purchase.accept', [
+                                                                    'purchase' => $attempt,
+                                                                ])
+                                                                @include('dashboard.purchase.refuse', [
+                                                                    'purchase' => $attempt,
+                                                                ])
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -243,10 +257,7 @@
                                     </div>
                                 </td>
                             </tr>
-
-
                         @endif
-
                     @endforeach
                 </tbody>
             </table>
@@ -272,7 +283,6 @@
             function submitForm() {
                 $("#searchForm").submit();
             }
-        });
     </script>
 
 @endsection
