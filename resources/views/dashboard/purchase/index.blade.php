@@ -66,7 +66,7 @@
                         <th>{{ trans('purchase.price') }}</th> --}}
                         <th>{{ trans('purchase.created') }}</th>
                         <th>{{ trans('purchase.status') }}</th>
-                        <th>{{-- {{ trans('app.actions') }} --}}</th>
+                        <th>{{ trans('app.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
