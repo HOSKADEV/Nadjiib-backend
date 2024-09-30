@@ -12,6 +12,7 @@ return [
     'courses'        => 'Courses',
     'ads'            => 'Ads',
     'notices' => 'Notices',
+    'purchases' => 'Purchases',
     'documentation' => 'Documentation',
     'policy' => 'Privacy policy',
     'about' => 'Terms of use'

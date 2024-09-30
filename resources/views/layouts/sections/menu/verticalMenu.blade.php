@@ -8,7 +8,7 @@
                 @include('_partials.macros')
             </span>
             <span class="app-brand-text demo menu-text fw-bold text-capitalize ms-2">
-                {{ config('app.locale') == 'en' ? "Najib" : "نجيب"  }}
+                {{ config('app.locale') == 'en' ? "Najiib" : "نجيب"  }}
             </span>
         </a>
 
@@ -97,12 +97,12 @@
       </a>
   </li>
 
-  <li class="menu-item {{ request()->routeIs('dashboard.payments.index') ? 'active' : '' }}">
+ {{--  <li class="menu-item {{ request()->routeIs('dashboard.payments.index') ? 'active' : '' }}">
     <a href="{{ route('dashboard.payments.index') }}" class="menu-link">
         <i class='menu-icon bx bxs-wallet'></i>
         <div>{{ trans('menu.payments') }}</div>
     </a>
-</li>
+</li> --}}
 
       <li class="menu-item {{ str_contains(request()->route()->getName(),'dashboard.documentation') ? 'active open' : '' }}">
         <a class="menu-link menu-toggle" >

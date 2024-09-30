@@ -46,5 +46,11 @@ return [
     ],
 
     'addimage' => 'Add image',
-    'reset' => 'Reset'
+    'reset' => 'Reset',
+
+    'welcome_to' => 'Welcome to',
+    'email' => 'Email',
+    'password' => 'Password',
+    'sign_in' => 'Sign in',
+    'enter_email'=> 'Enter your email',
 ];

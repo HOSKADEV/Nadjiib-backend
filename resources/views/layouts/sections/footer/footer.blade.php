@@ -1,6 +1,6 @@
 <!-- Footer-->
 <footer class="content-footer footer bg-footer-theme">
-    <div
+    {{-- <div
         class="{{ !empty($containerNav) ? $containerNav : 'container-fluid' }} d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
         <div class="mb-2 mb-md-0">
             ©
@@ -22,6 +22,6 @@
             <a href="{{ config('variables.support') ? config('variables.support') : '#' }}" target="_blank"
                 class="footer-link d-none d-sm-inline-block">Support</a>
         </div>
-    </div>
+    </div> --}}
 </footer>
 <!--/ Footer-->

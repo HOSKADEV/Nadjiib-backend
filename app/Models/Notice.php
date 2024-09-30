@@ -40,7 +40,7 @@ class Notice extends Model
         'ar' => $this->title_ar,
         'en' => $this->title_en,
         'fr' => $this->title_fr,
-        'default' => $this->title_ar,
+        default => $this->title_ar,
       };
     }
 
@@ -49,7 +49,7 @@ class Notice extends Model
         'ar' => $this->content_ar,
         'en' => $this->content_en,
         'fr' => $this->content_fr,
-        'default' => $this->content_ar,
+        default => $this->content_ar,
       };
     }
 }

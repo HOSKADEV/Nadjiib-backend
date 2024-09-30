@@ -43,7 +43,7 @@ class Section extends Model
         'ar' => $this->name_ar,
         'en' => $this->name_en,
         'fr' => $this->name_fr,
-        'default' => $this->name_ar,
+        default => $this->name_ar,
       };
     }
 }

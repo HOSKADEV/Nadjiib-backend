@@ -90,7 +90,7 @@ class LessonController extends Controller
 
       if ($lesson) {
 
-        if ($request->has('video_url')) {
+        if ($request->get('video_url')) {
           //  ** create a new data for lesson video
           $dataVideo = array_replace($request->only([
             'video_url',
@@ -100,10 +100,12 @@ class LessonController extends Controller
             'extension' => $request->video_extension,
             'duration' => $request->video_duartion
           ]);
+
           $lessonVideo = $this->lessonVideo->create($dataVideo);
+
         }
 
-        if ($request->has('file_url')) {
+        if ($request->get('file_url')) {
 
           //  ** create a new data for lesson File
           $dataFile = array_replace($request->only([]), [
@@ -117,6 +119,8 @@ class LessonController extends Controller
             $request->file_extension
           );
         }
+
+
 
         DB::commit();
         return response()->json([

@@ -23,8 +23,8 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.svg') }}" />
 
-    {{-- 
-        
+    {{--
+
     --}}
     <!-- Include Styles -->
     @include('layouts/sections/styles')

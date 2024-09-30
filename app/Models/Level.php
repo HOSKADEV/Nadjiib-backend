@@ -61,7 +61,7 @@ class Level extends Model
         'ar' => $this->name_ar,
         'en' => $this->name_en,
         'fr' => $this->name_fr,
-        'default' => $this->name_ar,
+        default => $this->name_ar,
       };
     }
 
@@ -70,7 +70,7 @@ class Level extends Model
         'ar' => $this->specialty_ar,
         'en' => $this->specialty_en,
         'fr' => $this->specialty_fr,
-        'default' => $this->specialty_ar,
+        default => $this->specialty_ar,
       };
     }
 
