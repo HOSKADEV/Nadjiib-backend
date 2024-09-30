@@ -98,6 +98,13 @@ class PurchaseController extends Controller
     $purchase = Purchase::find($request->id);
     $purchase->status = $request->status;
     $purchase->save();
+
+    if ($request->status == 'success') {
+
+      $purchase->apply_subscription();
+
+    }
+
     toastr()->success(trans('message.success.update'));
     return redirect()->route('dashboard.purchases.index');
   }
