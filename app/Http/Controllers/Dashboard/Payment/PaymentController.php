@@ -3,15 +3,25 @@
 namespace App\Http\Controllers\Dashboard\Payment;
 
 use App\Models\Payment;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
     public function index(Request $request){
 
-      if($request->has('date'));
-      $payments = Payment::all();
-      dd($payments);
+      $date = $request->has('date') ? Carbon::createFromDate($request->date) : Carbon::now();
+
+      $payments = Payment::with('teacher')
+              ->whereMonth('date', $date->month)
+              ->whereYear('date', $date->year)
+
+    ->get();
+    //dd($payments);
+
+    return view('dashboard.payment.index', compact('payments'));
+
     }
 }

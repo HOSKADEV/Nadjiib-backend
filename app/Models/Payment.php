@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -31,9 +32,20 @@ class Payment extends Model
         return $this->belongsTo(Teacher::class);
     }
 
+    public function purchases(){
+      return $this->teacher->purchases()
+      ->where('purchases.status','success')
+      ->whereMonth('purchases.created_at', Carbon::createFromDate($this->date)->month)
+      ->whereYear('purchases.created_at', Carbon::createFromDate($this->date)->year);
+    }
+
+    public function bonuses(){
+      return PurchaseBonus::whereIn('purchase_id',$this->purchases()->pluck('purchases.id')->toArray()) ;
+    }
+
     public function refresh_amount(){
-      $purchases = $this->teacher->purchases()->where('purchases.status','success')->pluck('purchases.id')->toArray();
-      $this->amount = PurchaseBonus::whereIn('purchase_id',$purchases)->sum('amount');
+      //$purchases = $this->teacher->purchases()->where('purchases.status','success')->pluck('purchases.id')->toArray();
+      $this->amount = $this->bonuses()->sum('amount');
       $this->save();
     }
 }
