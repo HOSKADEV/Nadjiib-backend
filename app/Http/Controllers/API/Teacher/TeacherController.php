@@ -195,9 +195,9 @@ class TeacherController extends Controller
 
         $user = $this->get_user_from_token($request->bearerToken());
 
-        $request->mergeIfMissing([
+        /* $request->mergeIfMissing([
           'subjects' => $user?->student?->active_subs()->pluck('subject_id')->toArray() ?? []
-        ]);
+        ]); */
 
         $teachers = User::join('teachers','users.id','teachers.user_id')
                         ->leftjoin('posts','teachers.id','posts.teacher_id')
@@ -216,6 +216,24 @@ class TeacherController extends Controller
 
         if($user){
           $teachers = $teachers->whereNot('users.id',$user->id);
+        }
+
+        if($request->has('type')){
+          if($request->type == 'cloud_chat'){
+            $teachers = $teachers->where('cloud_chat', 'ACTIVE')->orderBy('teachers.created_at', 'DESC');
+            $request->mergeIfMissing([
+              'subjects' => $user?->student?->active_subs()->pluck('subject_id')->toArray() ?? []
+            ]);
+          }
+          if($request->type == 'channels'){
+            $teachers = $teachers->having('num_posts','>', 0)->orderBy('teachers.created_at', 'DESC');
+          }
+          if($request->type == 'most_active'){
+            $teachers = $teachers->having('num_posts','>', 0)->orderBy('num_posts', 'DESC');
+          }
+
+        }else{
+          $teachers = $teachers->orderBy('users.created_at', 'DESC');
         }
 
         if($request->has('subjects')){
@@ -238,20 +256,7 @@ class TeacherController extends Controller
 
         }
 
-        if($request->has('type')){
-          if($request->type == 'cloud_chat'){
-            $teachers = $teachers->where('cloud_chat', 'ACTIVE')->orderBy('teachers.created_at', 'DESC');
-          }
-          if($request->type == 'channels'){
-            $teachers = $teachers->having('num_posts','>', 0)->orderBy('teachers.created_at', 'DESC');
-          }
-          if($request->type == 'most_active'){
-            $teachers = $teachers->having('num_posts','>', 0)->orderBy('num_posts', 'DESC');
-          }
 
-        }else{
-          $teachers = $teachers->orderBy('users.created_at', 'DESC');
-        }
 
         return response()->json([
           'status' => true,

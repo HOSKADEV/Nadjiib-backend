@@ -62,7 +62,7 @@
                         <th></th>
                         <th>{{ trans('purchase.course') }}</th>
                         <th>{{ trans('purchase.student') }}</th>
-                        {{--                         <th>{{ trans('purchase.teacher') }}</th>
+                        {{-- <th>{{ trans('purchase.teacher') }}</th>
                         <th>{{ trans('purchase.price') }}</th> --}}
                         <th>{{ trans('purchase.created') }}</th>
                         <th>{{ trans('purchase.status') }}</th>
