@@ -12,7 +12,7 @@ class PaymentController extends Controller
 {
     public function index(Request $request){
 
-      $date = $request->has('date') ? Carbon::createFromDate($request->date) : Carbon::now();
+      $date = $request->has('date') ? Carbon::createFromDate('01-'.$request->date) : Carbon::now();
 
       $payments = Payment::with('teacher')
               ->whereMonth('date', $date->month)
@@ -21,7 +21,7 @@ class PaymentController extends Controller
     ->get();
     //dd($payments);
 
-    return view('dashboard.payment.index', compact('payments'));
+    return view('dashboard.payment.index', compact('payments', 'date'));
 
     }
 }

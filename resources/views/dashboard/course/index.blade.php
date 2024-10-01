@@ -140,7 +140,7 @@
                                                 {{ trans('ad.create') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('dashboard.courses.show', $course->id) }}">
+                                        <a class="dropdown-item" href="{{ url('dashboard/course/'. $course->id . '/lessons') }}">
                                             <i class="bx bx-show me-2"></i>
                                             {{ trans('course.show') }}
                                         </a>

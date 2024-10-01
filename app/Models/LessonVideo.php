@@ -27,4 +27,8 @@ class LessonVideo extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
+
+    public function url(){
+      return $this->video_url ? url($this->video_url) : null;
+    }
 }

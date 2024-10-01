@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
 use App\Http\Controllers\Dashboard\Course\CourseController;
+use App\Http\Controllers\Dashboard\Lesson\LessonController;
 use App\Http\Controllers\Dashboard\Payment\PaymentController;
 use App\Http\Controllers\Dashboard\Section\SectionController;
 use App\Http\Controllers\Dashboard\Setting\SettingController;
@@ -85,6 +86,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);
+
+    Route::get('/course/{id}/lessons', [LessonController::class,'index']);
 
     Route::get('/settings', [SettingController::class,'index']);
 

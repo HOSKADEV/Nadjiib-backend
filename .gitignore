@@ -16,6 +16,9 @@ yarn-error.log
 public/css
 public/js
 public/mix-manifest.json
+public/videos
+public/images
+public/documents
 # But not these files...
 # public/assets/*
 # public/assets/js

@@ -25,4 +25,8 @@ class LessonFile extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
+
+    public function url(){
+      return $this->file_url ? url($this->file_url) : null;
+    }
 }

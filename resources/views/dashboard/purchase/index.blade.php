@@ -205,7 +205,7 @@
                                                                         <i class='bx bxs-credit-card me-2'></i>
                                                                         {{ trans('purchase.transaction') }}
                                                                     </a>
-                                                                    @if ($purchase->used_coupons()->count())
+                                                                    @if ($attempt->used_coupons()->count())
                                                                         <a class="dropdown-item"
                                                                             href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
@@ -215,7 +215,7 @@
                                                                         </a>
                                                                     @endif
 
-                                                                    @if ($purchase->status != 'success')
+                                                                    @if ($attempt->status != 'success')
                                                                         <a class="dropdown-item"
                                                                             href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
@@ -225,7 +225,7 @@
                                                                         </a>
                                                                     @endif
 
-                                                                    @if ($purchase->status == 'pending')
+                                                                    @if ($attempt->status == 'pending')
                                                                         <a class="dropdown-item"
                                                                             href="javascript:void(0);"
                                                                             data-bs-toggle="modal"

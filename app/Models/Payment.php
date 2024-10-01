@@ -39,6 +39,17 @@ class Payment extends Model
       ->whereYear('purchases.created_at', Carbon::createFromDate($this->date)->year);
     }
 
+    public function status(){
+      if($this->is_confirmed == 'yes'){
+        return 2;
+      }
+      if($this->is_paid == 'yes'){
+        return 1;
+      }
+
+      return 0;
+    }
+
     public function bonuses(){
       return PurchaseBonus::whereIn('purchase_id',$this->purchases()->pluck('purchases.id')->toArray()) ;
     }
