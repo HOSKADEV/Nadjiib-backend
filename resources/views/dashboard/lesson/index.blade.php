@@ -4,6 +4,7 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
+    <script src="https://kit.fontawesome.com/cec0d2ede3.js" crossorigin="anonymous"></script>
 @endsection
 
 @section('page-header')
@@ -38,7 +39,7 @@
                         <th>#</th>
                         <th>{{ trans('lesson.title') }}</th>
                         <th>{{ trans('lesson.description') }}</th>
-                        <th>{{ trans('app.actions') }}</th>
+                        <th>{{ trans('lesson.attachments') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,129 +51,41 @@
                                 <textarea rows="2" class="form-control">{{ $lesson->description }}</textarea>
                             </td>
                             <td>
-                                @php
-                                    $videos = $lesson->videos; // Assuming this function exists and returns an array of video objects
-                                    $files = $lesson->files; // Assuming this function exists and returns an array of file objects
-                                @endphp
+                                @foreach ($lesson->videos as $video)
+                                    <a href="{{ $video->url() }}">
+                                      <i class="bx bxs-movie-play bx-md" style="color: #696cff"></i>
+                                    </a>
+                                @endforeach
 
-                            <td>
-                                <!-- Video button -->
-                                <button type="button" class="btn btn-sm btn-info mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#videoModal{{ $lesson->id }}">
-                                    <i class='bx bxs-movie-play'></i>
-                                </button>
+                                @foreach ($lesson->files as $file)
+                                @if ($file->type() == 'img' )
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file-image bx-md" style="color: #03c3ec"></i>
+                                </a>
+                                @elseif ($file->type() == 'doc')
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file-doc bx-md" style="color: #356AAA"></i>
+                                </a>
+                                @elseif ($file->type() == 'xls')
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file bx-md" style="color: #1F7244"></i>
+                                </a>
+                                @elseif ($file->type() == 'ppt')
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file bx-md" style="color: #D24625"></i>
+                                </a>
+                                @elseif ($file->type() == 'pdf')
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file-pdf bx-md" style="color: #B30B00"></i>
+                                </a>
+                                @else
+                                <a href="{{ $file->url() }}">
+                                  <i class="bx bxs-file-blank bx-md" style="color: #8592a3"></i>
+                                </a>
+                                @endif
 
-                                <!-- File button -->
-                                <button type="button" class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#fileModal{{ $lesson->id }}">
-                                    <i class='bx bxs-file'></i>
-                                </button>
-                            </td>
+                                @endforeach
 
-                            <!-- Video Modal -->
-                            <div class="modal fade" id="videoModal{{ $lesson->id }}" tabindex="-1"
-                                aria-labelledby="videoModalLabel{{ $lesson->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="videoModalLabel{{ $lesson->id }}">Videos for
-                                                Lesson {{ $lesson->id }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            @if (count($videos) > 0)
-                                                <div id="videoCarousel{{ $lesson->id }}" class="carousel slide"
-                                                    data-bs-ride="carousel">
-                                                    <div class="carousel-inner">
-                                                        @foreach ($videos as $index => $video)
-                                                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                                                <video class="d-block w-100" controls>
-                                                                    <source src="{{ $video->url() }}"
-                                                                        type="video/{{ $video->extension }}">
-                                                                    Your browser does not support the video tag.
-                                                                </video>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                    @if (count($videos) > 1)
-                                                        <button class="carousel-control-prev" type="button"
-                                                            data-bs-target="#videoCarousel{{ $lesson->id }}"
-                                                            data-bs-slide="prev">
-                                                            <span class="carousel-control-prev-icon"
-                                                                aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Previous</span>
-                                                        </button>
-                                                        <button class="carousel-control-next" type="button"
-                                                            data-bs-target="#videoCarousel{{ $lesson->id }}"
-                                                            data-bs-slide="next">
-                                                            <span class="carousel-control-next-icon"
-                                                                aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Next</span>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            @else
-                                                <p>No videos available for this lesson.</p>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- File Modal -->
-                            <div class="modal fade" id="fileModal{{ $lesson->id }}" tabindex="-1"
-                                aria-labelledby="fileModalLabel{{ $lesson->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="fileModalLabel{{ $lesson->id }}">Documents for
-                                                Lesson {{ $lesson->id }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            @if (count($files) > 0)
-                                                <div id="fileCarousel{{ $lesson->id }}" class="carousel slide"
-                                                    data-bs-ride="carousel">
-                                                    <div class="carousel-inner">
-                                                        @foreach ($files as $index => $file)
-                                                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                                                <div class="text-center mb-3">
-                                                                    <h6>{{ $file->filename }}</h6>
-                                                                    <a href="{{ $file->url() }}"
-                                                                        class="btn btn-primary btn-sm" download>Download</a>
-                                                                </div>
-                                                                <embed src="{{ $file->url() }}"
-                                                                    type="application/{{ $file->extension }}"
-                                                                    width="100%" height="600px" />
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                    @if (count($files) > 1)
-                                                        <button class="carousel-control-prev" type="button"
-                                                            data-bs-target="#fileCarousel{{ $lesson->id }}"
-                                                            data-bs-slide="prev">
-                                                            <span class="carousel-control-prev-icon"
-                                                                aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Previous</span>
-                                                        </button>
-                                                        <button class="carousel-control-next" type="button"
-                                                            data-bs-target="#fileCarousel{{ $lesson->id }}"
-                                                            data-bs-slide="next">
-                                                            <span class="carousel-control-next-icon"
-                                                                aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Next</span>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            @else
-                                                <p>No documents available for this lesson.</p>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             </td>
                         </tr>
                     @endforeach
