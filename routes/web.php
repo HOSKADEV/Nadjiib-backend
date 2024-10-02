@@ -88,6 +88,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('courses', CourseController::class);
 
     Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course-lessons');
+    Route::get('/payment/{id}/purchases', [PaymentController::class,'purchases'])->name('payment-purchases');
 
     Route::get('/settings', [SettingController::class,'index']);
 

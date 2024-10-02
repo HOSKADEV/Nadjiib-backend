@@ -27,6 +27,8 @@ return [
     'unsupported_file' => 'نوع الملف غير مدعوم',
     'no_file' => 'لا يتوفر ملف لهذه المعاملة',
     'view_file' => 'تفقد الملف هنا',
+    'total_percentage' => 'النسبة الاجمالية',
+    'total_amount' =>'المبلغ الاجمالي',
 
   'search_placeholder' => 'اسم المشتري أو الدورة',
     'accept' => 'قبول المعاملة',
@@ -40,5 +42,16 @@ return [
         'percentage' => 'نسبة التخفيض',
         'amount' => 'قيمة التخفيض',
     ],
+
+    'bonus' => [
+      'type' => 'النوع',
+      'created' => 'تاريخ الانشاء',
+      'percentage' => 'النسبة',
+      'amount' => 'القيمة',
+      'standard' => 'النسبة الافتراضية',
+      'invitation' => 'مكافأة الدعوة',
+      'cloud' => 'مكافأة غيمة',
+      'community' => 'مكافأة تفوق'
+    ]
 
 ];

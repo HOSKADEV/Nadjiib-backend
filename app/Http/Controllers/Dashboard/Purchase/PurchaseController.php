@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Purchase;
 
+use Exception;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -95,18 +96,31 @@ class PurchaseController extends Controller
   public function update(Request $request)
   {
 
-    $purchase = Purchase::find($request->id);
-    $purchase->status = $request->status;
-    $purchase->save();
+    try{
 
-    if ($request->status == 'success') {
+      $purchase = Purchase::find($request->id);
 
-      $purchase->apply_subscription();
+      if($purchase->student->owns($purchase->course)){
+        throw new Exception(trans('message.prohibited'));
+      }
 
+      $purchase->status = $request->status;
+      $purchase->save();
+
+      if ($request->status == 'success') {
+
+        $purchase->apply_subscription();
+
+      }
+
+      toastr()->success(trans('message.success.update'));
+      return redirect()->route('dashboard.purchases.index');
+
+    }catch(Exception $e){
+      toastr()->error($e->getMessage());
+      return redirect()->route('dashboard.purchases.index');
     }
 
-    toastr()->success(trans('message.success.update'));
-    return redirect()->route('dashboard.purchases.index');
   }
 
   /**

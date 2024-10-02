@@ -129,6 +129,7 @@ class Purchase extends Model
         [
           'percentage' => $percentage,
           'amount' => $amount,
+          'created_at' => Carbon::now()
         ]
       );
 
@@ -146,11 +147,12 @@ class Purchase extends Model
         PurchaseBonus::updateOrInsert(
           [
             'purchase_id' => $this->id,
-            'type' => 2
+            'type' => 2,
           ],
           [
             'percentage' => $percentage,
             'amount' => $amount,
+            'created_at' => Carbon::now()
           ]
         );
 
@@ -175,6 +177,7 @@ class Purchase extends Model
           [
             'percentage' => $percentage,
             'amount' => $amount,
+            'created_at' => Carbon::now()
           ]
         );
       }
@@ -197,6 +200,7 @@ class Purchase extends Model
           [
             'percentage' => $percentage,
             'amount' => $amount,
+            'created_at' => Carbon::now()
           ]
         );
       }
@@ -281,7 +285,7 @@ class Purchase extends Model
     }
 
     $fileExtension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'webp'];
 
     if (in_array($fileExtension, $imageExtensions)){
       return 'image';

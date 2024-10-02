@@ -13,7 +13,7 @@ return [
     'ads'            => 'Ads',
     'notices' => 'Notices',
     'purchases' => 'Purchases',
-    'payments' => 'Payments',
+    'payments' => 'Dues',
     'documentation' => 'Documentation',
     'policy' => 'Privacy policy',
     'about' => 'Terms of use'

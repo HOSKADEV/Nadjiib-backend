@@ -78,18 +78,20 @@
                         <th></th>
                         <th>{{ trans('payment.teacher') }}</th>
                         <th>{{ trans('payment.amount') }}</th>
-                        <th>{{ trans('payment.date') }}</th>
+                        {{-- <th>{{ trans('payment.date') }}</th> --}}
+                        {{-- <th>{{ trans('payment.phone') }}</th> --}}
                         <th>{{ trans('payment.status') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($payments as $key => $payment)
+                    @foreach ($payments->items() as $key => $payment)
                     <tr>
                             <th>{{$key+1}}</th>
                         <td>{{ $payment->teacher->user->name }}</td>
                         <td>{{ $payment->amount }}</td>
-                        <td>{{ $payment->date }}</td>
+                        {{-- <td>{{ $payment->date }}</td> --}}
+                        {{-- <td>{{ $payment->teacher->user->phone }}</td> --}}
                         <td>@if ($payment->status() == 2)
                           <span class="badge rounded-pill text-capitalize bg-success">
                               {{ trans('payment.confirmed') }}
@@ -105,21 +107,21 @@
                       @endif</td>
                       <td>
                         <button type="button" class="btn btn-sm btn-warning mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#videoModal{{ $payment->id }}">
+                                    data-bs-target="#paidModal{{ $payment->id }}">
                                     <i class='bx bx-money'></i>
                                 </button>
 
                                 <!-- File button -->
-                                <button type="button" class="btn btn-sm btn-info mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#fileModal{{ $payment->id }}">
+                                <a href="{{ url('dashboard/payment/'. $payment->id . '/purchases') }}" class="btn btn-sm btn-info mx-1">
                                     <i class='bx bx-purchase-tag'></i>
-                                </button>
+                              </a>
                       </td>
                     </tr>
+                    @include('dashboard.payment.paid')
                     @endforeach
                 </tbody>
             </table>
-            {{-- {{ $payments->links() }} --}}
+            {{ $payments->links() }}
         </div>
     </div>
 
