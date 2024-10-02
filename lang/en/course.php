@@ -17,9 +17,9 @@ return [
     'delete'   => 'Delete Course',
     'approved' => 'Approved to publish the course',
     'reject'   => 'Refused to publish the course',
-    'show'     => 'View all course details',
+    'show'     => 'View all course lessons',
     'details'  => 'Course details',
-    
+
     'delete_confirmation' => 'Are you sure you want to delete this course ?',
     'reject_confirmation' => 'Are you sure about the rejection process for this course ?',
     'approved_confirmation' => 'Are you sure about the approved process for this course ?',

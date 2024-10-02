@@ -69,7 +69,7 @@
                 <div>{{ trans('menu.users') }}</div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('dashboard.courses.index') ? 'active' : '' }}">
+        <li class="menu-item {{ (request()->routeIs('dashboard.courses.index')  || request()->routeIs('dashboard.course-lessons')) ? 'active' : '' }}">
             <a href="{{ route('dashboard.courses.index') }}" class="menu-link">
                 <i class='menu-icon bx bxs-chalkboard'></i>
                 <div>{{ trans('menu.courses') }}</div>
@@ -97,12 +97,12 @@
       </a>
   </li>
 
-  <li class="menu-item {{ request()->routeIs('dashboard.payments.index') ? 'active' : '' }}">
+ {{--  <li class="menu-item {{ request()->routeIs('dashboard.payments.index') ? 'active' : '' }}">
     <a href="{{ route('dashboard.payments.index') }}" class="menu-link">
         <i class='menu-icon bx bxs-wallet'></i>
         <div>{{ trans('menu.payments') }}</div>
     </a>
-</li>
+</li> --}}
 
       <li class="menu-item {{ str_contains(request()->route()->getName(),'dashboard.documentation') ? 'active open' : '' }}">
         <a class="menu-link menu-toggle" >

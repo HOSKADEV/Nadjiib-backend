@@ -40,6 +40,8 @@ class LessonFile extends Model
         return 'ppt';
       }elseif(in_array(strtolower($this->extension), ['png','jpg','jpeg','svg','tiff','webp'])) {
         return 'img';
+      }elseif(in_array(strtolower($this->extension), ['zip','7z','rar','rar5','gz','tgz'])) {
+        return 'zip';
       }elseif(strtolower($this->extension) == 'pdf') {
         return 'pdf';
       }else{

@@ -87,7 +87,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
 
     Route::resource('courses', CourseController::class);
 
-    Route::get('/course/{id}/lessons', [LessonController::class,'index']);
+    Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course-lessons');
 
     Route::get('/settings', [SettingController::class,'index']);
 

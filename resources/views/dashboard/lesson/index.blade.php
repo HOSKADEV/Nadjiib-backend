@@ -4,12 +4,12 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
-    <script src="https://kit.fontawesome.com/cec0d2ede3.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/cec0d2ede3.js" crossorigin="00CCDCE7-0C17-4810-AE86-017AF928A04E"></script>
 @endsection
 
 @section('page-header')
     <h4 class="fw-bold py-3 mb-1 ">
-        <span class="text-muted fw-light">{{ trans('app.dashboard') }} /</span>{{ trans('lesson.lessons') }}
+        <span class="text-muted fw-light">{{$course->name}} / </span>{{ trans('lesson.lessons') }}
     </h4>
 @endsection
 @section('content')
@@ -24,10 +24,10 @@
 
                 <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                     <form action="" method="GET" id="searchNoticeForm">
-                        <label for="name" class="form-label">{{ trans('lesson.label.title') }}</label>
+                        <label for="name" class="form-label">{{ trans('lesson.search') }}</label>
                         <input type="text" id="name" name="search" value="{{ Request::get('search') }}"
-                            class="form-control input-solid"
-                            placeholder="{{ Request::get('search') != '' ? '' : trans('lesson.placeholder.title') }}">
+                            class="form-control input-'.Session::get('theme') == 'dark' ? 'regular' : 'solid' .'"
+                            placeholder="{{ Request::get('search') != '' ? '' : trans('lesson.placeholder') }}">
                     </form>
                 </div>
             </div>
@@ -53,34 +53,38 @@
                             <td>
                                 @foreach ($lesson->videos as $video)
                                     <a href="{{ $video->url() }}">
-                                      <i class="bx bxs-movie-play bx-md" style="color: #696cff"></i>
+                                      <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-video-regular.svg' : 'assets/icons/file-video-solid.svg')}}" height="30px" width="30px"/>
                                     </a>
                                 @endforeach
 
                                 @foreach ($lesson->files as $file)
                                 @if ($file->type() == 'img' )
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file-image bx-md" style="color: #03c3ec"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-image-regular.svg' : 'assets/icons/file-image-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @elseif ($file->type() == 'doc')
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file-doc bx-md" style="color: #356AAA"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-word-regular.svg' : 'assets/icons/file-word-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @elseif ($file->type() == 'xls')
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file bx-md" style="color: #1F7244"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-excel-regular.svg' : 'assets/icons/file-excel-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @elseif ($file->type() == 'ppt')
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file bx-md" style="color: #D24625"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-powerpoint-regular.svg' : 'assets/icons/file-powerpoint-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @elseif ($file->type() == 'pdf')
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file-pdf bx-md" style="color: #B30B00"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-pdf-regular.svg' : 'assets/icons/file-pdf-solid.svg')}}" height="30px" width="30px"/>
+                                </a>
+                                @elseif ($file->type() == 'zip')
+                                <a href="{{ $file->url() }}">
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-zipper-regular.svg' : 'assets/icons/file-zipper-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @else
                                 <a href="{{ $file->url() }}">
-                                  <i class="bx bxs-file-blank bx-md" style="color: #8592a3"></i>
+                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-regular.svg' : 'assets/icons/file-solid.svg')}}" height="30px" width="30px"/>
                                 </a>
                                 @endif
 
@@ -125,7 +129,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 2000);
 
                 function submitForm() {
                     $("#searchNoticeForm").submit();
