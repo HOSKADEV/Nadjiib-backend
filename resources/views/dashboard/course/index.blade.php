@@ -4,7 +4,9 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
-    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0"
+        integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous">
+    </script>
 @endsection
 
 @section('page-header')
@@ -62,7 +64,7 @@
                         <label for="search" class="form-label">{{ trans('user.label.search') }}</label>
                         <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
                             class="form-control input-solid"
-                            placeholder="{{ Request::get('search') != '' ? '' : trans('user.placeholder.search') }}">
+                            placeholder="{{ Request::get('search') != '' ? '' : trans('course.search') }}">
                     </div>
                 </div>
             </form>
@@ -113,6 +115,21 @@
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
+                                        <a class="dropdown-item"
+                                            href="{{ url('dashboard/course/' . $course->id . '/lessons') }}">
+                                            <i class="bx bx-show me-2"></i>
+                                            {{ trans('course.show') }}
+                                        </a>
+
+                                        <a class="dropdown-item" href="{{ url($course->image) }}">
+                                            <i class='bx bx-image me-1'></i>
+                                            {{ trans('course.image') }}
+                                      </a>
+                                        <a class="dropdown-item" href="{{ url($course->video) }}">
+                                            <i class='bx bx-movie-play me-1'></i>
+                                            {{ trans('course.video') }}
+                                    </a>
+
                                         @if ($course->status == 'PENDING')
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#approvedCourseModal{{ $course->id }}">
@@ -135,19 +152,16 @@
                                         @endif
 
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#createAdModal{{$course->id}}">
-                                                <i class='bx bxs-megaphone me-2'></i>
-                                                {{ trans('ad.create') }}
+                                            data-bs-target="#createAdModal{{ $course->id }}">
+                                            <i class='bx bxs-megaphone me-2'></i>
+                                            {{ trans('ad.create') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ url('dashboard/course/'. $course->id . '/lessons') }}">
-                                            <i class="bx bx-show me-2"></i>
-                                            {{ trans('course.show') }}
-                                        </a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+
                         @include('dashboard.course.create')
                         @include('dashboard.course.delete')
                         @include('dashboard.course.approved')
@@ -194,7 +208,7 @@
                 $("#search").focus();
                 timer = setTimeout(function() {
                     submitForm();
-                }, 4000);
+                }, 1000);
 
             })
 
@@ -207,7 +221,8 @@
                 //const fileInput = document.querySelector('.image-input');
                 const fileInput = document.getElementById('image' + id);
                 if (fileInput.files[0]) {
-                    document.getElementById('uploaded-image' + id).src = window.URL.createObjectURL(fileInput
+                    document.getElementById('uploaded-image' + id).src = window.URL.createObjectURL(
+                        fileInput
                         .files[0]);
                 }
             });
@@ -216,7 +231,8 @@
                 //const fileInput = document.querySelector('.image-input');
                 const fileInput = document.getElementById('image' + id);
                 fileInput.value = '';
-                document.getElementById('uploaded-image' + id).src = document.getElementById('old-image' + id).src;
+                document.getElementById('uploaded-image' + id).src = document.getElementById('old-image' +
+                    id).src;
             });
         });
     </script>

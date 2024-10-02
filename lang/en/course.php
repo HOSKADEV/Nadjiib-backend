@@ -36,4 +36,6 @@ return [
         'teacher'  => 'Teacher',
         'subject'  => 'Subject'
     ],
+
+    'search'=> 'Type course name'
 ];

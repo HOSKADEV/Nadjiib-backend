@@ -158,7 +158,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
 
             });
 
@@ -167,7 +167,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
 
             });
 
@@ -176,7 +176,7 @@
                 $("#search").focus();
                 timer = setTimeout(function() {
                     submitForm();
-                }, 4000);
+                }, 1000);
 
             })
 

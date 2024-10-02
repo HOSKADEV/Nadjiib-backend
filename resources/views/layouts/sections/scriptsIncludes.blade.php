@@ -22,5 +22,3 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-<script src="https://kit.fontawesome.com/cec0d2ede3.js" crossorigin="anonymous"></script>

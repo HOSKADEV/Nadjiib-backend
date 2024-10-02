@@ -81,7 +81,7 @@
                         <th>{{ trans('payment.teacher') }}</th>
                         <th>{{ trans('payment.amount') }}</th>
                         {{-- <th>{{ trans('payment.date') }}</th> --}}
-                        {{-- <th>{{ trans('payment.phone') }}</th> --}}
+                        <th>{{ trans('payment.email') }}</th>
                         <th>{{ trans('payment.status') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>
@@ -93,7 +93,7 @@
                             <td>{{ $payment->teacher->user->name }}</td>
                             <td>{{ $payment->amount }}</td>
                             {{-- <td>{{ $payment->date }}</td> --}}
-                            {{-- <td>{{ $payment->teacher->user->phone }}</td> --}}
+                            <td>{{ $payment->teacher->user->email }}</td>
                             <td>
                                 @if ($payment->status() == 2)
                                     <span class="badge rounded-pill text-capitalize bg-success">

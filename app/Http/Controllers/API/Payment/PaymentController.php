@@ -78,9 +78,10 @@ class PaymentController extends Controller
         $end_date = Carbon::createFromDate($payment->date)->lastOfMonth();
 
         $purchases = $teacher->purchases()
-                             ->whereBetween('purchases.created_at',[$start_date,$end_date])
-                             ->where('purchases.status', 'success')
-                             ->get();
+                            ->whereDate('purchases.created_at', '>=', $start_date)
+                            ->whereDate('purchases.created_at', '<=', $end_date)
+                            ->where('purchases.status', 'success')
+                            ->get();
 
         return response()->json([
           'status' => true,
