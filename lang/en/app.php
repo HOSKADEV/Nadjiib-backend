@@ -11,6 +11,7 @@ return [
     'update'    => 'Update',
     'delete'    => 'Delete',
     'send' => 'Send',
+    'total' => 'Total',
 
     'all' => 'All',
     'status' => [

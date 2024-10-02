@@ -41,4 +41,18 @@ return [
         'amount' => 'Discount value',
     ],
 
+    'total_percentage' => 'Total percentage',
+    'total_amount' =>'Total amount',
+
+    'bonus' => [
+      'type' => 'Type',
+      'created' => 'Created at',
+      'percentage' => 'Percentage',
+      'amount' => 'Amount',
+      'standard' => 'Standard Percentage',
+      'invitation' => 'Invitation bonus',
+      'cloud' => 'Cloud bonus',
+      'community' => 'Community bonus'
+    ]
+
 ];

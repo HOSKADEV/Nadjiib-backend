@@ -3,7 +3,8 @@
 @section('title', trans('payment.payments'))
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}">
+    </script>
     <script src="https://unpkg.com/htmx.org@2.0.0"
         integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous">
     </script>
@@ -55,7 +56,8 @@
                         <label for="date" class="form-label">{{ trans('payment.date') }}</label>
 
                         <div class="input-group input-group-merge">
-                            <input type="text" readonly="readonly" id="date" name="date" class="form-control input-solid" value={{$date->month.'-'.$date->year}}>
+                            <input type="text" readonly="readonly" id="date" name="date"
+                                class="form-control input-solid" value={{ $date->month . '-' . $date->year }}>
                             <span class="input-group-text cursor-pointer"><i class='bx bx-calendar'></i></span>
                         </div>
                     </div>
@@ -86,38 +88,42 @@
                 </thead>
                 <tbody>
                     @foreach ($payments->items() as $key => $payment)
-                    <tr>
-                            <th>{{$key+1}}</th>
-                        <td>{{ $payment->teacher->user->name }}</td>
-                        <td>{{ $payment->amount }}</td>
-                        {{-- <td>{{ $payment->date }}</td> --}}
-                        {{-- <td>{{ $payment->teacher->user->phone }}</td> --}}
-                        <td>@if ($payment->status() == 2)
-                          <span class="badge rounded-pill text-capitalize bg-success">
-                              {{ trans('payment.confirmed') }}
-                          </span>
-                      @elseif($payment->status() == 1)
-                          <span class="badge rounded-pill text-capitalize bg-warning">
-                              {{ trans('payment.paid') }}
-                          </span>
-                      @else
-                          <span class="badge rounded-pill text-capitalize bg-danger">
-                              {{ trans('payment.unpaid') }}
-                          </span>
-                      @endif</td>
-                      <td>
-                        <button type="button" class="btn btn-sm btn-warning mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#paidModal{{ $payment->id }}">
-                                    <i class='bx bx-money'></i>
-                                </button>
+                        <tr>
+                            <th>{{ $key + 1 }}</th>
+                            <td>{{ $payment->teacher->user->name }}</td>
+                            <td>{{ $payment->amount }}</td>
+                            {{-- <td>{{ $payment->date }}</td> --}}
+                            {{-- <td>{{ $payment->teacher->user->phone }}</td> --}}
+                            <td>
+                                @if ($payment->status() == 2)
+                                    <span class="badge rounded-pill text-capitalize bg-success">
+                                        {{ trans('payment.confirmed') }}
+                                    </span>
+                                @elseif($payment->status() == 1)
+                                    <span class="badge rounded-pill text-capitalize bg-warning">
+                                        {{ trans('payment.paid') }}
+                                    </span>
+                                @else
+                                    <span class="badge rounded-pill text-capitalize bg-danger">
+                                        {{ trans('payment.unpaid') }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
 
-                                <!-- File button -->
-                                <a href="{{ url('dashboard/payment/'. $payment->id . '/purchases') }}" class="btn btn-sm btn-info mx-1">
+                                <a href="{{ url('dashboard/payment/' . $payment->id . '/purchases') }}"
+                                    class="btn btn-sm btn-info mx-1">
                                     <i class='bx bx-purchase-tag'></i>
-                              </a>
-                      </td>
-                    </tr>
-                    @include('dashboard.payment.paid')
+                                </a>
+                                @if (empty($payment->status()))
+                                    <button type="button" class="btn btn-sm btn-warning mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#paidModal{{ $payment->id }}">
+                                        <i class='bx bx-money'></i>
+                                    </button>
+                                @endif
+                            </td>
+                        </tr>
+                        @include('dashboard.payment.paid')
                     @endforeach
                 </tbody>
             </table>
