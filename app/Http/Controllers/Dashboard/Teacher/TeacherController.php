@@ -29,6 +29,7 @@ class TeacherController extends Controller
   {
       $teacher = $this->teacher->find($request->id);
       $teacher->update(['status' => !boolval($teacher->status)]);
+      $teacher->notify();
       toastr()->success(trans('message.success.update'));
       return redirect()->route('dashboard.users.index');
   }

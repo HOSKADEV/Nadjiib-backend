@@ -111,4 +111,18 @@ class Teacher extends Model
 
       return $teacher_posts >= $posts_number ? true : false;
     }
+
+    public function notify(){
+      $teacher = $this->refresh();
+      $user = $teacher->user;
+      if($teacher->status){
+        $user->notices()->where('notices.type',1)->count() == 0
+        ? $user->notify(1,true)
+        : $user->notify(9,true);
+      }else{
+        $user->notify(10,true);
+      }
+
+
+    }
 }

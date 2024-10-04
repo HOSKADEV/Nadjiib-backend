@@ -70,6 +70,10 @@ class UserController extends Controller
 
       $user->tokens()->delete();
 
+      if($user->teacher){
+        $user->teacher->courses()->delete();
+      }
+
       //$user->delete();
 
       return response()->json([

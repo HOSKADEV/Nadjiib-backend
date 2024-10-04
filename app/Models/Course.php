@@ -30,8 +30,8 @@ class Course extends Model
     'status',
   ];
 
-  protected $softCascade = ['courseLevel', 'courseSection'];
-
+  /* protected $softCascade = ['courseLevel', 'courseSection']; */
+  protected $softCascade = ['ads', 'wishlists'];
   protected $casts = [
     'teacher_id' => 'integer',
     'subject_id' => 'integer',

@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use Laravel\Sanctum\HasApiTokens;
+use App\Http\Controllers\Controller;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Session;
 
 class User extends Authenticatable
 {
@@ -69,8 +71,9 @@ class User extends Authenticatable
     }
   }
 
-  public function role(){
-    if($this->role == 2 && empty($this->teacher?->status)){
+  public function role()
+  {
+    if ($this->role == 2 && empty($this->teacher?->status)) {
       return 3;
     }
 
@@ -90,7 +93,11 @@ class User extends Authenticatable
     return $this->hasMany(Notification::class);
   }
 
-  public function notify($type)
+  public function notices(){
+    return $this->hasManyThrough(Notice::class, Notification::class,'user_id','id','id', 'notice_id');
+  }
+
+  public function notify($type, $with_fcm=null)
   {
     switch ($type) {
       case 1:
@@ -181,6 +188,28 @@ class User extends Authenticatable
         ]);
         break;
 
+      case 9:
+        $notice = Notice::create([
+          'title_en' => 'You have been re-verified as a teacher',
+          'title_ar' => 'لقد تم توثيقك مجددا كأستاذ',
+          'content_en' => 'Your teacher privileges have been restored',
+          'content_ar' => 'تمت استعادة امتيازات الأستاذ الخاصة بك',
+
+          'type' => 1,
+        ]);
+        break;
+
+      case 10:
+        $notice = Notice::create([
+          'title_en' => 'Your verification has been canceled',
+          'title_ar' => 'لقد تم الغاء توثيقك',
+          'content_en' => 'Your teacher privileges have been revoked',
+          'content_ar' => 'تم إلغاء امتيازات الأستاذ الخاصة بك',
+
+          'type' => 1,
+        ]);
+        break;
+
       default:
         $notice = null;
     }
@@ -190,6 +219,15 @@ class User extends Authenticatable
         'user_id' => $this->id,
         'notice_id' => $notice->id
       ]);
+
+      if ($with_fcm && $this->fcm_token) {
+        $controller = new Controller();
+        $controller->send_fcm_device(
+          $notice->title(Session::get('locale')),
+          $notice->content(Session::get('locale')),
+          $this->fcm_token
+        );
+      }
 
       return $notification;
     }
