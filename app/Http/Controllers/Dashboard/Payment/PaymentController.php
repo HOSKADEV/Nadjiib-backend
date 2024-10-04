@@ -43,16 +43,17 @@ class PaymentController extends Controller
       $payment_date = Carbon::createFromDate($payment->date);
       $current_date = Carbon::now();
 
-      if ($payment_date->month == $current_date->month && $payment_date->year == $current_date->year) {
+      /* if ($payment_date->month == $current_date->month && $payment_date->year == $current_date->year) {
         throw new Exception(trans('message.prohibited'));
-      }
+      } */
 
       if ($request->is_paid == 'yes') {
 
         $payment->is_paid = $request->is_paid;
         $payment->paid_at = Carbon::now();
         $payment->save();
-
+        $payment->refresh();
+        $payment->notify();
       }
 
       toastr()->success(trans('message.success.update'));

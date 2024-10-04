@@ -13,6 +13,11 @@
                 </div>
                 <div class="modal-body">
                     <p>{{ trans('purchase.refuse_confirmation') }}</p>
+
+                    <div class="mb-3">
+                      <label class="form-label" for="reject_reason">{{ trans('purchase.reject_reason') }}</label>
+                      <textarea  class="form-control" name="reject_reason" rows="3" placeholder="{{ trans('purchase.reject_placeholder') }}"></textarea>
+                  </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary"

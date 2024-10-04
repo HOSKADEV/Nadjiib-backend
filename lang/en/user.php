@@ -2,20 +2,20 @@
 
 return [
     'users'  => 'Users',
-    'name'   => 'Name', 
-    'email'  => 'Email', 
-    'phone'  => 'Phone', 
+    'name'   => 'Name',
+    'email'  => 'Email',
+    'phone'  => 'Phone',
     'gender' => 'Gender',
-    'image'  => 'Image', 
+    'image'  => 'Image',
     'account'   => 'Account',
     'role'   => 'Role',
     'status' => 'Status',
 
     'create'    => 'Add a new user',
     'edit'      => 'Edit user Profile',
-    'update'    => 'Update user data',   
+    'update'    => 'Update user data',
     'delete'    => 'Delete user',
-    'upgrade'   => 'Upgrade Account',  
+    'upgrade'   => 'Upgrade Account',
 
     'delete_confirmation' => 'Are you sure you want to delete this user ?',
     'upgrade_confirmation' => 'Are you sure about the process of upgrading this account?',
@@ -29,7 +29,9 @@ return [
         'email'    => 'Email',
         'phone'    => 'Phone',
         'gender'   => 'Gender',
-        'password' => 'Password'
+        'password' => 'Password',
+        'ccp' => 'CCP account number',
+        'baridi_mob' => 'Baridi mob account number',
     ],
     'placeholder' =>[
         'search' => 'Write the username, email, or phone number',

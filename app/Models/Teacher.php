@@ -117,10 +117,10 @@ class Teacher extends Model
       $user = $teacher->user;
       if($teacher->status){
         $user->notices()->where('notices.type',1)->count() == 0
-        ? $user->notify(1,true)
-        : $user->notify(9,true);
+        ? $user->notify(type:1, fcm:true)
+        : $user->notify(type:9, fcm:true);
       }else{
-        $user->notify(10,true);
+        $user->notify(type:10, fcm:true);
       }
 
 
