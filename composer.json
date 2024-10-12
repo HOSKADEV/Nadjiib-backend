@@ -9,6 +9,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.0.2",
+    "arielmejiadev/larapex-charts": "^8.1",
     "askedio/laravel-soft-cascade": "^10.0",
     "barryvdh/laravel-dompdf": "^3.0",
     "chargily/chargily-pay": "^2.0",

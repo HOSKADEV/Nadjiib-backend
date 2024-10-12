@@ -1,0 +1,28 @@
+{
+"Users chart" : "مخطط المستخدمين",
+"Purchases chart" : "مخطط المبيعات",
+
+"New users" : "عدد المنضمين",
+"New purchases" : "عدد المبيعات",
+
+"Last 7 days" : "آخر 7 أيام",
+"Last 6 months" : "آخر 6 أشهر",
+"Last 5 years" : "آخر 5 سنوات",
+
+"user_role_1" : "تلميذ",
+"user_role_2" : "أستاذ",
+
+"course_status_PENDING" : "في الإنتظار",
+"course_status_ACCEPTED" : "مقبولة",
+"course_status_REFUSED" : "مرفوضة",
+
+"purchase_status_pending" : "في الإنتظار",
+"purchase_status_success" : "مقبولة",
+"purchase_status_failed" : "مرفوضة",
+
+"Users roles" : "أدوار المستخدمين",
+"Courses status" : "حالات الدورات",
+"Purchases status" : "حالات المعاملات"
+
+
+}

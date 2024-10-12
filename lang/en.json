@@ -1,0 +1,12 @@
+{
+"user_role_1" : "Student",
+"user_role_2" : "Teacher",
+
+"course_status_PENDING" : "Pending",
+"course_status_ACCEPTED" : "Accepted",
+"course_status_REFUSED" : "Refused",
+
+"purchase_status_pending" : "Pending",
+"purchase_status_success" : "Success",
+"purchase_status_failed" : "Failed"
+}
