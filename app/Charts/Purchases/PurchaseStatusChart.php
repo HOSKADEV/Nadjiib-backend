@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Purchases;
 
 use App\Models\Purchase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class PurchaseStatusChart
@@ -38,6 +39,7 @@ class PurchaseStatusChart
             ->setLabels($xaxis)
             ->setHeight(160)
             ->setWidth(280)
-            ->setFontFamily('Readex Pro');
+            ->setFontFamily('Readex Pro')
+    ->setFontColor(Session::get('theme') == 'dark' ? '#FFFFFF' : '#000000');
     }
 }

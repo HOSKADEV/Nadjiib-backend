@@ -30,6 +30,14 @@
                 <div>{{ trans('menu.dashboard') }}</div>
             </a>
         </li>
+
+        <li class="menu-item {{ request()->routeIs('stats') ? 'active' : '' }}">
+          <a href="{{ route('stats') }}" class="menu-link">
+              {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+              <i class='menu-icon bx bxs-bar-chart-alt-2'></i>
+              <div>{{ trans('menu.stats') }}</div>
+          </a>
+      </li>
         <li class="menu-item {{ request()->routeIs('dashboard.sections.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.sections.index') }}" class="menu-link">
                 {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}

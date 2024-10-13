@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 // Main Page Route
 Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
+
+Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats')->middleware('auth');
 //
 
 // authentication

@@ -16,5 +16,6 @@ return [
     'payments' => 'Dues',
     'documentation' => 'Documentation',
     'policy' => 'Privacy policy',
-    'about' => 'Terms of use'
+    'about' => 'Terms of use',
+    'stats' => 'Statistics'
 ];

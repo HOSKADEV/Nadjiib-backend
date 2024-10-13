@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Purchases;
 
-use App\Models\User;
+use App\Models\Purchase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
-class YearlyUsersChart
+class YearlyPurchasesChart
 {
     protected $chart;
 
@@ -19,7 +20,7 @@ class YearlyUsersChart
     public function build()
     {
 
-      $data = User::whereDate('created_at', '>=' , Carbon::now()->subYears(4))
+      $data = Purchase::whereDate('created_at', '>=' , Carbon::now()->subYears(4))
       ->groupBy(DB::raw('YEAR(created_at)'))
       ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(id) AS users'))
       ->get()->pluck( 'users','year')->all();
@@ -35,14 +36,15 @@ class YearlyUsersChart
 
       //dd($yaxis);
 
-      return $this->chart->lineChart()
-    ->addData(__('New users'), $yaxis)
+      return $this->chart->areaChart()
+    ->addData(__('New purchases'), $yaxis)
     ->setXAxis($xaxis)
     //->setSparkline()
     ->setStroke(width:4, curve:'smooth')
     ->setHeight(250)
     ->setDataLabels(true)
     ->setFontFamily('Readex Pro')
-    ->setColors(['#303F9F']);
+    ->setFontColor(Session::get('theme') == 'dark' ? '#FFFFFF' : '#000000')
+    ->setColors(['#007FFC']);
     }
 }

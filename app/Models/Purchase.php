@@ -83,6 +83,7 @@ class Purchase extends Model
         'coupon_id' => $coupon_code->id,
         'percentage' => $percentage,
         'amount' => $amount,
+        'created_at' => Carbon::now()
       ]);
 
       $this->total -= $amount;
@@ -96,6 +97,7 @@ class Purchase extends Model
         'coupon_id' => $invitation_code->id,
         'percentage' => $percentage,
         'amount' => $amount,
+        'created_at' => Carbon::now()
       ]);
 
       $this->total -= $amount;

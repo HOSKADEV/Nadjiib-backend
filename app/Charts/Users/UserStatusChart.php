@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Users;
 
-use App\Models\Course;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
-class CourseStatusChart
+class UserStatusChart
 {
     protected $chart;
 
@@ -18,19 +19,20 @@ class CourseStatusChart
     public function build()
     {
 
-      $data = Course::
-      groupBy('status')
-      ->select('status', DB::raw('COUNT(id) as courses'))
-      ->pluck('courses', 'status')->toArray();
+      $data = User::whereNot('role', 0)
+      ->whereNot('status', 'DELETED')
+      ->groupBy('role')
+      ->select('role', DB::raw('COUNT(id) as users'))
+      ->pluck('users', 'role')->toArray();
 
       $xaxis = [];
       $yaxis = [];
       foreach ($data as $key => $item) {
-        $xaxis[] = __('course_status_' . $key);
+        $xaxis[] = __('user_role_' . $key);
         $yaxis[] = $item;
       }
 
-      //dd($xaxis);
+      //dd($yaxis);
         return $this->chart->pieChart()
             //->setTitle('Top 3 scorers of the team.')
             //->setSubtitle('Season 2021.')
@@ -38,6 +40,7 @@ class CourseStatusChart
             ->setLabels($xaxis)
             ->setHeight(160)
             ->setWidth(280)
-            ->setFontFamily('Readex Pro');
+            ->setFontFamily('Readex Pro')
+            ->setFontColor(Session::get('theme') == 'dark' ? '#FFFFFF' : '#000000');
     }
 }
