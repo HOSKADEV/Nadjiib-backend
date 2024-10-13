@@ -31,16 +31,6 @@ class AnalyticsController extends Controller
     public function stats(Request $request)
     {
 
-      foreach(\App\Models\PurchaseBonus::all() as $item){
-        $item->created_at = $item->created_at ?? $item->purchase->created_at;
-        $item->save();
-      }
-
-      foreach(\App\Models\PurchaseCoupon::all() as $item){
-        $item->created_at = $item->created_at ?? $item->purchase->created_at;
-        $item->save();
-      }
-
       $users_chart = match($request->users_chart){
         'monthly' => new MonthlyUsersChart(),
         'yearly' => new YearlyUsersChart(),
