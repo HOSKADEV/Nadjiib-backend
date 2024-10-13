@@ -30,7 +30,8 @@ class Purchase extends Model
     'price',
     'total',
     'status',
-    'payment_method'
+    'payment_method',
+    'reject_reason',
   ];
 
 
@@ -292,5 +293,28 @@ class Purchase extends Model
     }else{
       return $fileExtension;
     }
+  }
+
+  public function notify(){
+    $student = $this->student->user;
+    $teacher = $this->course->teacher->user;
+
+      if($this->status == 'success') {
+        $student ? $student->notify(
+          type: 13,
+          fcm: true
+        ):null;
+        $teacher ? $teacher->notify(
+          type: 2,
+          fcm: true
+        ):null;
+      }elseif($this->status == 'failed') {
+        $student ? $student->notify(
+          type: 14,
+          content: $this->reject_reason,
+          fcm: true
+        ):null;
+      }
+
   }
 }

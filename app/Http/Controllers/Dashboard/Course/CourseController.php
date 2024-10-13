@@ -94,9 +94,12 @@ class CourseController extends Controller
     public function update(Request $request)
     {
         $data = [
-            'status' => $request->status == 1 ? CourseStatus::ACCEPTED : CourseStatus::REFUSED
+            'status' => $request->status == 1 ? CourseStatus::ACCEPTED : CourseStatus::REFUSED,
+            'reject_reason'=> $request->reject_reason,
         ];
-        $this->courses->update($request->id, $data);
+        $course = $this->courses->update($request->id, $data);
+        $course->refresh();
+        $course->notify();
         toastr()->success($request->status == 1 ? trans('message.success.approved') : trans('message.success.reject'));
         return redirect()->route('dashboard.courses.index');
     }

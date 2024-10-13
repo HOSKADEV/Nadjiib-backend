@@ -11,6 +11,8 @@ return [
     'image'  => 'An introductory picture of the course',
     'video'  => 'An introductory video about the course',
     'status' => 'Status',
+    'reject_reason' => 'Reason for rejection',
+    'reject_placeholder' => 'Write a reason why you are rejecting this course',
 
     'lessons' => 'Lessons',
 
@@ -36,4 +38,6 @@ return [
         'teacher'  => 'Teacher',
         'subject'  => 'Subject'
     ],
+
+    'search'=> 'Type course name'
 ];

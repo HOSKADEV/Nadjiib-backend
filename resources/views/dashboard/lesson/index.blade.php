@@ -129,7 +129,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 2000);
+                }, 1000);
 
                 function submitForm() {
                     $("#searchNoticeForm").submit();

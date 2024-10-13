@@ -105,14 +105,14 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
             });
 
             $('#type_filter').on('change', function(event) {
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
             });
         });
     </script>

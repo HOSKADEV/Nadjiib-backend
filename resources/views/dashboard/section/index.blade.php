@@ -86,7 +86,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
 
                 function submitForm() {
                     $("#searchSectionForm").submit();

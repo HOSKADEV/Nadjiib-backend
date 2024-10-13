@@ -105,6 +105,7 @@ class PurchaseController extends Controller
       }
 
       $purchase->status = $request->status;
+      $purchase->reject_reason = $request->reject_reason;
       $purchase->save();
 
       if ($request->status == 'success') {
@@ -112,6 +113,9 @@ class PurchaseController extends Controller
         $purchase->apply_subscription();
 
       }
+
+      $purchase->refresh();
+      $purchase->notify();
 
       toastr()->success(trans('message.success.update'));
       return redirect()->route('dashboard.purchases.index');

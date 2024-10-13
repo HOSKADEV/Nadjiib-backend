@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use Laravel\Sanctum\HasApiTokens;
+use App\Http\Controllers\Controller;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Session;
 
 class User extends Authenticatable
 {
@@ -29,6 +31,8 @@ class User extends Authenticatable
     'image',
     'role',
     'status',
+    'ccp',
+    'baridi_mob',
   ];
 
   /**
@@ -69,8 +73,9 @@ class User extends Authenticatable
     }
   }
 
-  public function role(){
-    if($this->role == 2 && empty($this->teacher?->status)){
+  public function role()
+  {
+    if ($this->role == 2 && empty($this->teacher?->status)) {
       return 3;
     }
 
@@ -90,7 +95,12 @@ class User extends Authenticatable
     return $this->hasMany(Notification::class);
   }
 
-  public function notify($type)
+  public function notices()
+  {
+    return $this->hasManyThrough(Notice::class, Notification::class, 'user_id', 'id', 'id', 'notice_id');
+  }
+
+  public function notify($type, $content = null, $fcm = null)
   {
     switch ($type) {
       case 1:
@@ -109,7 +119,7 @@ class User extends Authenticatable
           'title_en' => 'Your course has been purchased',
           'title_ar' => 'تم شراء دورتك',
           'content_en' => 'A student has purchased one of your courses',
-          'content_ar' => 'قام أحد الطلاب بشراء واحدة من دوراتك',
+          'content_ar' => 'قام أحد التلاميذ بشراء واحدة من دوراتك',
 
           'type' => $type,
         ]);
@@ -128,7 +138,7 @@ class User extends Authenticatable
 
       case 4:
         $notice = Notice::create([
-          'title_en' => 'Published in Cloud',
+          'title_en' => 'Published in Community',
           'title_ar' => 'تم النشر في تفوق',
           'content_en' => 'The video has been posted in the Community and it\'s ready',
           'content_ar' => 'لقد تم نشر الفيديو في مجتمع تفوق و أصبح جاهز',
@@ -181,6 +191,72 @@ class User extends Authenticatable
         ]);
         break;
 
+      case 9:
+        $notice = Notice::create([
+          'title_en' => 'You have been re-verified as a teacher',
+          'title_ar' => 'لقد تم توثيقك مجددا كأستاذ',
+          'content_en' => 'Your teacher privileges have been restored',
+          'content_ar' => 'تمت استعادة امتيازات الأستاذ الخاصة بك',
+
+          'type' => 1,
+        ]);
+        break;
+
+      case 10:
+        $notice = Notice::create([
+          'title_en' => 'Your verification has been canceled',
+          'title_ar' => 'لقد تم الغاء توثيقك',
+          'content_en' => 'Your teacher privileges have been revoked',
+          'content_ar' => 'تم إلغاء امتيازات الأستاذ الخاصة بك',
+
+          'type' => 1,
+        ]);
+        break;
+
+      case 11:
+        $notice = Notice::create([
+          'title_en' => 'Your course has been approved',
+          'title_ar' => 'تمت الموافقة على دورتك',
+          'content_en' => 'Your course has been approved and is now available for purchase',
+          'content_ar' => 'تمت الموافقة على دورتك وهي الآن متاحة للشراء',
+
+          'type' => 3,
+        ]);
+        break;
+
+      case 12:
+        $notice = Notice::create([
+          'title_en' => 'Your course was not approved',
+          'title_ar' => 'لم تتم الموافقة على دورتك',
+          'content_en' => $content ?? 'Unfortunately, your course was not approved for publication',
+          'content_ar' => $content ?? 'للأسف، لم تتم الموافقة على نشر دورتك',
+
+          'type' => 3,
+        ]);
+        break;
+
+      case 13:
+        $notice = Notice::create([
+          'title_en' => 'Course purchase successful',
+          'title_ar' => 'تم شراء الدورة بنجاح',
+          'content_en' => 'You have successfully purchased the course and gained access to it and the cloud service',
+          'content_ar' => 'لقد نجحت في شراء الدورة وحصلت على حق الوصول إليها وإلى خدمة السحابة',
+
+          'type' => 2,
+        ]);
+        break;
+
+      case 14:
+        $notice = Notice::create([
+          'title_en' => 'Course purchase unsuccessful',
+          'title_ar' => 'لم تتم عملية شراء الدورة',
+          'content_en' => $content ?? 'Your attempt to purchase the course was unsuccessful',
+          'content_ar' => $content ?? 'لم تنجح محاولتك لشراء الدورة',
+
+          'type' => 2,
+        ]);
+        break;
+
       default:
         $notice = null;
     }
@@ -190,6 +266,15 @@ class User extends Authenticatable
         'user_id' => $this->id,
         'notice_id' => $notice->id
       ]);
+
+      if ($fcm && $this->fcm_token) {
+        $controller = new Controller();
+        $controller->send_fcm_device(
+          $notice->title(Session::get('locale')),
+          $notice->content(Session::get('locale')),
+          $this->fcm_token
+        );
+      }
 
       return $notification;
     }

@@ -213,7 +213,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
             });
 
             $('#section_filter').on('change', function(event) {
@@ -221,7 +221,7 @@
 
                 timer = setTimeout(function() {
                     submitForm();
-                }, 500);
+                }, 1000);
 
             });
 

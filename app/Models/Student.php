@@ -52,7 +52,7 @@ class Student extends Model
 
   public function purchased_courses()
   {
-    return $this->belongsToMany(Course::class, 'purchases');
+    return $this->belongsToMany(Course::class, 'purchases')->withTrashed();
   }
 
   public function completed_lessons()

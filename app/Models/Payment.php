@@ -59,4 +59,14 @@ class Payment extends Model
       $this->amount = $this->bonuses()->sum('amount');
       $this->save();
     }
+
+    public function notify(){
+      $user = $this->teacher->user;
+      if($user) {
+          $user->notify(
+            type: 8,
+            fcm: true
+          );
+      }
+    }
 }

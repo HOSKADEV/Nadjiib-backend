@@ -28,10 +28,11 @@ class Course extends Model
     'video',
     'thumbnail',
     'status',
+    'reject_reason'
   ];
 
-  protected $softCascade = ['courseLevel', 'courseSection'];
-
+  /* protected $softCascade = ['courseLevel', 'courseSection']; */
+  protected $softCascade = ['ads', 'wishlists'];
   protected $casts = [
     'teacher_id' => 'integer',
     'subject_id' => 'integer',
@@ -193,5 +194,23 @@ class Course extends Model
       return collect([]);
     }
 
+  }
+
+  public function notify(){
+    $user = $this->teacher->user;
+    if($user) {
+      if($this->status == 'ACCEPTED') {
+        $user->notify(
+          type: 11,
+          fcm: true
+        );
+      }elseif($this->status == 'REFUSED') {
+        $user->notify(
+          type: 12,
+          content: $this->reject_reason,
+          fcm: true
+        );
+      }
+    }
   }
 }

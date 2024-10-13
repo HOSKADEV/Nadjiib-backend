@@ -27,6 +27,8 @@ return [
     'unsupported_file' => 'Unsupported file type',
     'no_file' => 'No file is available for this transaction',
     'view_file' => 'Check the file here',
+    'reject_reason' => 'Reason for rejection',
+    'reject_placeholder' => 'Write a reason why you are rejecting this transaction',
 
   'search_placeholder' => 'Buyer or course name',
     'accept' => 'Accept transaction',

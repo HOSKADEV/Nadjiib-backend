@@ -10,11 +10,11 @@ return new class extends Migration {
    */
   public function up(): void
   {
+
     Schema::table('purchases', function (Blueprint $table) {
-      Schema::table('purchases', function (Blueprint $table) {
-        $table->enum('payment_method', ['baridimob', 'poste', 'chargily'])->after('status');
-      });
+      $table->enum('payment_method', ['baridimob', 'poste', 'chargily'])->after('status');
     });
+
   }
 
   /**

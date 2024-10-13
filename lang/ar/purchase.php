@@ -29,6 +29,8 @@ return [
     'view_file' => 'تفقد الملف هنا',
     'total_percentage' => 'النسبة الاجمالية',
     'total_amount' =>'المبلغ الاجمالي',
+    'reject_reason'=> 'سبب الرفض',
+    'reject_placeholder'=> 'أكتب سببا لرفضك هذه المعاملة',
 
   'search_placeholder' => 'اسم المشتري أو الدورة',
     'accept' => 'قبول المعاملة',
