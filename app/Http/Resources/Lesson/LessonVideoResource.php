@@ -17,7 +17,8 @@ class LessonVideoResource extends JsonResource
         return [
             'id'        => $this->id,
             'lesson_id' => $this->lesson_id,
-            'video_url' => $this->video_url,
+            //'video_url' => $this->video_url,
+            'video_url' => $this->url(),
             'filename'  => $this->filename,
             'extension' => $this->extension,
             'duration'  => $this->duration,

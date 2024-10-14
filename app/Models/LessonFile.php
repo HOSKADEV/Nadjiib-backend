@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,14 @@ class LessonFile extends Model
     }
 
     public function url(){
-      return $this->file_url ? Storage::disk('s3')->temporaryUrl($this->file_url, now()->addMinutes(30)) : null;
+      if($this->file_url){
+        return File::exists($this->file_url)
+        ?  url($this->file_url)
+        : Storage::disk('s3')->temporaryUrl($this->file_url, now()->addMinutes(30));
+      }
+
+      return null;
+
     }
 
     public function type(){

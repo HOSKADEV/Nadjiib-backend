@@ -94,11 +94,11 @@ class LessonController extends Controller
 
       if ($lesson) {
 
-        if ($request->get('video_url')) {
+        if ($request->has('video_url')) {
 
           $video_url = gettype($request->video_url) == 'string'
             ? $request->video_url
-            : $this->SaveVideo($request->video_url->get(), 'videos/lessons/video');
+            : $this->SaveVideo($request->video_url, 'videos/lessons/video')->getPathName();
 
           $dataVideo = [
             'video_url' => $video_url,
@@ -112,7 +112,7 @@ class LessonController extends Controller
 
         }
 
-        if ($request->get('file_url')) {
+        if ($request->has('file_url')) {
           $files = $request->file_url;
           $filenames = $request->file_filename;
           $extensions = $request->file_extension;
@@ -121,9 +121,9 @@ class LessonController extends Controller
           $lenght = count($files);
 
           for ($i = 0; $i < $lenght; $i++) {
-            $file_url = gettype($request->file_url) == 'string'
-              ? $request->file_url
-              : $this->SaveDocument($request->file_url->get(), 'documents/lessons/file');
+            $file_url = gettype($files[$i]) == 'string'
+              ? $files[$i]
+              : $this->SaveDocument($files[$i], 'documents/lessons/file')->getPathName();
 
             $filesData[] = [
               'lesson_id' => $lesson->id,

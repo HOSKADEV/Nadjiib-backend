@@ -17,7 +17,8 @@ class LessonFileResource extends JsonResource
         return [
           'id'        => $this->id,
           'lesson_id' => $this->lesson_id,
-          'file_url'  => $this->file_url,
+          //'file_url'  => $this->file_url,
+          'file_url'  => $this->url(),
           'filename'  => $this->filename,
           'extension' => $this->extension,
           'created'   => $this->created_at->format('d-m-Y'),

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Aws\S3\S3Client;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,6 +34,12 @@ class LessonVideo extends Model
   public function url()
   {
 
-    return $this->video_url ? Storage::disk('s3')->temporaryUrl($this->video_url, now()->addMinutes(30)) : null;
+    if($this->video_url){
+      return File::exists($this->video_url)
+      ?  url($this->video_url)
+      : Storage::disk('s3')->temporaryUrl($this->video_url, now()->addMinutes(30));
+    }
+
+    return null;
   }
 }
