@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers\API\Lesson;
 
+use Exception;
+use App\Models\LessonFile;
+use Illuminate\Http\Request;
+use App\Http\Traits\uploadFile;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Lesson\LessonResource;
+use App\Repositories\Lesson\LessonRepository;
 use App\Http\Resources\Lesson\LessonCollection;
 use App\Http\Resources\Lesson\LessonFileResource;
-use App\Http\Resources\Lesson\LessonResource;
 use App\Http\Resources\Lesson\LessonVideoResource;
-use App\Http\Resources\Lesson\PaginateLessonCollection;
-use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\LessonFile\LessonFileRepository;
+use App\Http\Resources\Lesson\PaginateLessonCollection;
 use App\Repositories\LessonVideo\LessonVideoRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Exception;
-use Illuminate\Support\Facades\DB;
 
 class LessonController extends Controller
 {
+
+  use uploadFile;
   private $lesson;
   private $lessonVideo;
   private $lessonFile;
@@ -91,33 +95,47 @@ class LessonController extends Controller
       if ($lesson) {
 
         if ($request->get('video_url')) {
-          //  ** create a new data for lesson video
-          $dataVideo = array_replace($request->only([
-            'video_url',
-          ]), [
+
+          $video_url = gettype($request->video_url) == 'string'
+            ? $request->video_url
+            : $this->SaveVideo($request->video_url->get(), 'videos/lessons/video');
+
+          $dataVideo = [
+            'video_url' => $video_url,
             'lesson_id' => $lesson->id,
             'filename' => $request->video_filename,
             'extension' => $request->video_extension,
             'duration' => $request->video_duartion
-          ]);
+          ];
 
-          $lessonVideo = $this->lessonVideo->create($dataVideo);
+          $this->lessonVideo->create($dataVideo);
 
         }
 
         if ($request->get('file_url')) {
+          $files = $request->file_url;
+          $filenames = $request->file_filename;
+          $extensions = $request->file_extension;
+          $filesData = [];
 
-          //  ** create a new data for lesson File
-          $dataFile = array_replace($request->only([]), [
-            'lesson_id' => $lesson->id,
-          ]);
+          $lenght = count($files);
 
-          $lessonFile = $this->lessonFile->create(
-            $dataFile,
-            $request->file_url,
-            $request->file_filename,
-            $request->file_extension
-          );
+          for ($i = 0; $i < $lenght; $i++) {
+            $file_url = gettype($request->file_url) == 'string'
+              ? $request->file_url
+              : $this->SaveDocument($request->file_url->get(), 'documents/lessons/file');
+
+            $filesData[] = [
+              'lesson_id' => $lesson->id,
+              'file_url' => $file_url,
+              'filename' => $filenames[$i],
+              'extension' => $extensions[$i],
+              'created_at' => now(),
+              'updated_at' => now()
+            ];
+          }
+
+          LessonFile::insert($filesData);
         }
 
 
