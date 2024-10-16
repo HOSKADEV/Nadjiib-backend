@@ -16,8 +16,9 @@ class CourseStudentStatsResource extends JsonResource
     public function toArray($request)
     {
       $user = $request->user;
-      $num_videos = $this->videos()->count();
       $num_lessons = $this->lessons()->count();
+      $num_videos = $this->videos()->count();
+      $num_files = $this->files()->count();
       $completed_lessons = empty($user) ? 0 : $user->student?->completed($this);
       $remaining_lessons = $num_lessons - $completed_lessons;
 
@@ -28,8 +29,9 @@ class CourseStudentStatsResource extends JsonResource
       'price' => $this->price,
       'image' => is_null($this->image) ? null : url($this->image),
       'teacher_name' => $this->teacher->user->name,
-      'vidoes' => $num_videos,
       'lessons' => $num_lessons,
+      'videos' => $num_videos,
+      'files' => $num_files,
       'is_wished' => empty($user) ? false : $user->student?->wished($this),
       'is_purchased' => empty($user) ? false : $user->student?->purchased($this),
       'is_owned' => empty($user) ? false : $user->student?->owns($this),

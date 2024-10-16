@@ -23,8 +23,8 @@ class CourseTeacherStatsResource extends JsonResource
       ->where('coupon_id', $teacher->coupon_id)->count();
     $normal_purchases = $total_purchases - $invited_purchases;
 
-    $bonuses = $this->bonuses()->select(DB::raw('MIN(type) AS type'),DB::raw('SUM(amount) AS amount'))
-                              ->groupBy(DB::raw('type > 1'))->get();
+    $bonuses = $this->bonuses()->select(DB::raw('MIN(type) AS type'), DB::raw('SUM(amount) AS amount'))
+      ->groupBy(DB::raw('type > 1'))->get();
 
 
     $standard_amount = $bonuses->where('type', 1)->first()?->amount ?? 0;
@@ -40,8 +40,9 @@ class CourseTeacherStatsResource extends JsonResource
       'price' => $this->price,
       'image' => is_null($this->image) ? null : url($this->image),
       'teacher_name' => $this->teacher->user->name,
-      'vidoes' => $this->videos()->count(),
       'lessons' => $this->lessons()->count(),
+      'videos' => $this->videos()->count(),
+      'files' => $this->files()->count(),
       //'is_wished' => empty($user) ? false : $user->student?->wished($this),
       //'is_purchased' => empty($user) ? false : $user->student?->purchased($this),
       //'is_owned' => empty($user) ? false : $user->student?->owns($this),
