@@ -1,13 +1,16 @@
 <?php
 
 
+use App\Models\Lesson;
 use App\Models\LessonVideo;
 use Illuminate\Http\Request;
 use App\Models\PurchaseCoupon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\API\Ad\AdController;
+use App\Http\Resources\Lesson\LessonResource;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Call\CallController;
 use App\Http\Controllers\API\Chat\ChatController;
@@ -151,43 +154,95 @@ Route::prefix('v1')->group(function () {
 
 Route::post('v1/test', function(Request $request){
 
-  $credentials = new \Chargily\ChargilyPay\Auth\Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')),true));
+  $validation = Validator::make($request->all(), [
+    'course_id' => 'required|exists:courses,id',
+    'title' => 'required',
+    'description' => 'required',
+    'video_url' => 'required',
+    'video_filename' => 'sometimes',
+    'video_extension' => 'sometimes',
+    'video_duartion' => 'sometimes',
+    'file_url' => 'sometimes',
+    'file_filename' => 'sometimes',
+    'file_extension' => 'sometimes',
+    'file_duartion' => 'sometimes',
+  ]);
 
-$chargily_pay = new \Chargily\ChargilyPay\ChargilyPay($credentials);
+  if ($validation->fails()) {
+    return response()->json([
+      'status' => false,
+      'message' => 'Invalid data sent',
+      'errors' => $validation->errors()
+    ], 422);
+  }
 
-/* return response()->json([
-'data' => $chargily_pay->checkouts()->all()
-]); */
-$checkout = $chargily_pay->checkouts()->get('01j8fhf5mg1drhgprgkf89cbf4');
+  try {
+    DB::beginTransaction();
 
-/* $data = [
-  'id' => $checkout->getId(),
-  'customer' => $checkout->getCustomerId(),
-  'invoice' => $checkout->getInvoiceId(),
-  'payment_method' => $checkout->getPaymentMethod(),
-  'amount' => $checkout->getAmount(),
-  'status' => $checkout->getStatus(),
-  'description' => $checkout->getDescription(),
-  'success_url' => $checkout->getSuccessUrl(),
-  'failure_url' => $checkout->getFailureUrl(),
-  'fees' => $checkout->getFees(),
-  'pass_fees_to_customer' => $checkout->getPassFeesToCustomer(),
-  'locale' => $checkout->getLocale(),
-  'url' => $checkout->getUrl(),
-  'created_at' => $checkout->getCreatedAt()->toDateTimeString(),
-  'updated_at' => $checkout->getUpdatedAt()->toDateTimeString(),
-]; */
+    $lesson = Lesson::create($request->only(['course_id', 'title', 'description']));
 
-$pdf = Pdf::loadView('checkout.pdf', compact('checkout'));
-//return $pdf->download('checkout.pdf');
+    if ($lesson) {
 
-return Storage::put('document/purchase/checkout', $pdf->output());
+      if ($request->has('video_url')) {
 
-/* $original_array = array('id' => 1, 'name' => 'John', 'email' => 'john@example.com', 'phone' => '123-456-7890');
-$allowed_keys = array('id', 'name');
-$filtered_array = array_intersect_key($original_array, array_flip($allowed_keys));
+          $file = $request->video_url;
+          $url = Controller::firestore($file, 'lessons/' . $lesson->id . '/videos');
+          LessonVideo::create([
+          'lesson_id' => $lesson->id,
+          'video_url' => $url,
+          'filename'=> $request->video_filename,
+          'extension'=> $request->video_extension,
+          'duration'=> $request->video_duration,
+          ]);
 
-return(count($filtered_array)); */
+      }
+
+      if ($request->has('file_url')) {
+        $files = $request->file_url;
+        $filenames = $request->file_filename;
+        $extensions = $request->file_extension;
+        $filesData = [];
+
+        $lenght = count($files);
+
+        for ($i = 0; $i < $lenght; $i++) {
+
+
+          $file_url = Controller::firestore($files[$i], 'lessons/' . $lesson->id . '/files');
+
+          $filesData[] = [
+            'lesson_id' => $lesson->id,
+            'file_url' => $file_url,
+            'filename' => $filenames[$i],
+            'extension' => $extensions[$i],
+            'created_at' => now(),
+            'updated_at' => now()
+          ];
+        }
+
+        \App\Models\LessonFile::insert($filesData);
+      }
+
+      DB::commit();
+      return response()->json([
+        'status' => true,
+        'message' => 'Lesson Create Successfully',
+        'data' => new LessonResource($lesson)
+      ]);
+    } else {
+      DB::rollBack();
+      return response()->json([
+        'status' => false,
+        'message' => 'Lesson Create Failed',
+      ]);
+    }
+  } catch (Exception $e) {
+    DB::rollBack();
+    return response()->json([
+      'status' => false,
+      'message' => $e->getMessage()
+    ]);
+  }
 
 
 });

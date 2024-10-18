@@ -35,9 +35,13 @@ class LessonVideo extends Model
   {
 
     if($this->video_url){
-      return File::exists($this->video_url)
-      ?  url($this->video_url)
-      : Storage::disk('s3')->temporaryUrl($this->video_url, now()->addMinutes(30));
+      if(File::exists($this->video_url)){
+        return url($this->video_url);
+      }else if(Storage::disk('s3')->exists($this->video_url)){
+        return Storage::disk('s3')->temporaryUrl($this->video_url, now()->addMinutes(30));
+      }else{
+        return $this->video_url;
+      }
     }
 
     return null;
