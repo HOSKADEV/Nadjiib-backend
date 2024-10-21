@@ -51,7 +51,7 @@ class Course extends Model
 
   public function ads()
   {
-    return $this->hasManyThrough(Ad::class, CourseAd::class,'course_id','id','id','ad_id');
+    return $this->hasManyThrough(Ad::class, CourseAd::class,'course_id','ads.id','courses.id','ad_id')->select('ads.*');
   }
 
   public function levels()
