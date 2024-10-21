@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonVideo;
 use Illuminate\Http\Request;
@@ -153,7 +154,7 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::post('v1/test', function(Request $request){
-
+return Course::find(4)->ads;
   $validation = Validator::make($request->all(), [
     'course_id' => 'required|exists:courses,id',
     'title' => 'required',
