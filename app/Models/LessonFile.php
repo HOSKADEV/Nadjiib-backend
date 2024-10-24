@@ -30,9 +30,13 @@ class LessonFile extends Model
 
     public function url(){
       if($this->file_url){
-        return File::exists($this->file_url)
-        ?  url($this->file_url)
-        : Storage::disk('s3')->temporaryUrl($this->file_url, now()->addMinutes(30));
+        if(File::exists($this->file_url)){
+          return url($this->file_url);
+        }else if(Storage::disk('s3')->exists($this->file_url)){
+          return Storage::disk('s3')->temporaryUrl($this->file_url, now()->addMinutes(30));
+        }else{
+          return $this->file_url;
+        }
       }
 
       return null;

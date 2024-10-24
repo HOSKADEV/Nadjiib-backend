@@ -269,18 +269,16 @@ class CourseController extends Controller
     }
 
     try {
-      $courseDelete = $this->course->delete($request->course_id);
-      if (!$courseDelete) {
-        return response()->json([
-          'status' => false,
-          'message' => 'Server Error. Can\'t delete the course at this time.',
-        ], 500);
-      } else {
+      $course = $this->course->find($request->course_id);
+      $course->ads()->delete();
+      $course->wishlists()->delete();
+      $course->delete();
+
         return response()->json([
           'status' => true,
           'message' => 'Course deleted successfully.'
         ]);
-      }
+
     } catch (Exception $e) {
       return response()->json([
         'status' => false,
