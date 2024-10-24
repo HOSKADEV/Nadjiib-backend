@@ -33,10 +33,14 @@ var e = `<div class="dz-preview dz-file-preview">
                 document.getElementById("video_submit_btn").addEventListener("click", function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    $('#video_lesson_id').val($('#lesson_id').val());
                     myDropzone.processQueue();
+                });
+
+                this.on("complete", function (file) {
+                  if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
                     $('#video_submit_btn').prop('disabled', true);
                     $('#video_next_btn').prop('disabled', false);
+                  }
                 });
             }
         };
@@ -59,7 +63,6 @@ var e = `<div class="dz-preview dz-file-preview">
               document.getElementById("files_submit_btn").addEventListener("click", function(e) {
                   e.preventDefault();
                   e.stopPropagation();
-                  $('#files_lesson_id').val($('#lesson_id').val());
                   myDropzone.processQueue();
               });
 

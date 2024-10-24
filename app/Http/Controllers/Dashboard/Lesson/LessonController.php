@@ -18,6 +18,7 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Handler\DropZoneUploadHandler;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Session;
 
 class LessonController extends Controller
 {
@@ -58,13 +59,20 @@ class LessonController extends Controller
 
     try {
       // ** create a new data for lesson if necessary
-      $lesson = Lesson::create($request->only(['course_id', 'title', 'description']));
+      //$lesson = Lesson::create($request->only(['course_id', 'title', 'description']));
+
+      $lesson = new Lesson();
+      $lesson->course_id = $request->course_id;
+      $lesson->title = $request->title;
+      $lesson->description = $request->description;
+
+      Session::put('lesson', $lesson);
 
       return response()->json([
         'status' => true,
         'message' => 'success',
-        'data' => $lesson
       ]);
+
     } catch (Exception $e) {
       DB::rollBack();
       return response()->json([
@@ -94,8 +102,13 @@ class LessonController extends Controller
       $filename = $video->getClientOriginalName();
       $basename = basename($filename, '.' . $extension);
       $video_url = $video->move('videos/lessons/video', $basename . time() . '.' . $extension);
+
+      $lesson = session('lesson');
+      $lesson->save();
+      Session::put('lesson', $lesson);
+
       LessonVideo::create([
-        'lesson_id' => $request->lesson_id,
+        'lesson_id' => $lesson->id,
         'video_url' => $video_url,
         'filename' => $basename,
         'extension' => $extension,
@@ -114,6 +127,7 @@ class LessonController extends Controller
   {//dd($request->files->all()['files']);
     $files = $request->files->all()['files'];
     $filesData = [];
+    $lesson = session('lesson');
 
     foreach ($files as $file) {
       $extension = $file->getClientOriginalExtension();
@@ -124,7 +138,7 @@ class LessonController extends Controller
       Storage::disk('upload')->putFileAs($path, $file,$filename);
 
       $filesData[] = [
-        'lesson_id' => $request->lesson_id,
+        'lesson_id' => $lesson->id,
         'file_url' => $file_url,
         'filename' => $basename,
         'extension' => $extension,

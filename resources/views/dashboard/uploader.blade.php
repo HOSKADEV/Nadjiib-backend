@@ -19,7 +19,7 @@
     {{-- <div class="col-12 mx-auto">
   <h4>Create A new Lesson</h4>
 </div> --}}
-<input type="hidden" id="lesson_id" name="lesson_id">
+
 
     <div class="container py-8">
         <div class="align-text-center">
@@ -109,17 +109,17 @@
 
                         <div id="upload-video" class="content">
                             <div class="content-header mb-4">
-                                <h6 class="mb-0">Personal Info</h6>
-                                <small>Enter Your Personal Info.</small>
+                                <h6 class="mb-0">Video Upload</h6>
+                                <small>Select Lesson video.</small>
                             </div>
                             <div class="row g-6">
                                 <div class="col-12 mb-2">
                                     <form class="dropzone" id="video-form" action="{{ url('/lesson/video/upload') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" id="video_lesson_id" name="lesson_id">
+
                                         <div class="dz-message needsclick col-12">
-                                            Drop files here or click to upload
+                                            Drop video file here or click to upload
                                             <span class="note needsclick">Only one video file is accepted</span>
                                         </div>
                                         <div class="fallback">
@@ -145,18 +145,18 @@
                         <!-- Social Links -->
                         <div id="upload-files" class="content">
                             <div class="content-header mb-4">
-                                <h6 class="mb-0">Social Links</h6>
-                                <small>Enter Your Social Links.</small>
+                                <h6 class="mb-0">Lesson Files</h6>
+                                <small>Select Lesson files.</small>
                             </div>
                             <div class="row g-6">
                                 <div class="col-12 mb-2">
                                   <form class="dropzone" id="files-form" action="{{ url('/lesson/files/upload') }}"
                                       method="POST" enctype="multipart/form-data">
                                       @csrf
-                                      <input type="hidden" id="files_lesson_id" name="lesson_id">
+
                                       <div class="dz-message needsclick col-12">
                                           Drop files here or click to upload
-                                          <span class="note needsclick">Only one video file is accepted</span>
+                                          <span class="note needsclick">Maximum of 15 files are accepted</span>
                                       </div>
                                       <div class="fallback">
                                           <input type="file" name="files[]" class="form-control" {{-- accept="" --}} multiple>
@@ -213,7 +213,6 @@
                     success: function(response) {
                         if (response.status == 1) {
                           $(this).prop('disabled', true);
-                          $('#lesson_id').val(response.data.id);
                           $('#lesson_next_btn').prop('disabled', false);
                         } else {
                             //console.log(response.message);
