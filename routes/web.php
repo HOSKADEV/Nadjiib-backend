@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Course;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -104,3 +105,14 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
 
     Route::post('/documentation/update',[SettingController::class,'documentation']);
 });
+
+
+Route::get('/uploader', function(){
+  $courses = Course::all();
+  session()->put(['locale' => 'en']);
+  return view('dashboard.uploader')->with('courses',$courses);
+});
+
+Route::post('/lesson/create', [LessonController::class, 'create']);
+Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
+Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
