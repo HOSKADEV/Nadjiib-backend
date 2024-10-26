@@ -80,7 +80,9 @@ class SettingsController extends Controller
       $teacher_purchases = $teacher->purchases()->where(DB::raw('DATE(purchases.created_at)'), '>=', Carbon::now()->startOfMonth())
       ->where(DB::raw('DATE(purchases.created_at)'), '<=', Carbon::now()->endOfMonth())->where('purchases.status','success');
 
-      $teacher_total_amount = $teacher_purchases->sum('purchases.price');
+      //$teacher_total_amount = $teacher_purchases->sum('purchases.price');
+
+      $teacher_total_amount = PurchaseBonus::whereIn('purchase_id',$teacher_purchases->pluck('purchases.id')->toArray())->sum('amount');
 
       $teacher_bonuses_amount = PurchaseBonus::whereIn('purchase_id',$teacher_purchases->pluck('purchases.id')->toArray())->whereIn('type',[2,3])->sum('amount');
 
@@ -107,6 +109,7 @@ class SettingsController extends Controller
           'progress' => ($community_percentage + $cloud_percentage ) / 2,
           'amount' => $teacher_bonuses_amount,
           'percentage' => $teacher_bonuses_percentage,
+          'total_amount' => $teacher_total_amount
         ],
       ];
 

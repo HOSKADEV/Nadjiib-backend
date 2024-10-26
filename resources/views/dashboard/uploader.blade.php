@@ -67,8 +67,8 @@
                             <!-- Account Details -->
                             <div id="create-lesson" class="content">
                                 <div class="content-header mb-4">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
+                                    <h6 class="mb-0">Create Lesson</h6>
+                                    <small>Enter Your Lesson Details.</small>
                                 </div>
                                 <div class="row">
                                     <div class="col">

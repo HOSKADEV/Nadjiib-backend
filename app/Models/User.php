@@ -257,6 +257,15 @@ class User extends Authenticatable
         ]);
         break;
 
+        case 15:
+      $notice = Notice::create([
+          'title_en' => 'New Video Available',
+          'title_ar' => 'فيديو جديد متاح',
+          'content_en' => 'A teacher you follow has published a new video. Check it out now!',
+          'content_ar' => 'نشر أستاذ تتابعه فيديو جديد. شاهده الآن!',
+          'type' => $type,
+      ]);
+
       default:
         $notice = null;
     }

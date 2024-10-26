@@ -60,6 +60,8 @@ class PostController extends Controller
 
       }
 
+  $post->notify();
+
       return response()->json([
         'status' => true,
         'message' => 'success',

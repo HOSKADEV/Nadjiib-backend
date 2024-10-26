@@ -77,7 +77,7 @@ class Teacher extends Model
 
     public function followers()
     {
-        return $this->belongsToMany(Student::class, 'followings');
+        return $this->hasManyThrough(Student::class, Following::class, 'teacher_id', 'id', 'id', 'student_id');
     }
 
     public function ads()
