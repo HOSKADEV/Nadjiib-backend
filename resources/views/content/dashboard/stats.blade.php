@@ -6,8 +6,8 @@
 @endsection
 
 @section('vendor-script')
-    <script src="{{ $users_chart->cdn() }}"></script>
-    <script src="{{ $cloud_community_chart->cdn() }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     {{ $users_chart->script() }}
     {{ $purchases_chart->script() }}
     {{ $users_status_chart->script() }}
