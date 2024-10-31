@@ -57,7 +57,7 @@ class PurchasesDetailsChart
 
       foreach($purchases_db_data as $item){
         $key = Carbon::createFromDate($item['year'] . '-' . $item['month'] .'-1')->format('Y-m-d');
-        $purchases_data[$key] = $item['amount'] - $discounts_data[$key] - $bonuses_data[$key];
+        $purchases_data[$key] = $item['amount']??0 - $discounts_data[$key]??0 - $bonuses_data[$key]??0;
       }
 
       //dd($data);
