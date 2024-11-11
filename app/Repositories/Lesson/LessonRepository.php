@@ -40,4 +40,13 @@ interface LessonRepository
      */
     public function paginate($perPage, $courseId, $search = null);
 
+       /**
+     * Paginate Levels.
+     *
+     * @param null $search
+     * @param null $status
+     * @return mixed
+     */
+    public function get($courseId, $search = null);
+
 }

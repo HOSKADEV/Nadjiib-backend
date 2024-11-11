@@ -75,4 +75,17 @@ class EloquentLesson implements LessonRepository
         }
         return $result;
     }
+
+    public function get($courseId, $search = null)
+    {
+        $query = Lesson::query();
+        if ($search) {
+            (new LessonKeywordSearch)($query, $search);
+        }
+        $result = $query->whereCourseId($courseId)->orderBy('id', 'asc')->get();
+        if ($search) {
+            $result->appends(['search' => $search]);
+        }
+        return $result;
+    }
 }

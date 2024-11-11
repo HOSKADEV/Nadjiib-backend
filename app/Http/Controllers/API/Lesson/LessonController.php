@@ -49,8 +49,8 @@ class LessonController extends Controller
     }
 
     try {
-      $lessons = $this->lesson->paginate(10, $request->course_id, $request->search_byTitle);
-
+      //$lessons = $this->lesson->paginate(10, $request->course_id, $request->search_byTitle);
+      $lessons = $this->lesson->get($request->course_id, $request->search_byTitle);
       return response()->json([
         'status' => true,
         'data' => new LessonCollection($lessons)
