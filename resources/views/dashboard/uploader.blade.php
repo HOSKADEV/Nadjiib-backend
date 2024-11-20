@@ -9,18 +9,14 @@
 @endsection
 
 @section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/dropzone.css') }}" type="text/css" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/css/dropzone.css') }}" type="text/css" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/stepper.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/progress.css') }}" type="text/css" />
 @endsection
 
 
 
 @section('content')
-    {{-- <div class="col-12 mx-auto">
-  <h4>Create A new Lesson</h4>
-</div> --}}
-
-
     <div class="container py-8">
         <div class="align-text-center">
             <h2 class="mb-8 my-4">Create A new Lesson</h2>
@@ -83,8 +79,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Lesson Name</label>
-                                            <input type="text" name="title" id="title"
-                                                class="form-control">
+                                            <input type="text" name="title" id="title" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col">
@@ -150,27 +145,28 @@
                             </div>
                             <div class="row g-6">
                                 <div class="col-12 mb-2">
-                                  <form class="dropzone" id="files-form" action="{{ url('/lesson/files/upload') }}"
-                                      method="POST" enctype="multipart/form-data">
-                                      @csrf
+                                    <form class="dropzone" id="files-form" action="{{ url('/lesson/files/upload') }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
 
-                                      <div class="dz-message needsclick col-12">
-                                          Drop files here or click to upload
-                                          <span class="note needsclick">Maximum of 15 files are accepted</span>
-                                      </div>
-                                      <div class="fallback">
-                                          <input type="file" name="files[]" class="form-control" {{-- accept="" --}} multiple>
-                                      </div>
+                                        <div class="dz-message needsclick col-12">
+                                            Drop files here or click to upload
+                                            <span class="note needsclick">Maximum of 15 files are accepted</span>
+                                        </div>
+                                        <div class="fallback">
+                                            <input type="file" name="files[]" class="form-control"
+                                                {{-- accept="" --}} multiple>
+                                        </div>
 
-                                  </form>
+                                    </form>
 
-                              </div>
+                                </div>
                                 <div class="col-12 d-flex justify-content-between">
                                     <button class="btn btn-primary" id="files_submit_btn">
                                         <i class="bx bx-upload bx-sm ms-sm-n2 me-sm-2"></i>
                                         <span class="align-middle d-sm-inline-block d-none">Upload</span>
                                     </button>
-                                    <a class="btn btn-success" href="{{url('/uploader')}}">Finish</a>
+                                    <a class="btn btn-success" href="{{ url('/uploader') }}">Finish</a>
                                 </div>
                             </div>
                         </div>
@@ -212,8 +208,8 @@
                     processData: false,
                     success: function(response) {
                         if (response.status == 1) {
-                          $(this).prop('disabled', true);
-                          $('#lesson_next_btn').prop('disabled', false);
+                            $(this).prop('disabled', true);
+                            $('#lesson_next_btn').prop('disabled', false);
                         } else {
                             //console.log(response.message);
                             Swal.fire(
@@ -237,6 +233,126 @@
 
                 });
 
+            });
+
+            function trackUploadProgress() {
+                let progress = 0;
+
+                function checkUploadProgress() {
+                    $.ajax({
+                        url: '/upload-progress',
+                        method: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            progress = response.progress;
+                            $('.progress-bar').css('width', response.progress + '%')
+                                .attr('aria-valuenow', response.progress)
+                                .text(Math.round(response.progress) + '%');
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Progress Error',
+                                text: 'Could not retrieve upload progress'
+                            });
+                        }
+                    });
+                }
+
+                while (progress < 100) {
+                    setTimeout(checkUploadProgress, 500);
+                }
+
+                startCompression();
+            }
+
+            function startCompression() {
+                // Close upload progress Swal
+                Swal.close();
+
+                // Show compression progress Swal
+                Swal.fire({
+                    title: 'Compressing Video',
+                    html: `
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+                `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+
+                // Start tracking compression progress
+                trackCompressionProgress();
+            }
+
+            function trackCompressionProgress() {
+                let progress = 0;
+
+                function checkCompressionProgress() {
+                    $.ajax({
+                        url: '/compression-progress',
+                        method: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            progress = response.progress;
+                            $('.progress-bar').css('width', response.progress + '%')
+                                .attr('aria-valuenow', response.progress)
+                                .text(Math.round(response.progress) + '%');
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Progress Error',
+                                text: 'Could not retrieve compression progress'
+                            });
+                        }
+                    });
+                }
+
+                while (progress < 100) {
+                    setTimeout(checkCompressionProgress, 500);
+                }
+                // Compression complete, show success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Video uploaded and compressed successfully!'
+                });
+
+            }
+
+            $('#video_submit_btn').on('click', function(e) {
+                e.preventDefault();
+
+                // Check if file is selected
+                /*  if ($('#videoForm')[0].files.length === 0) {
+                     Swal.fire({
+                         icon: 'warning',
+                         title: 'No File Selected',
+                         text: 'Please choose a video file first.'
+                     });
+                     return;
+                 } */
+
+                // Show initial upload progress Swal
+                Swal.fire({
+                    title: 'Uploading Video',
+                    html: `
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+                `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+
+                // Start upload process
+                trackUploadProgress();
             });
         })
     </script>

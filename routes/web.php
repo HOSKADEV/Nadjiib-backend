@@ -116,3 +116,5 @@ Route::get('/uploader', function(){
 Route::post('/lesson/create', [LessonController::class, 'create']);
 Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
 Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
+Route::post('/compression-progress', [LessonController::class, 'getCompressionProgress'])->name('compression.progress');
+Route::post('/upload-progress', [LessonController::class, 'getUploadProgress'])->name('upload.progress');

@@ -85,21 +85,58 @@ class LessonController extends Controller
     }
   }
 
+  public function upload_files(Request $request)
+  {//dd($request->files->all()['files']);
+    $files = $request->files->all()['files'];
+    $filesData = [];
+    $lesson = session('lesson');
+
+    foreach ($files as $file) {
+      $extension = $file->getClientOriginalExtension();
+      $basename = basename($file->getClientOriginalName(), '.' . $extension);
+      $filename = $basename . time() . '.' . $extension;
+      $path = 'documents/lessons/file/';
+      $file_url = $path . $filename;
+      Storage::disk('upload')->putFileAs($path, $file, $filename);
+
+      $filesData[] = [
+        'lesson_id' => $lesson->id,
+        'file_url' => $file_url,
+        'filename' => $basename,
+        'extension' => $extension,
+        'created_at' => now(),
+        'updated_at' => now()
+      ];
+    }
+
+    LessonFile::insert($filesData);
+
+
+
+
+
+    return response()->json([
+      'status' => true,
+      'message' => 'Files Uploaded Successfully',
+    ]);
+
+
+  }
+
   public function upload_video(Request $request)
   {
-    // create the file receiver
+
     $receiver = new FileReceiver($request->video, $request, DropZoneUploadHandler::class);
 
-    // check if the upload is success, throw exception or return response you need
     if ($receiver->isUploaded() === false) {
       throw new UploadMissingFileException();
     }
 
-    // receive the file
     $save = $receiver->receive();
+    Session::put('upload_progress', $save->handler()->getPercentageDone());
 
-    // check if the upload has finished (in chunk mode it will send smaller files)
     if ($save->isFinished()) {
+      Session::put('upload_progress', 100);
       $video = $save->getFile();
       $extension = $video->getClientOriginalExtension();
       $basename = basename($video->getClientOriginalName(), '.' . $extension);
@@ -110,21 +147,20 @@ class LessonController extends Controller
 
       $format = new X264();
       $format->setKiloBitrate(1000) // 1000 kbps
-            ->setAudioKiloBitrate(128) // 128 kbps audio
-            ->setVideoCodec('libx264')
-            ->setAudioCodec('aac');
+        ->setAudioKiloBitrate(128) // 128 kbps audio
+        ->setVideoCodec('libx264')
+        ->setAudioCodec('aac');
 
-      // Process the video
       FFMpeg::fromDisk('local')
-          ->open($temp_url)
-          ->export()
-          ->onProgress(function ($percentage, $remaining, $rate) {
-            echo "{$remaining} seconds left at rate: {$rate}";
+        ->open($temp_url)
+        ->export()
+        ->onProgress(function ($percentage, $remaining, $rate) {
+          Session::put('compression_progress', $percentage);
         })
-          ->toDisk('upload')
-          ->inFormat($format)
-          //->resize(1280, 720) // 720p resolution
-          ->save($video_url);
+        ->toDisk('upload')
+        ->inFormat($format)
+        //->resize(1280, 720) // 720p resolution
+        ->save($video_url);
 
       File::delete($temp_url);
 
@@ -148,41 +184,16 @@ class LessonController extends Controller
 
   }
 
-  public function upload_files(Request $request)
-  {//dd($request->files->all()['files']);
-    $files = $request->files->all()['files'];
-    $filesData = [];
-    $lesson = session('lesson');
-
-    foreach ($files as $file) {
-      $extension = $file->getClientOriginalExtension();
-      $basename = basename($file->getClientOriginalName(), '.' . $extension);
-      $filename = $basename . time() . '.' . $extension;
-      $path = 'documents/lessons/file/';
-      $file_url = $path . $filename;
-      Storage::disk('upload')->putFileAs($path, $file,$filename);
-
-      $filesData[] = [
-        'lesson_id' => $lesson->id,
-        'file_url' => $file_url,
-        'filename' => $basename,
-        'extension' => $extension,
-        'created_at' => now(),
-        'updated_at' => now()
-      ];
-    }
-
-    LessonFile::insert($filesData);
-
-
-
-
-
-  return response()->json([
-    'status' => true,
-    'message' => 'Files Uploaded Successfully',
-  ]);
-
-
+  public function getUploadProgress()
+  {
+    return response()->json([
+      'progress' => Session::get('upload_progress', 0)
+    ]);
+  }
+  public function getCompressionProgress()
+  {
+    return response()->json([
+      'progress' => Session::get('compression_progress', 0)
+    ]);
   }
 }
