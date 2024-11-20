@@ -1,0 +1,157 @@
+{
+  "1": {
+    "name_ar": "اللغة العربية",
+    "name_fr": "Langue arabe",
+    "name_en": "Arabic Language"
+  },
+  "2": {
+    "name_ar": "اللغة الفرنسية",
+    "name_fr": "Langue française",
+    "name_en": "French Language"
+  },
+  "3": {
+    "name_ar": "اللغة الإنجليزية",
+    "name_fr": "Langue anglaise",
+    "name_en": "English Language"
+  },
+  "4": {
+    "name_ar": "اللغة الإسبانية",
+    "name_fr": "Langue espagnole",
+    "name_en": "Spanish Language"
+  },
+  "5": {
+    "name_ar": "اللغة الألمانية",
+    "name_fr": "Langue allemande",
+    "name_en": "German Language"
+  },
+  "6": {
+    "name_ar": "اللغة الإيطالية",
+    "name_fr": "Langue italienne",
+    "name_en": "Italian Language"
+  },
+  "7": {
+    "name_ar": "اللغة الأمازيغية",
+    "name_fr": "Langue amazighe",
+    "name_en": "Amazigh Language"
+  },
+  "8": {
+    "name_ar": "الرياضيات",
+    "name_fr": "Mathématiques",
+    "name_en": "Mathematics"
+  },
+  "9": {
+    "name_ar": "التربية المدنية",
+    "name_fr": "Éducation civique",
+    "name_en": "Civic Education"
+  },
+  "10": {
+    "name_ar": "التربية الاسلامية",
+    "name_fr": "Éducation islamique",
+    "name_en": "Islamic Education"
+  },
+  "11": {
+    "name_ar": "التربية العلمية و التكنولوجية",
+    "name_fr": "Éducation scientifique et technologique",
+    "name_en": "Science and Technology Education"
+  },
+  "12": {
+    "name_ar": "التاريخ و الجغرافيا",
+    "name_fr": "Histoire et géographie",
+    "name_en": "History and Geography"
+  },
+  "13": {
+    "name_ar": "الرسم و المحفوظات",
+    "name_fr": "Dessin et conservation",
+    "name_en": "Drawing and Preservation"
+  },
+  "14": {
+    "name_ar": "العلوم الفيزيائية و التكنولوجيا",
+    "name_fr": "Sciences physiques et technologie",
+    "name_en": "Physical Sciences and Technology"
+  },
+  "15": {
+    "name_ar": "علوم الطبيعة و الحياة",
+    "name_fr": "Sciences de la vie et de la nature",
+    "name_en": "Life and Natural Sciences"
+  },
+  "16": {
+    "name_ar": "التاريخ",
+    "name_fr": "Histoire",
+    "name_en": "History"
+  },
+  "17": {
+    "name_ar": "الجغرافيا",
+    "name_fr": "Géographie",
+    "name_en": "Geography"
+  },
+  "18": {
+    "name_ar": "التربية التشكيلية",
+    "name_fr": "Éducation artistique",
+    "name_en": "Art Education"
+  },
+  "19": {
+    "name_ar": "التربية الموسيقية",
+    "name_fr": "Éducation musicale",
+    "name_en": "Music Education"
+  },
+  "20": {
+    "name_ar": "التربية البدنية و الرياضية",
+    "name_fr": "Éducation physique et sportive",
+    "name_en": "Physical and Sports Education"
+  },
+  "21": {
+    "name_ar": "التربية الفنية",
+    "name_fr": "Éducation artistique",
+    "name_en": "Art Education"
+  },
+  "22": {
+    "name_ar": "المعلوماتية",
+    "name_fr": "Informatique",
+    "name_en": "Computer Science"
+  },
+  "23": {
+    "name_ar": "العلوم الاسلامية",
+    "name_fr": "Sciences islamiques",
+    "name_en": "Islamic Sciences"
+  },
+  "24": {
+    "name_ar": "التسيير المحاسبي و المالي",
+    "name_fr": "Gestion comptable et financière",
+    "name_en": "Accounting and Financial Management"
+  },
+  "25": {
+    "name_ar": "القانون",
+    "name_fr": "Droit",
+    "name_en": "Law"
+  },
+  "26": {
+    "name_ar": "الاقتصاد و المناجمنت",
+    "name_fr": "Économie et gestion",
+    "name_en": "Economics and Management"
+  },
+  "27": {
+    "name_ar": "الفلسفة",
+    "name_fr": "Philosophie",
+    "name_en": "Philosophy"
+  },
+  "28": {
+    "name_ar": "الفنون التشكيلية",
+    "name_fr": "Beaux-arts",
+    "name_en": "Fine Arts"
+  },
+  "29": {
+    "name_ar": "الموسيقى",
+    "name_fr": "Musique",
+    "name_en": "Music"
+  },
+  "30": {
+    "name_ar": "العلوم الفيزيائية",
+    "name_fr": "Sciences physiques",
+    "name_en": "Physical Sciences"
+  },
+  "31": {
+    "name_ar": "التكنولوجيا",
+    "name_fr": "Technologie",
+    "name_en": "Technology"
+  }
+}

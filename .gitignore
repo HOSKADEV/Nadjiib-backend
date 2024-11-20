@@ -1,0 +1,13 @@
+/node_modules
+/storage
+/vendor
+/.env
+/najiib-app-5070a-firebase-adminsdk-ziqok-f175205356.json
+/public
+# But not these files...
+!public/assets/*
+!public/.htaccess
+!public/favicon.ico
+!public/index.php
+!public/mix-manifest.json
+!public/robots.txt
