@@ -47,8 +47,8 @@ class TeacherController extends Controller
         "bio"   => 'sometimes|string',
         "sections"   => 'required|array',
         "subjects"   => 'required|array',
-        "ccp" => 'sometimes|string',
-        "baridi_mob" => 'sometimes|string',
+        "ccp" => 'sometimes',
+        "baridi_mob" => 'sometimes',
       ]);
 
       if ($validator->fails()) {
@@ -117,8 +117,8 @@ class TeacherController extends Controller
           "channel_name" => 'sometimes|string',
           "cloud_chat" => 'sometimes|in:active,inactive',
           "bio"         => 'sometimes|string',
-          "ccp" => 'sometimes|string',
-          "baridi_mob" => 'sometimes|string',
+          "ccp" => 'sometimes',
+          "baridi_mob" => 'sometimes',
         ]);
 
         if ($validator->fails()) {

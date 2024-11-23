@@ -77,7 +77,9 @@ class StudentController extends Controller
       "name"       => 'sometimes|string',
       "image"      => 'sometimes|mimes:jpeg,png,jpg,gif',
       "phone"      => 'sometimes|unique:users,phone',
-      "gender"     => 'sometimes|in:male,female'
+      "gender"     => 'sometimes|in:male,female',
+      "ccp" => 'sometimes',
+      "baridi_mob" => 'sometimes',
     ]);
 
     if ($validator->fails()) {
