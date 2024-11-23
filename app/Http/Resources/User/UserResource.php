@@ -27,7 +27,9 @@ class UserResource extends JsonResource
       "image"  => is_null($this->image) ? null : url($this->image),
       "role"   => $this->role,
       "fcm_token" => $this->fcm_token,
-      "customer_id" => $this->customer_id
+      "customer_id" => $this->customer_id,
+      "ccp" => $this->ccp,
+      "baridi_mob" => $this->baridi_mob,
     ];
   }
 }
