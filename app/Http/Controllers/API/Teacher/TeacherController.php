@@ -47,6 +47,8 @@ class TeacherController extends Controller
         "bio"   => 'sometimes|string',
         "sections"   => 'required|array',
         "subjects"   => 'required|array',
+        "ccp" => 'sometimes|string',
+        "baridi_mob" => 'sometimes|string',
       ]);
 
       if ($validator->fails()) {
@@ -83,6 +85,8 @@ class TeacherController extends Controller
         $dataUser = array_replace([
           'name'  => $request->name?? $user->name,
           'phone' => $request->phone?? $user->phone,
+          'ccp'  => $request->ccp?? $user->ccp,
+          'baridi_mob' => $request->baridi_mob?? $user->baridi_mob,
           'role'=> 2
         ]);
         $user = $this->user->update($request->user_id, $dataUser);
@@ -113,6 +117,8 @@ class TeacherController extends Controller
           "channel_name" => 'sometimes|string',
           "cloud_chat" => 'sometimes|in:active,inactive',
           "bio"         => 'sometimes|string',
+          "ccp" => 'sometimes|string',
+          "baridi_mob" => 'sometimes|string',
         ]);
 
         if ($validator->fails()) {
@@ -154,7 +160,7 @@ class TeacherController extends Controller
 
 
       $teacher = $this->teacher->update($request->teacher_id, $request->only(['channel_name','bio','cloud_chat']));
-      $user = $this->user->update($teacher->user_id, $request->only('name','phone','gender'));
+      $user = $this->user->update($teacher->user_id, $request->only('name','phone','gender','ccp','baridi_mob'));
       $user->image = $pathImage;
       $user->save();
 
