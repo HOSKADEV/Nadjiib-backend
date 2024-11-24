@@ -81,7 +81,7 @@
                         <th>{{ trans('payment.teacher') }}</th>
                         <th>{{ trans('payment.amount') }}</th>
                         {{-- <th>{{ trans('payment.date') }}</th> --}}
-                        <th>{{ trans('payment.email') }}</th>
+                        <th>{{ trans('user.email') }}</th>
                         <th>{{ trans('payment.status') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>

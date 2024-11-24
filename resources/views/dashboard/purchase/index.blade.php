@@ -9,10 +9,18 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+    integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
 
 @section('vendor-style')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+        integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .hiddenRow {
             padding: 0 !important;
@@ -44,12 +52,25 @@
                         </select>
                     </div> --}}
 
+
+
                     <div class="form-group col-md-3">
                         <label for="search" class="form-label">{{ trans('user.label.search') }}</label>
                         <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
                             class="form-control input-solid"
                             placeholder="{{ Request::get('search') != '' ? '' : trans('purchase.search_placeholder') }}">
                     </div>
+
+                    <div class="form-group col-md-3">
+                      <label for="date" class="form-label">{{ trans('payment.date') }}</label>
+
+                      <div class="input-group input-group-merge">
+                          <input type="text" readonly="readonly" id="date" name="date"
+                              class="form-control input-solid" value="">
+                          <span class="input-group-text cursor-pointer"><i class='bx bx-calendar'></i></span>
+                      </div>
+                  </div>
+
                 </div>
             </form>
 
@@ -273,7 +294,11 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-
+          $("#date").datepicker({
+                format: "mm-yyyy",
+                startView: "months",
+                minViewMode: "months"
+            });
             // search
             $('#search').on('keyup change blur', function(event) {
                 $("#search").focus();

@@ -18,7 +18,7 @@ class PurchaseController extends Controller
 
   public function index(Request $request)
   {
-    $purchases = Purchase::latest()->paginate(10);
+    // $purchases = Purchase::latest()->paginate(10);
 
      $purchases = Purchase::
      leftJoin('students', 'purchases.student_id', 'students.id')
@@ -37,7 +37,7 @@ class PurchaseController extends Controller
         ->orWhere('courses.name', 'like', '%'.  $request->search. '%');
       }
 
-      $purchases = $purchases->paginate(10);
+      $purchases = $purchases->paginate(50);
     //dd($purchases);
     return view('dashboard.purchase.index', compact('purchases'));
   }
