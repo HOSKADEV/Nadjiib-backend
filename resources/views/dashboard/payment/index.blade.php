@@ -3,8 +3,7 @@
 @section('title', trans('payment.payments'))
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}">
-    </script>
+    <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
     <script src="https://unpkg.com/htmx.org@2.0.0"
         integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous">
     </script>
@@ -81,7 +80,7 @@
                         <th>{{ trans('payment.teacher') }}</th>
                         <th>{{ trans('payment.amount') }}</th>
                         {{-- <th>{{ trans('payment.date') }}</th> --}}
-                        <th>{{ trans('user.email') }}</th>
+                        {{-- <th>{{ trans('user.email') }}</th> --}}
                         <th>{{ trans('payment.status') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>
@@ -93,7 +92,7 @@
                             <td>{{ $payment->teacher->user->name }}</td>
                             <td>{{ $payment->amount }}</td>
                             {{-- <td>{{ $payment->date }}</td> --}}
-                            <td>{{ $payment->teacher->user->email }}</td>
+                            {{-- <td>{{ $payment->teacher->user->email }}</td> --}}
                             <td>
                                 @if ($payment->status() == 2)
                                     <span class="badge rounded-pill text-capitalize bg-success">
@@ -110,11 +109,16 @@
                                 @endif
                             </td>
                             <td>
+                                <button type="button" class="btn btn-sm btn-secondary mx-1" data-bs-toggle="modal"
+                                    data-bs-target="#infoModal{{ $payment->id }}">
+                                    <i class='bx bx-user'></i>
+                                </button>
 
                                 <a href="{{ url('dashboard/payment/' . $payment->id . '/purchases') }}"
                                     class="btn btn-sm btn-info mx-1">
                                     <i class='bx bx-purchase-tag'></i>
                                 </a>
+
                                 @if (empty($payment->status()))
                                     <button type="button" class="btn btn-sm btn-warning mx-1" data-bs-toggle="modal"
                                         data-bs-target="#paidModal{{ $payment->id }}">
@@ -124,6 +128,7 @@
                             </td>
                         </tr>
                         @include('dashboard.payment.paid')
+                        @include('dashboard.payment.info')
                     @endforeach
                 </tbody>
             </table>

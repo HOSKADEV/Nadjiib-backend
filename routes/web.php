@@ -34,24 +34,12 @@ use App\Http\Controllers\Dashboard\Notification\NotificationController;
 
 $controller_path = 'App\Http\Controllers';
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/theme/{theme}', function ($theme) {
-        Session::put('theme', $theme);
-        return redirect()->back();
-    });
 
-    Route::get('/lang/{lang}', function ($lang) {
-        Session::put('locale', $lang);
-        App::setLocale($lang);
-        return redirect()->back();
-    });
+Route::group(['middleware' => ['auth','role']], function () {
+  Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard');
+  Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats');
 });
 
-// Main Page Route
-Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
-
-Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats')->middleware('auth');
-//
 
 // authentication
 Route::get('/auth/login-basic', 'App\Http\Controllers\authentications\LoginBasic@index')->name('login');
@@ -71,7 +59,7 @@ Route::get('/chargily/failed', 'App\Http\Controllers\API\Purchase\PurchaseContro
 Route::get('/purchase/success', 'App\Http\Controllers\API\Purchase\PurchaseController@success')->name('purchase-success');
 Route::get('/purchase/failed', 'App\Http\Controllers\API\Purchase\PurchaseController@failed')->name('purchase-failed');
 
-Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth','role']], function () {
     Route::resource('sections', SectionController::class);
     Route::resource('levels', LevelController::class);
     Route::resource('subjects', SubjectController::class);
@@ -81,6 +69,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('notices', NotificationController::class);
     Route::resource('purchases', PurchaseController::class);
     Route::resource('payments', PaymentController::class);
+    Route::resource('lessons', LessonController::class);
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
 
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
@@ -104,6 +93,24 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::get('/documentation/about',[SettingController::class,'doc_index'])->name('documentation.about');
 
     Route::post('/documentation/update',[SettingController::class,'documentation']);
+});
+
+Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], function () {
+  Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard');
+  Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats');
+});
+
+Route::group(['middleware' => ['auth']], function () {
+  Route::get('/theme/{theme}', function ($theme) {
+      Session::put('theme', $theme);
+      return redirect()->back();
+  });
+
+  Route::get('/lang/{lang}', function ($lang) {
+      Session::put('locale', $lang);
+      App::setLocale($lang);
+      return redirect()->back();
+  });
 });
 
 

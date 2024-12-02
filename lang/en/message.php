@@ -13,4 +13,6 @@ return [
         'delete' => 'An error occurred deleting data',
         'upgrade'=> 'An error occurred in the account upgrade process',
     ],
+
+    'prohibited' => 'This action is prohibited'
 ];

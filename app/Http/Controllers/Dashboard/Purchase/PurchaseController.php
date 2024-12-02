@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Purchase;
 use Exception;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -19,9 +20,23 @@ class PurchaseController extends Controller
   public function index(Request $request)
   {
     // $purchases = Purchase::latest()->paginate(10);
+    //$date = $request->has('date') ? Carbon::createFromDate('01-' . $request->date) : Carbon::now();
 
-     $purchases = Purchase::
-     leftJoin('students', 'purchases.student_id', 'students.id')
+     $purchases = Purchase::query();
+
+     if($request->date){
+      $date =Carbon::createFromDate('01-' . $request->date);
+      $purchases = $purchases->whereMonth('purchases.created_at', $date->month)
+      ->whereYear('purchases.created_at', $date->year);
+     }
+
+     if($request->search){
+      $purchases = $purchases->where('users.name','like', '%'.  $request->search. '%')
+      ->orWhere('courses.name', 'like', '%'.  $request->search. '%');
+    }
+
+
+     $purchases = $purchases->leftJoin('students', 'purchases.student_id', 'students.id')
      ->leftJoin('users', 'students.user_id', 'users.id')
      ->leftJoin('courses', 'purchases.course_id', 'courses.id')
      ->groupBy('student_id', 'course_id')
@@ -32,10 +47,7 @@ class PurchaseController extends Controller
       ->orderBy('created_at', 'DESC');
 
 
-      if($request->search){
-        $purchases = $purchases->where('users.name','like', '%'.  $request->search. '%')
-        ->orWhere('courses.name', 'like', '%'.  $request->search. '%');
-      }
+
 
       $purchases = $purchases->paginate(50);
     //dd($purchases);
@@ -118,11 +130,11 @@ class PurchaseController extends Controller
       $purchase->notify();
 
       toastr()->success(trans('message.success.update'));
-      return redirect()->route('dashboard.purchases.index');
+      return redirect()->back();
 
     }catch(Exception $e){
       toastr()->error($e->getMessage());
-      return redirect()->route('dashboard.purchases.index');
+      return redirect()->back();
     }
 
   }

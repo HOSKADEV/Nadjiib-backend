@@ -82,6 +82,10 @@ class User extends Authenticatable
     return intval($this->role);
   }
 
+  public function isAdmin(){
+    return $this->role ==  0 ;
+  }
+
   public function student()
   {
     return $this->hasOne(Student::class);

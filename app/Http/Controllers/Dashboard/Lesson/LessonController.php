@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Lesson;
 
+use Session;
 use Exception;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\uploadFile;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Lesson\LessonResource;
@@ -18,7 +20,6 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Handler\DropZoneUploadHandler;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Session;
 
 class LessonController extends Controller
 {
@@ -82,6 +83,35 @@ class LessonController extends Controller
     }
   }
 
+  public function destroy(Request $request)
+  {
+
+    try {
+      $lesson = Lesson::with('course','files', 'videos')->find($request->id);
+      $user = auth()->user();
+
+      /* if (!($lesson->course->teacher->user_id == $user->id || $user->isAdmin())) {
+        throw new Exception(trans('message.prohibited'));
+      } */
+
+      File::delete($lesson->videos->pluck('video_url'));
+      File::delete($lesson->files->pluck('file_url'));
+
+      $lesson->videos()->delete();
+      $lesson->files()->delete();
+
+      $lesson->delete();
+
+      toastr()->success(trans('message.success.delete'));
+      return redirect()->back();
+    } catch (Exception $e) {
+      toastr()->error($e->getMessage());
+      return redirect()->back();
+    }
+
+
+  }
+
   public function upload_video(Request $request)
   {
     // create the file receiver
@@ -135,7 +165,7 @@ class LessonController extends Controller
       $filename = $basename . time() . '.' . $extension;
       $path = 'documents/lessons/file/';
       $file_url = $path . $filename;
-      Storage::disk('upload')->putFileAs($path, $file,$filename);
+      Storage::disk('upload')->putFileAs($path, $file, $filename);
 
       $filesData[] = [
         'lesson_id' => $lesson->id,
@@ -153,10 +183,10 @@ class LessonController extends Controller
 
 
 
-  return response()->json([
-    'status' => true,
-    'message' => 'Files Uploaded Successfully',
-  ]);
+    return response()->json([
+      'status' => true,
+      'message' => 'Files Uploaded Successfully',
+    ]);
 
 
   }

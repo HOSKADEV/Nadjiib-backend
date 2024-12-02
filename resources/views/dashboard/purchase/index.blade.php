@@ -11,8 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
-    integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
 
 @section('vendor-style')
@@ -26,6 +26,35 @@
             padding: 0 !important;
         }
     </style>
+
+<style>
+  .btn-clear-input {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.53;
+    color: #697a8d;
+    background-color: #fff;
+    border: 1px solid #d9dee3;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+  }
+
+  .btn-clear-input:hover {
+    border-color: #a1acb8;
+    background-color: #f5f5f5;
+  }
+
+  .btn-clear-input:focus {
+    border-color: #697a8d;
+    box-shadow: 0 0 0 0.25rem rgba(105, 122, 141, 0.1);
+    outline: none;
+  }
+  </style>
 @endsection
 
 @section('page-header')
@@ -62,14 +91,17 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="date" class="form-label">{{ trans('payment.date') }}</label>
+                        <label for="date" class="form-label">{{ trans('payment.date') }}</label>
 
-                      <div class="input-group input-group-merge">
-                          <input type="text" readonly="readonly" id="date" name="date"
-                              class="form-control input-solid" value="">
+                        <div class="input-group input-group-merge">
                           <span class="input-group-text cursor-pointer"><i class='bx bx-calendar'></i></span>
-                      </div>
-                  </div>
+                            <input type="text" readonly="readonly" id="date" name="date"
+                                class="form-control input-solid" value="{{ request('date') }}">
+                            <button type="button" class="btn-clear-input" onclick="clearDateInput()">
+                                <i class='bx bx-x'></i>
+                            </button>
+                        </div>
+                    </div>
 
                 </div>
             </form>
@@ -193,11 +225,13 @@
                                                         <td class="td-4">{{ $attempt->created_at() }}</td>
                                                         <td class="td-5">
                                                             @if ($attempt->status == 'pending')
-                                                                <span class="badge rounded-pill text-capitalize bg-warning">
+                                                                <span
+                                                                    class="badge rounded-pill text-capitalize bg-warning">
                                                                     {{ trans('purchase.pending') }}
                                                                 </span>
                                                             @elseif($attempt->status == 'success')
-                                                                <span class="badge rounded-pill text-capitalize bg-success">
+                                                                <span
+                                                                    class="badge rounded-pill text-capitalize bg-success">
                                                                     {{ trans('purchase.accepted') }}
                                                                 </span>
                                                             @else
@@ -293,14 +327,33 @@
 
 @section('scripts')
     <script type="text/javascript">
+        function clearDateInput() {
+            const dateInput = document.getElementById('date');
+            dateInput.value = '';
+
+            // Create and dispatch a change event
+            const event = new Event('change', {
+                bubbles: true,
+                cancelable: true
+            });
+            dateInput.dispatchEvent(event);
+        }
         $(document).ready(function() {
-          $("#date").datepicker({
+            $("#date").datepicker({
                 format: "mm-yyyy",
                 startView: "months",
                 minViewMode: "months"
             });
             // search
-            $('#search').on('keyup change blur', function(event) {
+            $('#search').on('keyup change', function(event) {
+                $("#search").focus();
+                timer = setTimeout(function() {
+                    submitForm();
+                }, 1000);
+
+            })
+
+            $('#date').on('change', function(event) {
                 $("#search").focus();
                 timer = setTimeout(function() {
                     submitForm();

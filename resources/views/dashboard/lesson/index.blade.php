@@ -4,12 +4,11 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/masonry/masonry.js') }}"></script>
-    <script src="https://kit.fontawesome.com/cec0d2ede3.js" crossorigin="00CCDCE7-0C17-4810-AE86-017AF928A04E"></script>
 @endsection
 
 @section('page-header')
     <h4 class="fw-bold py-3 mb-1 ">
-        <span class="text-muted fw-light">{{$course->name}} / </span>{{ trans('lesson.lessons') }}
+        <span class="text-muted fw-light">{{ $course->name }} / </span>{{ trans('lesson.lessons') }}
     </h4>
 @endsection
 @section('content')
@@ -40,6 +39,7 @@
                         <th>{{ trans('lesson.title') }}</th>
                         <th>{{ trans('lesson.description') }}</th>
                         <th>{{ trans('lesson.attachments') }}</th>
+                        <th>{{ trans('app.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,45 +53,60 @@
                             <td>
                                 @foreach ($lesson->videos as $video)
                                     <a href="{{ $video->url() }}">
-                                      <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-video-regular.svg' : 'assets/icons/file-video-solid.svg')}}" height="30px" width="30px"/>
+                                        <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-video-regular.svg' : 'assets/icons/file-video-solid.svg') }}"
+                                            height="30px" width="30px" />
                                     </a>
                                 @endforeach
 
                                 @foreach ($lesson->files as $file)
-                                @if ($file->type() == 'img' )
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-image-regular.svg' : 'assets/icons/file-image-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @elseif ($file->type() == 'doc')
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-word-regular.svg' : 'assets/icons/file-word-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @elseif ($file->type() == 'xls')
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-excel-regular.svg' : 'assets/icons/file-excel-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @elseif ($file->type() == 'ppt')
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-powerpoint-regular.svg' : 'assets/icons/file-powerpoint-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @elseif ($file->type() == 'pdf')
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-pdf-regular.svg' : 'assets/icons/file-pdf-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @elseif ($file->type() == 'zip')
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-zipper-regular.svg' : 'assets/icons/file-zipper-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @else
-                                <a href="{{ $file->url() }}">
-                                  <img src="{{asset(Session::get('theme') == 'dark' ? 'assets/icons/file-regular.svg' : 'assets/icons/file-solid.svg')}}" height="30px" width="30px"/>
-                                </a>
-                                @endif
-
+                                    @if ($file->type() == 'img')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-image-regular.svg' : 'assets/icons/file-image-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @elseif ($file->type() == 'doc')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-word-regular.svg' : 'assets/icons/file-word-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @elseif ($file->type() == 'xls')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-excel-regular.svg' : 'assets/icons/file-excel-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @elseif ($file->type() == 'ppt')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-powerpoint-regular.svg' : 'assets/icons/file-powerpoint-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @elseif ($file->type() == 'pdf')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-pdf-regular.svg' : 'assets/icons/file-pdf-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @elseif ($file->type() == 'zip')
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-zipper-regular.svg' : 'assets/icons/file-zipper-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @else
+                                        <a href="{{ $file->url() }}">
+                                            <img src="{{ asset(Session::get('theme') == 'dark' ? 'assets/icons/file-regular.svg' : 'assets/icons/file-solid.svg') }}"
+                                                height="30px" width="30px" />
+                                        </a>
+                                    @endif
                                 @endforeach
 
                             </td>
+                            <td>
+                              <button type="button" class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
+                              data-bs-target="#deleteLessonModal{{ $lesson->id }}">
+                              <i class='bx bx-trash'></i>
+                          </button>
+                            </td>
                         </tr>
+
+                        @include('dashboard.lesson.delete')
                     @endforeach
 
                     {{-- @include('dashboard.lesson.files')
@@ -105,24 +120,8 @@
 @endsection
 
 @section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all modals
-            var modals = document.querySelectorAll('.modal');
-            modals.forEach(function(modal) {
-                new bootstrap.Modal(modal);
-            });
-
-            // Initialize all carousels
-            var carousels = document.querySelectorAll('.carousel');
-            carousels.forEach(function(carousel) {
-                new bootstrap.Carousel(carousel, {
-                    interval: false // Disable auto-sliding
-                });
-            });
-        });
-    </script>
     <script type="text/javascript">
+
         $(document).ready(function() {
             $('#name').on('keyup', function(event) {
                 $("#name").focus();
@@ -134,6 +133,25 @@
                 function submitForm() {
                     $("#searchNoticeForm").submit();
                 }
+            });
+
+            $('.submit-btn').on('click', function(event) {
+
+                const form = $(`#deleteLessonForm${$(this).data('lesson')}`);
+                const submitButton = $(`#submitBtn${$(this).data('lesson')}`);
+                const closeButton = $(`#closeBtn${$(this).data('lesson')}`);
+
+                closeButton.hide();
+
+                submitButton.html(`<div class="spinner-border spinner-border-lg" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>`);
+
+                submitButton.prop('disabled', true);
+
+                setTimeout(() => {
+                    form.submit();
+                }, 0);
             });
         });
     </script>

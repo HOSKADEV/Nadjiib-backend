@@ -8,4 +8,5 @@ return [
   'deactivate'   => 'Account de-authentication',
   'active' => 'Authenticated teacher',
   'inactive' => 'Unauthenticated Teacher',
+  'info' => 'Teacher info'
 ];

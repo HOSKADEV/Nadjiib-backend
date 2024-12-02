@@ -8,5 +8,8 @@
 
 "purchase_status_pending" : "Pending",
 "purchase_status_success" : "Success",
-"purchase_status_failed" : "Failed"
+"purchase_status_failed" : "Failed",
+
+"privacy_policy" : "Privacy Policy",
+"about" : "Terms Of Use"
 }
