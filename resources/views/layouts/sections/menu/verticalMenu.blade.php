@@ -135,6 +135,20 @@
           </ul>
         </li>
       @else
+      <li class="menu-item {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('user.dashboard') }}" class="menu-link">
+            {{-- <i class="menu-icon tf-icons bx bx-collection"></i> --}}
+            <i class='menu-icon bx bxs-dashboard'></i>
+            <div>{{ trans('menu.dashboard') }}</div>
+        </a>
+    </li>
+
+    <li class="menu-item {{ (request()->routeIs('user.courses.index')  || request()->routeIs('dashboard.course-lessons')) ? 'active' : '' }}">
+      <a href="{{ route('user.courses.index') }}" class="menu-link">
+          <i class='menu-icon bx bxs-chalkboard'></i>
+          <div>{{ trans('menu.courses') }}</div>
+      </a>
+  </li>
 
       @endif
     </ul>

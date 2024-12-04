@@ -46,6 +46,11 @@ class Teacher extends Model
         return $this->belongsToMany(Subject::class, 'teacher_subjects');
     }
 
+    public function course_subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'courses')->distinct();
+    }
+
     public function calls()
     {
         return $this->hasMany(Call::class);

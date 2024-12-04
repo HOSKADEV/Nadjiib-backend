@@ -22,10 +22,7 @@ class AnalyticsController extends Controller
 {
     public function index(Request $request)
     {
-      //dd($request->all());
-      //return view('content.dashboard.dashboards-analytics');
-      return view('content.dashboard.placeholder');
-
+      return view('content.dashboard.admin');
     }
 
     public function stats(Request $request)

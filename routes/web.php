@@ -66,38 +66,40 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('level-subjects', LevelSubjectController::class);
     Route::resource('coupons', CouponController::class);
     Route::resource('ads', AdController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('courses', CourseController::class);
     Route::resource('notices', NotificationController::class);
     Route::resource('purchases', PurchaseController::class);
     Route::resource('payments', PaymentController::class);
     Route::resource('lessons', LessonController::class);
-    Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
 
+    Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
+    Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
+    Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
     Route::put('teachers/status', [TeacherController::class, 'changeStatus'])->name('teachers.changeStatus');
-    Route::resource('users', UserController::class);
-
-    Route::resource('courses', CourseController::class);
-
     Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course-lessons');
     Route::get('/payment/{id}/purchases', [PaymentController::class,'purchases'])->name('payment-purchases');
 
     Route::get('/settings', [SettingController::class,'index']);
-
     Route::post('/setting/version/update', [SettingController::class,'version']);
     Route::post('/setting/misc/update', [SettingController::class,'misc']);
     Route::post('/setting/contact/update', [SettingController::class,'contact']);
     Route::post('/setting/bank/update', [SettingController::class,'bank']);
-
     Route::get('/documentation/policy',[SettingController::class,'doc_index'])->name('documentation.policy');
     Route::get('/documentation/about',[SettingController::class,'doc_index'])->name('documentation.about');
-
     Route::post('/documentation/update',[SettingController::class,'documentation']);
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], function () {
-  Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard');
-  Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats');
+  Route::get('/',[\App\Http\Controllers\User\Analytics\AnalyticsController::class, 'index'])->name('dashboard');
+  Route::resource('courses', \App\Http\Controllers\User\Course\CourseController::class);
+  Route::resource('lessons', \App\Http\Controllers\User\Lesson\LessonController::class);
+  Route::resource('posts', \App\Http\Controllers\User\Post\PostController::class);
+  Route::get('/course/{id}/lessons', [\App\Http\Controllers\User\Lesson\LessonController::class,'index'])->name('course-lessons');
+  Route::post('/lesson/video/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_video']);
+  Route::post('/lesson/files/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_files']);
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -114,12 +116,11 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 
-Route::get('/uploader', function(){
+/* Route::get('/uploader', function(){
   $courses = Course::all();
   session()->put(['locale' => 'en']);
   return view('dashboard.uploader')->with('courses',$courses);
 });
 
-Route::post('/lesson/create', [LessonController::class, 'create']);
-Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
-Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
+Route::post('/lesson/create', [LessonController::class, 'create']); */
+
