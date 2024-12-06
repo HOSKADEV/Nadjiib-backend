@@ -1,6 +1,6 @@
 <div class="modal fade" id="deleteLessonModal{{ $lesson->id}}" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('dashboard.lessons.destroy','test') }}" id="deleteLessonForm{{ $lesson->id}}" method="POST">
+        <form action="{{ route('dashboard.lessons.delete') }}" id="deleteLessonForm{{ $lesson->id}}" method="POST">
             @csrf
             @method('DELETE')
             <input type="hidden" name="id" class="form-control" value="{{ $lesson->id}}">

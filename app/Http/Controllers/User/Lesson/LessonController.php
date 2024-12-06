@@ -42,13 +42,33 @@ class LessonController extends Controller
       }
 
       $lessons = $lessons->paginate(10);
-      return view('dashboard.lesson.index', compact('course', 'lessons'));
+      return view('user.lesson.index', compact('course', 'lessons'));
     } catch (Exception $e) {
       return redirect()->route('error');
     }
   }
 
-  public function create(Request $request)
+  public function create($id)
+  {
+
+    try{
+
+      $course = Course::whereNot('status','Refused')->findOrFail($id);
+
+      if (auth()->user()?->teacher?->id != $course->teacher_id) {
+        throw new Exception();
+      }
+
+      return view('user.lesson.create', compact('course'));
+
+    }catch(Exception $e){
+      return redirect()->route('error');
+    }
+
+
+  }
+
+  public function store(Request $request)
   {
     $validation = Validator::make($request->all(), [
       'course_id' => 'required|exists:courses,id',
@@ -89,16 +109,16 @@ class LessonController extends Controller
     }
   }
 
-  public function destroy(Request $request)
+  public function delete(Request $request)
   {
 
     try {
       $lesson = Lesson::with('course', 'files', 'videos')->find($request->id);
       $user = auth()->user();
 
-      /* if (!($lesson->course->teacher->user_id == $user->id || $user->isAdmin())) {
+      if ($lesson->course->teacher->user_id != $user->id) {
         throw new Exception(trans('message.prohibited'));
-      } */
+      }
 
       File::delete($lesson->videos->pluck('video_url'));
       File::delete($lesson->files->pluck('file_url'));

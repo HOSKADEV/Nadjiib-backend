@@ -34,11 +34,9 @@ use App\Http\Controllers\Dashboard\Notification\NotificationController;
 
 $controller_path = 'App\Http\Controllers';
 
+Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats')->middleware(['auth','role']);
 
-Route::group(['middleware' => ['auth','role']], function () {
-  Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard');
-  Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats');
-});
 
 
 // authentication
@@ -71,9 +69,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('notices', NotificationController::class);
     Route::resource('purchases', PurchaseController::class);
     Route::resource('payments', PaymentController::class);
-    Route::resource('lessons', LessonController::class);
 
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
+    Route::get('/lesson/delete', [LessonController::class,'delete'])->name('lessons.delete');
     Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
     Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
@@ -93,13 +91,14 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], function () {
-  Route::get('/',[\App\Http\Controllers\User\Analytics\AnalyticsController::class, 'index'])->name('dashboard');
   Route::resource('courses', \App\Http\Controllers\User\Course\CourseController::class);
-  Route::resource('lessons', \App\Http\Controllers\User\Lesson\LessonController::class);
   Route::resource('posts', \App\Http\Controllers\User\Post\PostController::class);
-  Route::get('/course/{id}/lessons', [\App\Http\Controllers\User\Lesson\LessonController::class,'index'])->name('course-lessons');
-  Route::post('/lesson/video/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_video']);
-  Route::post('/lesson/files/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_files']);
+  Route::get('/course/{id}/lessons', [\App\Http\Controllers\User\Lesson\LessonController::class,'index'])->name('course.lessons');
+  Route::get('/course/{id}/lesson/create', [\App\Http\Controllers\User\Lesson\LessonController::class,'create'])->name('lessons.create');
+  Route::post('/lesson/store', [\App\Http\Controllers\User\Lesson\LessonController::class,'store'])->name('lessons.store');
+  Route::post('/lesson/delete', [\App\Http\Controllers\User\Lesson\LessonController::class,'delete'])->name('lessons.delete');
+  Route::post('/lesson/video/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_video'])->name('lesson.video');
+  Route::post('/lesson/files/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_files'])->name('lesson.files');
 });
 
 Route::group(['middleware' => ['auth']], function () {

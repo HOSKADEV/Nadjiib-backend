@@ -15,11 +15,14 @@
     <div class="card">
         <h5 class="card-header pt-0 mt-1">
             <div class="row  justify-content-between">
-                {{-- <div class="form-group col-md-4 mr-5 mt-4">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNoticeModal">
-                        <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('lesson.create') }}
-                    </button>
-                </div> --}}
+              @if ($course->status != 'REFUSED')
+              <div class="form-group col-md-3 mr-5 mt-4">
+                <a type="button" class="btn btn-primary" href="{{route('user.lessons.create', $course->id)}}">
+                    <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('lesson.create') }}
+                </a>
+              </div>
+              @endif
+
 
                 <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                     <form action="" method="GET" id="searchNoticeForm">
@@ -106,11 +109,8 @@
                             </td>
                         </tr>
 
-                        @include('dashboard.lesson.delete')
+                        @include('user.lesson.delete')
                     @endforeach
-
-                    {{-- @include('dashboard.lesson.files')
-                    @include('dashboard.lesson.videos') --}}
                 </tbody>
             </table>
             {{ $lessons->links() }}
@@ -143,7 +143,7 @@
 
                 closeButton.hide();
 
-                submitButton.html(`<div class="spinner-border spinner-border-lg" role="status">
+                submitButton.html(`<div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>`);
 

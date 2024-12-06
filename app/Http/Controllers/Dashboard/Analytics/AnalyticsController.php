@@ -22,7 +22,12 @@ class AnalyticsController extends Controller
 {
     public function index(Request $request)
     {
-      return view('content.dashboard.admin');
+      if(auth()->user()->isAdmin()){
+        return view('content.dashboard.admin');
+      }else{
+        return view('content.dashboard.user');
+      }
+
     }
 
     public function stats(Request $request)

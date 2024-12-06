@@ -10,9 +10,7 @@
 @endsection
 
 @section('page-header')
-    <h4 class="fw-bold py-3 mb-1 ">
-        <span class="text-muted fw-light">{{ trans('app.dashboard') }} /</span>{{ trans('course.courses') }}
-    </h4>
+    <h4 class="fw-bold py-3 mb-1 ">{{ trans('course.my_courses') }}</h4>
 @endsection
 
 @section('content')
@@ -20,6 +18,11 @@
         <h5 class="card-header pt-0 mt-2">
             <form action="" method="GET" id="searchCourseForm">
                 <div class="row">
+                  <div class="form-group col-md-3 mr-5 mt-4">
+                    <a type="button" class="btn btn-primary" href="{{route('user.courses.create')}}">
+                        <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('course.create') }}
+                    </a>
+                  </div>
                     <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                         <label for="name" class="form-label">{{ trans('course.label.status') }}</label>
                         <select class="form-select" id="status" name="status" aria-label="Default select example">
@@ -36,7 +39,6 @@
                     <div class="form-group col-md-3">
                         <label for="subject" class="form-label">{{ trans('course.label.subject') }}</label>
                         <select class="form-select" id="subject" name="subject" aria-label="Default select example">
-                            <option value="">{{ trans('course.select.subject') }}</option>
                             <option value="">{{ trans('app.all') }}</option>
 
                             @foreach ($subjects as $item => $subject)
@@ -100,7 +102,7 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"
-                                            href="{{ url('user/course/' . $course->id . '/lessons') }}">
+                                            href="{{ route('user.course.lessons' , $course->id) }}">
                                             <i class="bx bx-show me-2"></i>
                                             {{ trans('course.show') }}
                                         </a>

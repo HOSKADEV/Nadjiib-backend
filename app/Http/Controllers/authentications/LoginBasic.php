@@ -23,12 +23,7 @@ class LoginBasic extends Controller
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
-      if(auth()->user()->isAdmin()){
         return redirect()->intended('/')->withSuccess('Signed in');
-      }else{
-        return redirect()->intended('/user')->withSuccess('Signed in');
-      }
-
     }
 
     return redirect("/auth/login-basic")->withSuccess('Login details are not valid');

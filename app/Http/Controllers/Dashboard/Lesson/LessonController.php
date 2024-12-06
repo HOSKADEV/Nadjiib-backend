@@ -83,16 +83,16 @@ class LessonController extends Controller
     }
   }
 
-  public function destroy(Request $request)
+  public function delete(Request $request)
   {
 
     try {
       $lesson = Lesson::with('course','files', 'videos')->find($request->id);
       $user = auth()->user();
 
-      /* if (!($lesson->course->teacher->user_id == $user->id || $user->isAdmin())) {
+      if (!$user->isAdmin()) {
         throw new Exception(trans('message.prohibited'));
-      } */
+      }
 
       File::delete($lesson->videos->pluck('video_url'));
       File::delete($lesson->files->pluck('file_url'));
