@@ -79,7 +79,7 @@
                             <div class="row g-6">
                                 <div class="col-sm-6">
                                     <label class="form-label" for="name">Course name</label>
-                                    <input type="text" id="name" name="name" class="form-control"/>
+                                    <input type="text" id="name" name="name" class="form-control" />
                                 </div>
 
                                 <div class="col-sm-6">
@@ -92,7 +92,7 @@
 
                                 <div class="col-sm-6">
                                     <label class="form-label" for="price">Course price</label>
-                                    <input type="number" id="price" name="price" class="form-control"/>
+                                    <input type="number" id="price" name="price" class="form-control" />
                                 </div>
 
                                 <div class="col-sm-6">
@@ -145,9 +145,8 @@
                                 </div>
                                 <div class="col-sm-6" id="subjects_div">
                                     <label class="form-label" for="subject_id">Subject</label>
-                                    <select class="form-control selectpicker" id="sections_ids" name="sections_ids"
+                                    <select class="form-control selectpicker" id="subject_id" name="subject_id"
                                         data-dropup-auto="false">
-                                            <option value="" selected>Not selected</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-6" id="subject_name_div">
@@ -225,20 +224,66 @@
 
             $(document).on('click', '#next-1', function() {
                 const selected_type = $('#type_subject').val();
-                if(selected_type == "extracurricular"){
-                  $('#levels_ids').selectpicker('deselectAll');
-                  $('#sections_ids').selectpicker('deselectAll');
-                  $('#levels_div').hide();
-                  $('#sections_div').show();
-                }else{
-                  $('#levels_ids').selectpicker('deselectAll');
-                  $('#sections_ids').selectpicker('deselectAll');
-                  $('#levels_div').show();
-                  $('#sections_div').hide();
+                if (selected_type == "extracurricular") {
+                    $('#levels_ids').selectpicker('deselectAll');
+                    $('#sections_ids').selectpicker('deselectAll');
+                    $('#levels_div').hide();
+                    $('#sections_div').show();
+                } else {
+                    $('#levels_ids').selectpicker('deselectAll');
+                    $('#sections_ids').selectpicker('deselectAll');
+                    $('#levels_div').show();
+                    $('#sections_div').hide();
                 }
 
                 stepper.next();
             })
+
+            $(document).on('change', '#levels_ids', function() {
+                //console.log($(this).val());
+                const levels = $(this).val();
+
+                $('#subject_id').html('');
+
+                if (levels.length) {
+                    $.ajax({
+                        url: '{{ url('api/v1/subject/get') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'POST',
+                        data: {
+                            levels: $(this).val(),
+                            type: 'academic'
+                        },
+                        dataType: 'JSON',
+                        //contentType: false,
+                        //processData: false,
+                        success: function(response) {
+                            console.log(response.data);
+
+
+                            $.each(response.data, function() {
+                              console.log(this.id);
+                                $("#subject_id").append(`<option value="${this.id}"> ${this.name} </option>`);
+                            });
+
+
+                        },
+                        error: function(data) {
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+
+
+                    });
+                }
+
+                $('#subject_id').selectpicker('refresh');
+
+            })
+
+
         });
     </script>
 @endsection
