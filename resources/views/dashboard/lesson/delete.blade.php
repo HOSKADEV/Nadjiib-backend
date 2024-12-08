@@ -2,7 +2,6 @@
     <div class="modal-dialog" role="document">
         <form action="{{ route('dashboard.lessons.delete') }}" id="deleteLessonForm{{ $lesson->id}}" method="POST">
             @csrf
-            @method('DELETE')
             <input type="hidden" name="id" class="form-control" value="{{ $lesson->id}}">
 
             <div class="modal-content">

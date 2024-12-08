@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\User\Course;
 
+use Exception;
 use App\Models\Section;
+use App\Rules\NewSubject;
 use App\Enums\CourseStatus;
 use Illuminate\Http\Request;
+use App\Rules\ValidSubjectName;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Teacher\TeacherRepository;
@@ -85,7 +90,40 @@ class CourseController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validation = Validator::make($request->all(), [
+      'name' => 'required|string',
+      'description' => 'required',
+      'price' => 'required|numeric|min:0',
+      'type_subject' => 'required|in:academic,extracurricular',
+      'subject_id' => 'required_if:type_subject,academic|exists:subjects,id',
+      'sections_ids' => 'required_if:type_subject,extracurricular|array',
+      'levels_ids' => 'required_if:type_subject,academic|array',
+      'name_subject' => new ValidSubjectName($request),
+    ]);
+
+    if ($validation->fails()) {
+      return response()->json([
+        'status' => false,
+        'message' => 'Invalid data sent',
+        'errors' => $validation->errors()
+      ], 422);
+    }
+
+    try {
+
+      Session::put('courseData', $request->all());
+
+      return response()->json([
+        'status' => true,
+        'message' => 'success',
+      ]);
+
+    } catch (Exception $e) {
+      return response()->json([
+        'status' => false,
+        'message' => $e->getMessage()
+      ]);
+    }
   }
 
   /**

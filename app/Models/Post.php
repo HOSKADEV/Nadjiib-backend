@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -97,5 +98,17 @@ class Post extends Model
     $controller = new Controller();
 
     $controller->send_fcm_multi($notice->title(), $notice->content(), array_filter($students));
+  }
+
+  public function video_url()
+  {
+
+    if($this->video_url){
+      if(File::exists($this->video_url)){
+        return url($this->video_url);
+      }
+    }
+
+    return null;
   }
 }

@@ -85,6 +85,14 @@
                 </a>
             </li>
 
+            <li
+                class="menu-item {{ request()->routeIs('dashboard.posts.index') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.posts.index') }}" class="menu-link">
+                    <i class='menu-icon bx bxs-comment-detail'></i>
+                    <div>{{ trans('menu.posts') }}</div>
+                </a>
+            </li>
+
             <li class="menu-item {{ request()->routeIs('dashboard.ads.index') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.ads.index') }}" class="menu-link">
                     <i class='menu-icon bx bxs-megaphone'></i>

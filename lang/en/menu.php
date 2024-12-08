@@ -17,5 +17,6 @@ return [
     'documentation' => 'Documentation',
     'policy' => 'Privacy policy',
     'about' => 'Terms of use',
-    'stats' => 'Statistics'
+    'stats' => 'Statistics',
+    'posts' => 'Posts',
 ];

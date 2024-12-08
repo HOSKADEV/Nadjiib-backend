@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Dashboard\Ad\AdController;
+use App\Http\Controllers\Dashboard\Post\PostController;
 use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Levels\LevelController;
 use App\Http\Controllers\Dashboard\Coupon\CouponController;
@@ -71,7 +72,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('payments', PaymentController::class);
 
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
-    Route::get('/lesson/delete', [LessonController::class,'delete'])->name('lessons.delete');
+    Route::post('/lesson/delete', [LessonController::class,'delete'])->name('lessons.delete');
     Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
     Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
@@ -79,6 +80,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::put('teachers/status', [TeacherController::class, 'changeStatus'])->name('teachers.changeStatus');
     Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course-lessons');
     Route::get('/payment/{id}/purchases', [PaymentController::class,'purchases'])->name('payment-purchases');
+    Route::get('/post/index', [PostController::class,'index'])->name('posts.index');
+    Route::post('/post/delete', [PostController::class,'delete'])->name('posts.delete');
 
     Route::get('/settings', [SettingController::class,'index']);
     Route::post('/setting/version/update', [SettingController::class,'version']);

@@ -31,8 +31,10 @@ class LessonController extends Controller
       $lessons = $course->lessons();
 
       if ($request->search) {
-        $lessons = $lessons->where('title', 'like', '%' . $request->search . '%')
-          ->orWhere('description', 'like', '%' . $request->search . '%');
+        $lessons = $lessons->where(function ($query) use ($request) {
+          $query->where('title', 'like', '%' . $request->search . '%')
+            ->orWhere('description', 'like', '%' . $request->search . '%');
+        });
       }
 
       $lessons = $lessons->paginate(10);
@@ -87,7 +89,7 @@ class LessonController extends Controller
   {
 
     try {
-      $lesson = Lesson::with('course','files', 'videos')->find($request->id);
+      $lesson = Lesson::with('files', 'videos')->find($request->id);
       $user = auth()->user();
 
       if (!$user->isAdmin()) {
