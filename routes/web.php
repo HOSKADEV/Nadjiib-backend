@@ -98,6 +98,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], fu
   Route::resource('posts', \App\Http\Controllers\User\Post\PostController::class);
   Route::get('/course/{id}/lessons', [\App\Http\Controllers\User\Lesson\LessonController::class,'index'])->name('course.lessons');
   Route::get('/course/{id}/lesson/create', [\App\Http\Controllers\User\Lesson\LessonController::class,'create'])->name('lessons.create');
+  Route::post('/courses/video/upload', [\App\Http\Controllers\User\Course\CourseController::class, 'upload_video'])->name('course.video');
+  Route::post('/courses/image/upload', [\App\Http\Controllers\User\Course\CourseController::class, 'upload_image'])->name('course.image');
   Route::post('/lesson/store', [\App\Http\Controllers\User\Lesson\LessonController::class,'store'])->name('lessons.store');
   Route::post('/lesson/delete', [\App\Http\Controllers\User\Lesson\LessonController::class,'delete'])->name('lessons.delete');
   Route::post('/lesson/video/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_video'])->name('lesson.video');

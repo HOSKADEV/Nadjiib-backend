@@ -123,16 +123,32 @@ $('#rotate-right').on('click', function () {
 $('#cancel-button').on('click', resetInterface);
 
 // Crop button
-$('#crop-button').on('click', function () {
-  croppieInstance.result({
+$('#image_submit_btn').on('click', function () {
+    croppieInstance.result({
     type: 'canvas',
     size: 'viewport'
   }).then(function (resp) {
-    // Display cropped image
-    resultDiv.html(
-      `<h3>Cropped Image:</h3><img src="${resp}" style="max-width:100%;">`);
+    $.ajax({
+      url: 'image/upload',
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'POST',
+      data: {
+          image: resp
+      },
+      dataType: 'JSON',
+      //contentType: false,
+      //processData: false,
+      success: function(response) {
+        $('#image_next_btn').prop('disabled', false);
+      },
+      error: function(data) {
+          var errors = data.responseJSON;
+          console.log(errors);
+      }
 
-    // Optional: You could also send this to a server
-    // fetch('/upload', { method: 'POST', body: resp })
+
+  });
   });
 });

@@ -22,6 +22,7 @@
     "laravel/tinker": "^2.7",
     "league/flysystem-aws-s3-v3": "^3.29",
     "pion/laravel-chunk-upload": "^1.5",
+    "protonemedia/laravel-mixins": "^3.7",
     "spatie/laravel-collection-macros": "^7.12",
     "spatie/laravel-query-builder": "^5.7",
     "yajra/laravel-datatables-oracle": "^10.7",

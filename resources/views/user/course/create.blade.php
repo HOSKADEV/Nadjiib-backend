@@ -163,10 +163,10 @@
                                 <div id="result"></div>
                             </div>
                             <div class="col-12 d-flex justify-content-between">
-                                <button class="btn btn-primary btn-prev">
-                                    <i class="bx bx-left-arrow-alt bx-sm ms-sm-n2 me-sm-2"></i>
-                                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                </button>
+                              <button class="btn btn-primary" id="image_submit_btn">
+                                <i class="bx bx-upload bx-sm ms-sm-n2 me-sm-2"></i>
+                                <span class="align-middle d-sm-inline-block d-none">{{ __('lesson.upload') }}</span>
+                              </button>
 
                                 <div id="controls">
                                     <button type="button" id="rotate-left" class="btn btn-icon btn-primary">
@@ -182,10 +182,10 @@
                                     </button>
                                 </div>
 
-                                <button class="btn btn-primary btn-next">
-                                    <span class="align-middle d-sm-inline-block d-none me-sm-2">Next</span>
-                                    <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                </button>
+                                <button class="btn btn-primary btn-next" id="image_next_btn" disabled>
+                                  <span class="align-middle d-sm-inline-block d-none me-sm-2">{{ __('lesson.next') }}</span>
+                                  <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
+                              </button>
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                     <div id="social-links" class="content">
                         <div class="row g-6">
                             <div class="col-12 mb-2">
-                                <form class="dropzone" id="video-form" action="{{ route('user.lesson.video') }}"
+                                <form class="dropzone" id="video-form" action="{{ route('user.course.video') }}"
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="dz-message needsclick col-12">
@@ -206,11 +206,11 @@
                                 </form>
                             </div>
                             <div class="col-12 d-flex justify-content-between">
-                                <button class="btn btn-primary btn-prev">
-                                    <i class="bx bx-left-arrow-alt bx-sm ms-sm-n2 me-sm-2"></i>
-                                    <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                </button>
-                                <button class="btn btn-success btn-submit">Submit</button>
+                              <button class="btn btn-primary" id="video_submit_btn">
+                                <i class="bx bx-upload bx-sm ms-sm-n2 me-sm-2"></i>
+                                <span class="align-middle d-sm-inline-block d-none">{{ __('lesson.upload') }}</span>
+                            </button>
+                            <button class="btn btn-success" id="video_next_btn" onclick="window.location.href='{{route('user.courses.index')}}'" disabled>{{ __('lesson.finish') }}</button>
                             </div>
                         </div>
                     </div>
@@ -392,6 +392,8 @@
                     }
                 });
             });
+
+
 
         });
     </script>
