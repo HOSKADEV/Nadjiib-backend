@@ -42,7 +42,7 @@
         <div class="nav-item d-flex align-items-center">
             <i class="bx bx-search fs-4 lh-0"></i>
             <input type="text" class="form-control border-0 shadow-none"
-            placeholder="{{ trans('app.search') }}" aria-label="{{ trans('app.search') }}">>
+            placeholder="{{ trans('app.search') }}" aria-label="{{ trans('app.search') }}">
         </div>
     </div>
     <!-- /Search -->
