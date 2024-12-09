@@ -12,4 +12,9 @@ return [
     'video' => 'الفيديو',
     'delete' => 'حذف المنشور',
     'delete_confirmation' => 'هل انت متاكد من عملية حذف هذا المنشور و الفيديو المتعلق به ؟',
+    'create_new_post' => 'إنشاء منشور جديد',
+    'content' => 'المحتوى',
+    'write_something' => 'اكتب شيئاً...',
+    'upload_video' => 'تحميل فيديو',
+    "my_posts" => "منشوراتي"
 ];

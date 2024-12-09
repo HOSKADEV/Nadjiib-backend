@@ -41,8 +41,8 @@
     <div class="navbar-nav align-items-center">
         <div class="nav-item d-flex align-items-center">
             <i class="bx bx-search fs-4 lh-0"></i>
-            <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                aria-label="Search...">
+            <input type="text" class="form-control border-0 shadow-none"
+            placeholder="{{ trans('app.search') }}" aria-label="{{ trans('app.search') }}">>
         </div>
     </div>
     <!-- /Search -->
@@ -61,7 +61,7 @@
                 <li>
                     <a class="dropdown-item {{ Session::get('locale') == 'en' ? 'active' : '' }}"
                         href="{{ url('lang/en') }}" data-language="en">
-                        <span class="align-middle">English</span>
+                        <span class="align-middle">{{trans('app.language_english')}}</span>
                     </a>
                 </li>
                 {{-- <li>
@@ -72,7 +72,7 @@
               <li> --}}
                 <a class="dropdown-item {{ Session::get('locale') == 'ar' ? 'active' : '' }}"
                     href="{{ url('lang/ar') }}" data-language="de">
-                    <span class="align-middle">Arabic</span>
+                    <span class="align-middle">{{trans('app.language_arabic')}}</span>
                 </a>
         </li>
     </ul>
@@ -89,12 +89,12 @@
         <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
             <li>
                 <a class="dropdown-item" href="{{ url('theme/light') }}" data-theme="light">
-                    <span class="align-middle"><i class='bx bx-sun me-2'></i>Light</span>
+                    <span class="align-middle"><i class='bx bx-sun me-2'></i>{{trans('app.theme_light')}}</span>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="{{ url('theme/dark') }}" data-theme="dark">
-                    <span class="align-middle"><i class="bx bx-moon me-2"></i>Dark</span>
+                    <span class="align-middle"><i class="bx bx-moon me-2"></i>{{trans('app.theme_dark')}}</span>
                 </a>
             </li>
             {{-- <li>
@@ -109,7 +109,7 @@
     <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
-                <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                <img src="{{ auth()->user()->image ? url(auth()->user()->image) : asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
             </div>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
@@ -118,13 +118,13 @@
                     <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt
+                                <img src="{{ auth()->user()->image ? url(auth()->user()->image) : asset('assets/img/avatars/1.png') }}" alt
                                     class="w-px-40 h-auto rounded-circle">
                             </div>
                         </div>
                         <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
-                            <small class="text-muted">Admin</small>
+                            <span class="fw-semibold d-block">{{auth()->user()->isAdmin() ? trans('app.adminstration') : auth()->user()->name}}</span>
+                            <small class="text-muted">{{auth()->user()->getAccountAttribute()}}</small>
                         </div>
                     </div>
                 </a>
@@ -138,28 +138,21 @@
                     <span class="align-middle">My Profile</span>
                 </a>
             </li> --}}
-            <li>
-                <a class="dropdown-item" href="{{ url('/dashboard/settings') }}">
-                    <i class='bx bx-cog me-2'></i>
-                    <span class="align-middle">Settings</span>
-                </a>
-            </li>
-            {{-- <li>
-                <a class="dropdown-item" href="javascript:void(0);">
-                    <span class="d-flex align-items-center align-middle">
-                        <i class="flex-shrink-0 bx bx-credit-card me-2 pe-1"></i>
-                        <span class="flex-grow-1 align-middle">Billing</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                    </span>
-                </a>
-            </li> --}}
-            <li>
-                <div class="dropdown-divider"></div>
-            </li>
+            @if(auth()->user()->isAdmin())
+              <li>
+                  <a class="dropdown-item" href="{{ url('/dashboard/settings') }}">
+                      <i class='bx bx-cog me-2'></i>
+                      <span class="align-middle">{{trans('app.settings')}}</span>
+                  </a>
+              </li>
+              <li>
+                  <div class="dropdown-divider"></div>
+              </li>
+            @endif
             <li>
                 <a class="dropdown-item" href="{{ url('/auth/logout') }}">
                     <i class='bx bx-power-off me-2'></i>
-                    <span class="align-middle">Log Out</span>
+                    <span class="align-middle">{{trans('app.logout')}}</span>
                 </a>
             </li>
         </ul>

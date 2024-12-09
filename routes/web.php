@@ -58,6 +58,9 @@ Route::get('/chargily/failed', 'App\Http\Controllers\API\Purchase\PurchaseContro
 Route::get('/purchase/success', 'App\Http\Controllers\API\Purchase\PurchaseController@success')->name('purchase-success');
 Route::get('/purchase/failed', 'App\Http\Controllers\API\Purchase\PurchaseController@failed')->name('purchase-failed');
 
+Route::get('/auth/redirect', 'App\Http\Controllers\authentications\LoginBasic@redirect')->name('google.redirect');
+Route::get('/auth/callback', 'App\Http\Controllers\authentications\LoginBasic@callback')->name('google.callback');
+
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth','role']], function () {
     Route::resource('sections', SectionController::class);
     Route::resource('levels', LevelController::class);
@@ -104,6 +107,10 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], fu
   Route::post('/lesson/delete', [\App\Http\Controllers\User\Lesson\LessonController::class,'delete'])->name('lessons.delete');
   Route::post('/lesson/video/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_video'])->name('lesson.video');
   Route::post('/lesson/files/upload', [\App\Http\Controllers\User\Lesson\LessonController::class, 'upload_files'])->name('lesson.files');
+
+  Route::get('/post/index', [\App\Http\Controllers\User\Post\PostController::class,'index'])->name('posts.index');
+  Route::post('/post/delete', [\App\Http\Controllers\User\Post\PostController::class,'delete'])->name('posts.delete');
+  Route::post('/post/create', [\App\Http\Controllers\User\Post\PostController::class,'create'])->name('posts.create');
 });
 
 Route::group(['middleware' => ['auth']], function () {

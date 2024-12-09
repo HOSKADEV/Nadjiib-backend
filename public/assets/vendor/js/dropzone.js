@@ -68,3 +68,37 @@ var e = `<div class="dz-preview dz-file-preview">
 
           }
       };
+
+
+      Dropzone.options.postForm = { // camelized version of the `id`
+        previewTemplate: e,
+        addRemoveLinks: true,
+        uploadMultiple: false,
+        paramName: "video", // The name that will be used to transfer the file
+        maxFilesize: 2048, // MB
+        maxFiles: 1,
+        parallelUploads: 5,
+        autoProcessQueue: false,
+        chunking: true,
+        //chunkSize: 5,
+        parallelChunkUploads: true,
+        init: function() {
+            var myDropzone = this;
+
+            document.getElementById("post_submit_btn").addEventListener("click", function(e) {
+              $('#post_submit_btn').attr('disabled', true);
+              $('#post_cancel_btn').attr('disabled', true);
+              $('#form-content').val($('#post-content').val());
+                e.preventDefault();
+                e.stopPropagation();
+                myDropzone.processQueue();
+            });
+
+            this.on("complete", function (file) {
+              if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                $('#createPostModal').modal('hide');
+                location.reload();
+              }
+            });
+        }
+    };

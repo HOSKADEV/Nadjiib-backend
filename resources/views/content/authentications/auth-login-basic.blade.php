@@ -23,7 +23,6 @@
           </div>
           <!-- /Logo -->
           <h4 class="mb-2">{{trans('app.welcome_to')}} {{ config('app.locale') == 'en' ? "Najiib" : "نجيب"  }}! 👋</h4>
-          {{-- <p class="mb-4">Please sign-in to your account and start the adventure</p> --}}
 
           <form id="formAuthentication" class="mb-3" action="{{url('/auth/login-action')}}" method="POST">
             @csrf
@@ -34,39 +33,28 @@
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">{{trans('app.password')}}</label>
-                {{-- <a href="{{url('auth/forgot-password-basic')}}">
-                  <small>Forgot Password?</small>
-                </a> --}}
               </div>
               <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
-                {{-- <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span> --}}
               </div>
             </div>
-            {{-- <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="remember-me">
-                <label class="form-check-label" for="remember-me">
-                  Remember Me
-                </label>
-              </div>
-            </div> --}}
             <div class="mb-3">
               <button class="btn btn-primary d-grid w-100" type="submit">{{trans('app.sign_in')}}</button>
             </div>
           </form>
 
-          {{-- <p class="text-center">
-            <span>New on our platform?</span>
-            <a href="{{url('auth/register-basic')}}">
-              <span>Create an account</span>
+          <div class="divider my-4">
+            <div class="divider-text">{{trans('app.or')}}</div>
+          </div>
+
+          <div class="mb-3">
+            <a href="{{ route('google.redirect') }}" class="btn btn-outline-primary w-100">
+              <i class="bx bxl-google me-2"></i> {{trans('app.sign_in_with_google')}}
             </a>
-          </p> --}}
+          </div>
         </div>
       </div>
     </div>
-    <!-- /Register -->
   </div>
-</div>
 </div>
 @endsection

@@ -152,6 +152,13 @@
                     <div>{{ trans('menu.courses') }}</div>
                 </a>
             </li>
+            <li
+                class="menu-item {{ request()->routeIs('user.posts.index') ? 'active' : '' }}">
+                <a href="{{ route('user.posts.index') }}" class="menu-link">
+                    <i class='menu-icon bx bxs-comment-detail'></i>
+                    <div>{{ trans('menu.posts') }}</div>
+                </a>
+            </li>
         @endif
     </ul>
 

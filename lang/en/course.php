@@ -39,5 +39,38 @@ return [
         'subject'  => 'Subject'
     ],
 
-    'search'=> 'Type course name'
+    'search'=> 'Type course name',
+
+    'create_course_wizard' => 'Create New Course',
+    'course_details' => 'Course Details',
+    'enter_course_information' => 'Setup course basic information',
+    'course_image' => 'Course Image',
+    'upload_course_image' => 'Upload course cover image',
+    'course_preview' => 'Course Preview',
+    'upload_preview_video' => 'Upload preview video',
+
+    'course_name' => 'Course Name',
+    'enter_course_name' => 'Enter course name',
+    'course_type' => 'Course Type',
+    'academic' => 'Academic',
+    'extracurricular' => 'Extracurricular',
+    'course_price' => 'Course Price',
+    'enter_course_price' => 'Enter course price',
+    'target_levels' => 'Target Levels',
+    'course_sections' => 'Course Sections',
+    'course_subject' => 'Course Subject',
+    'select_subject' => 'Select a subject',
+    'subject_name' => 'Subject Name',
+    'enter_subject_name' => 'Enter subject name',
+    'course_description' => 'Course Description',
+    'enter_course_description' => 'Describe your course',
+
+    'save' => 'Save',
+    'next' => 'Next',
+    'upload' => 'Upload',
+    'finish' => 'Finish',
+
+    'drag_drop_image_message' => 'Drag and drop course image here or click to select',
+    'video_dropzone_message' => 'Drop course preview video here or click to upload',
+    'video_dropzone_note' => 'Maximum file size: 2GB'
 ];
