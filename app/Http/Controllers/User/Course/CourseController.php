@@ -211,7 +211,7 @@ class CourseController extends Controller
       $extension = $video->getClientOriginalExtension();
       $filename = $video->getClientOriginalName();
       $basename = basename($filename, '.' . $extension);
-      $video_url = $video->move('temp/', $basename . time() . '.' . $extension);
+      $video_url = $video->move('videos/courses/video/', $basename . time() . '.' . $extension);
 
       $courseData = session('courseData');
 
@@ -273,7 +273,7 @@ class CourseController extends Controller
     $extension = $file->getClientOriginalExtension();
     $basename = basename($file->getClientOriginalName(), '.' . $extension);
     $filename = $basename . time() . '.' . $extension;
-    $path = 'temp/';
+    $path = 'images/courses/image/';
     $file_url = $path . $filename;
 
     Storage::disk('upload')->putFileAs($path, $file, $filename);
