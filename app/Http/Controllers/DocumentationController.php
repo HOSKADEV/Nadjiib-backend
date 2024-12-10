@@ -9,15 +9,23 @@ class DocumentationController extends Controller
 {
   public function privacy_policy()
   {
-    $privacy_policy = Documentation::privacy_policy()->content(session('locale'));
+    $privacy_policy = Documentation::privacy_policy();
 
-    return view('content.pages.documentation')->with('data', $privacy_policy);
+    $data = $privacy_policy->content(session('locale'));
+
+    $title = __($privacy_policy->name);
+
+    return view('content.pages.documentation',compact('data','title'));
   }
 
   public function about()
   {
-    $about = Documentation::about()->content(session('locale'));
+    $about = Documentation::about();
 
-    return view('content.pages.documentation')->with('data', $about);
+    $data = $about->content(session('locale'));
+
+    $title = __($about->name);
+
+    return view('content.pages.documentation',compact('data','title'));
   }
 }
