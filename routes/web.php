@@ -47,6 +47,8 @@ Route::post('/auth/register-action', 'App\Http\Controllers\authentications\Regis
 Route::post('/auth/login-action', 'App\Http\Controllers\authentications\LoginBasic@login');
 Route::get('/auth/forgot-password-basic', 'App\Http\Controllers\authentications\ForgotPasswordBasic@index')->name('auth-reset-password-basic');
 Route::get('/auth/logout', 'App\Http\Controllers\authentications\LogoutBasic@logout')->name('auth-logout');
+Route::get('/privacy_policy', 'App\Http\Controllers\DocumentationController@privacy_policy')->name('privacy-policy');
+Route::get('/terms_of_use', 'App\Http\Controllers\DocumentationController@about')->name('terms-of-use');
 
 
 Route::get('/error', 'App\Http\Controllers\pages\MiscError@index')->name('error');
