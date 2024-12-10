@@ -115,18 +115,18 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth']], fu
   Route::post('/post/create', [\App\Http\Controllers\User\Post\PostController::class,'create'])->name('posts.create');
 });
 
-Route::group(['middleware' => ['auth']], function () {
-  Route::get('/theme/{theme}', function ($theme) {
-      Session::put('theme', $theme);
-      return redirect()->back();
-  });
 
-  Route::get('/lang/{lang}', function ($lang) {
-      Session::put('locale', $lang);
-      App::setLocale($lang);
-      return redirect()->back();
-  });
+Route::get('/theme/{theme}', function ($theme) {
+    Session::put('theme', $theme);
+    return redirect()->back();
 });
+
+Route::get('/lang/{lang}', function ($lang) {
+    Session::put('locale', $lang);
+    App::setLocale($lang);
+    return redirect()->back();
+});
+
 
 
 /* Route::get('/uploader', function(){
