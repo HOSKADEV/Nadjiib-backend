@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html @if (Session::get('locale') == 'ar') dir="rtl" lang="ar" @endif>
+<html>
 
 <head>
   <meta charset="utf-8">
@@ -96,7 +96,7 @@
 
 <body class="index-page">
 <main class="main">
-    <div class="content-wrapper">
+    <div class="content-wrapper documentation"   @if (Session::get('locale') == 'ar') dir="rtl" lang="ar" @endif>
         {!! $data !!}
     </div>
 </main>
