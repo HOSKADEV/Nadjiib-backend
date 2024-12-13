@@ -72,7 +72,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
 
-    Route::get('/notifications', [NotificationController::class, 'get']);
+    Route::post('/notifications', [NotificationController::class, 'get']);
 
     Route::post('/notification/create', [NotificationController::class, 'create']);
     Route::post('/notification/read', [NotificationController::class, 'read']);

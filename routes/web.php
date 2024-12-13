@@ -77,13 +77,17 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('payments', PaymentController::class);
 
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
+
+    Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course.lessons');
+    Route::get('/course/{id}/lesson/create', [LessonController::class,'create'])->name('lessons.create');
+    Route::post('/lesson/store', [LessonController::class,'store'])->name('lessons.store');
     Route::post('/lesson/delete', [LessonController::class,'delete'])->name('lessons.delete');
-    Route::post('/lesson/video/upload', [LessonController::class, 'upload_video']);
-    Route::post('/lesson/files/upload', [LessonController::class, 'upload_files']);
+    Route::post('/lesson/video/upload', [LessonController::class, 'upload_video'])->name('lesson.video');
+    Route::post('/lesson/files/upload', [LessonController::class, 'upload_files'])->name('lesson.files');
+
     Route::post('users/upgrade', [UserController::class, 'upgradeAccount'])->name('users.upgrade');
     Route::put('users/status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
     Route::put('teachers/status', [TeacherController::class, 'changeStatus'])->name('teachers.changeStatus');
-    Route::get('/course/{id}/lessons', [LessonController::class,'index'])->name('course-lessons');
     Route::get('/payment/{id}/purchases', [PaymentController::class,'purchases'])->name('payment-purchases');
     Route::get('/post/index', [PostController::class,'index'])->name('posts.index');
     Route::post('/post/delete', [PostController::class,'delete'])->name('posts.delete');

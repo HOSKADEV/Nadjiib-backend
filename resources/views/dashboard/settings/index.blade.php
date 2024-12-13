@@ -174,9 +174,9 @@
                             </div>
                         </div>
 
-                        <div class="row  justify-content-between" style="margin-top:10px">
+                        <div class="row  justify-content-between mt-4 mb-3">
 
-                            <div class="form-group col-md-4 p-3">
+                            <div class="form-group col-md-4">
                                 <label class="form-label" for="standard_bonus">{{ __('Standard Percentages') }}</label>
                                 <div class="input-group input-group-merge">
                                     <input type="number" class="form-control" id="standard_bonus" name="standard_bonus"
@@ -185,7 +185,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-4 p-3">
+                            <div class="form-group col-md-4">
                                 <label class="form-label" for="invitation_bonus">{{ __('Invitation bonus') }}</label>
                                 <div class="input-group input-group-merge">
                                     <input type="number" class="form-control" id="invitation_bonus"
@@ -194,7 +194,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-4 p-3">
+                            <div class="form-group col-md-4">
                                 <label class="form-label"
                                     for="invitation_discount">{{ __('Invitation discount') }}</label>
                                 <div class="input-group input-group-merge">

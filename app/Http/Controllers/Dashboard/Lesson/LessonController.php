@@ -44,7 +44,27 @@ class LessonController extends Controller
     }
   }
 
-  public function create(Request $request)
+  public function create($id)
+  {
+
+    try{
+
+      $course = Course::whereNot('status','Refused')->findOrFail($id);
+
+      if (!auth()->user()->isAdmin()) {
+        throw new Exception();
+      }
+
+      return view('dashboard.lesson.create', compact('course'));
+
+    }catch(Exception $e){
+      return redirect()->route('error');
+    }
+
+
+  }
+
+  public function store(Request $request)
   {
     $validation = Validator::make($request->all(), [
       'course_id' => 'required|exists:courses,id',
