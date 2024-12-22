@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Chargily\ChargilyPay\ChargilyPay;
@@ -47,24 +48,17 @@ class AuthController extends Controller
 
       $firebase_user = $auth->getUser($request->uid);
 
-      $user = $this->user->findByEmail($firebase_user->email);
-
-      if (is_null($user)) {
-        $user = $this->user->create([
-          'name' => $firebase_user->displayName,
-          'email' => $firebase_user->email,
+      $user = User::firstOrCreate(
+        ['email' => $firebase_user->email],
+        [
+          'name' => $firebase_user->displayName ?? 'user#'.uuid_create(),
           'phone' => $firebase_user->phoneNumber,
           'image' => $firebase_user->photoUrl,
-        ]);
-      }
+        ]
+      );
 
       if ($request->has('fcm_token')) {
         $user->fcm_token = $request->fcm_token;
-        $user->save();
-      }
-
-      if (empty($user->name)) {
-        $user->name = 'user#' . $user->id;
         $user->save();
       }
 
