@@ -84,7 +84,7 @@ class AuthController extends Controller
         'status' => true,
         'message' => 'success',
         'token' => $token,
-        'data' => new UserResource($user),
+        'data' => new UserResource($user->refersh()),
       ]);
 
     } catch (Exception $e) {
