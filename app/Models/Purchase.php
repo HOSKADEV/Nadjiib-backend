@@ -37,12 +37,12 @@ class Purchase extends Model
 
   public function student()
   {
-    return $this->belongsTo(Student::class);
+    return $this->belongsTo(Student::class)->withTrashed();
   }
 
   public function Course()
   {
-    return $this->belongsTo(Course::class);
+    return $this->belongsTo(Course::class)->withTrashed();
   }
 
   public function transaction()

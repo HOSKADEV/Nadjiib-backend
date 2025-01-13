@@ -29,6 +29,6 @@ class PurchaseCoupon extends Model
 
     public function coupon()
     {
-        return $this->belongsTo(Coupon::class);
+        return $this->belongsTo(Coupon::class)->withTrashed();
     }
 }
