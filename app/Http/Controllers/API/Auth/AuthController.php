@@ -84,6 +84,7 @@ class AuthController extends Controller
         'status' => true,
         'message' => 'success',
         'token' => $token,
+        'wallet' => getWalletBalance($user->id),
         'data' => new UserResource($user->refresh()),
       ]);
 
