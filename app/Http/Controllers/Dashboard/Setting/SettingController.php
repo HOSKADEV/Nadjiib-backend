@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
-  public function index(){
+  public function index()
+  {
     $android = Version::android();
     $ios = Version::ios();
 
-    $posts_number = Setting::where('name','posts_number')->value('value');
+    /* $posts_number = Setting::where('name','posts_number')->value('value');
     $cloud_bonus = Setting::where('name','cloud_bonus')->value('value');
     $standard_bonus = Setting::where('name','standard_bonus')->value('value');
     $community_bonus = Setting::where('name','community_bonus')->value('value');
@@ -28,9 +29,13 @@ class SettingController extends Controller
     $facebook = Setting::where('name','facebook')->value('value');
     $instagram = Setting::where('name','instagram')->value('value');
     $ccp = Setting::where('name','ccp')->value('value');
-    $baridi_mob = Setting::where('name','baridi_mob')->value('value');
-    $form_image = Setting::where('name','form_image')->value('value');
-    $calls_duration = Setting::where('name','calls_duration')->value('value');
+    $baridi_mob = Setting::where('name','baridi_mob')->value('value'); */
+
+    $settings = Setting::pluck('value', 'name')->toArray();
+
+
+    $form_image = Setting::where('name', 'form_image')->value('value');
+    $calls_duration = Setting::where('name', 'calls_duration')->value('value');
 
     $calls_duration = CarbonInterval::seconds($calls_duration)->cascade();
     $form_image = $form_image ? url($form_image) : null;
@@ -40,30 +45,32 @@ class SettingController extends Controller
     $duration_seconds = $calls_duration->s;
 
     return view('dashboard.settings.index')
-    ->with('android',$android)
-    ->with('ios',$ios)
-    ->with('posts_number',$posts_number)
-    ->with('cloud_bonus',$cloud_bonus)
-    ->with('standard_bonus',$standard_bonus)
-    ->with('community_bonus',$community_bonus)
-    ->with('invitation_bonus',$invitation_bonus)
-    ->with('invitation_discount',$invitation_discount)
-    ->with('email',$email)
-    ->with('facebook',$facebook)
-    ->with('instagram',$instagram)
-    ->with('whatsapp',$whatsapp)
-    ->with('ccp',$ccp)
-    ->with('baridi_mob',$baridi_mob)
-    ->with('duration_hours',$duration_hours)
-    ->with('duration_minutes',$duration_minutes)
-    ->with('duration_seconds',$duration_seconds)
-    ->with('form_image', $form_image)
+      ->with('android', $android)
+      ->with('ios', $ios)
+      ->with('settings', $settings)
+      /*     ->with('posts_number',$posts_number)
+          ->with('cloud_bonus',$cloud_bonus)
+          ->with('standard_bonus',$standard_bonus)
+          ->with('community_bonus',$community_bonus)
+          ->with('invitation_bonus',$invitation_bonus)
+          ->with('invitation_discount',$invitation_discount)
+          ->with('email',$email)
+          ->with('facebook',$facebook)
+          ->with('instagram',$instagram)
+          ->with('whatsapp',$whatsapp)
+          ->with('ccp',$ccp)
+          ->with('baridi_mob',$baridi_mob) */
+      ->with('duration_hours', $duration_hours)
+      ->with('duration_minutes', $duration_minutes)
+      ->with('duration_seconds', $duration_seconds)
+      ->with('form_image', $form_image)
     ;
 
 
   }
 
-  public function version(Request $request){
+  public function version(Request $request)
+  {
     $validator = Validator::make($request->all(), [
       'android_version_number' => 'required',
       'android_build_number' => 'required',
@@ -79,7 +86,7 @@ class SettingController extends Controller
 
     if ($validator->fails()) {
       return response()->json([
-        'status'=> 0,
+        'status' => 0,
         'message' => $validator->errors()->first()
       ]);
     }
@@ -102,10 +109,27 @@ class SettingController extends Controller
 
 
     return response()->json([
-      'status'=> 1,
+      'status' => 1,
       'message' => 'success'
     ]);
 
+  }
+
+  public function update(Request $request)
+  {
+    //dd($request->all());
+    if ($request->hasFile('image')) {
+      $form_image = $request->image->store('images', 'upload');
+      $request->merge(['form_image' => $form_image]);
+    }
+    foreach ($request->except('image') as $key => $value) {
+      Setting::updateOrInsert(['name' => $key], ['value' => $value]);
+    }
+
+    return response()->json([
+      'status' => 1,
+      'message' => 'success',
+    ]);
   }
 
   public function misc(Request $request)
@@ -195,7 +219,7 @@ class SettingController extends Controller
 
     try {
 
-      if($request->hasFile('image')){
+      if ($request->hasFile('image')) {
         $form_image = $request->image->store('images', 'upload');
         $request->merge(['form_image' => $form_image]);
       }
@@ -216,18 +240,20 @@ class SettingController extends Controller
     }
   }
 
-  public function doc_index(Request $request){
-    if($request->route()->getName() == 'dashboard.documentation.policy'){
-      return view('dashboard.documentation.index')->with('documentation',Documentation::privacy_policy());
-    }elseif($request->route()->getName() == 'dashboard.documentation.about'){
-      return view('dashboard.documentation.index')->with('documentation',Documentation::about());
-    }else{
+  public function doc_index(Request $request)
+  {
+    if ($request->route()->getName() == 'dashboard.documentation.policy') {
+      return view('dashboard.documentation.index')->with('documentation', Documentation::privacy_policy());
+    } elseif ($request->route()->getName() == 'dashboard.documentation.about') {
+      return view('dashboard.documentation.index')->with('documentation', Documentation::about());
+    } else {
       return redirect()->back();
     }
 
   }
 
-  public function documentation(Request $request){
+  public function documentation(Request $request)
+  {
 
     //dd($request->all());
 
@@ -237,15 +263,16 @@ class SettingController extends Controller
       'content_en' => 'sometimes|string',
     ]);
 
-    if ($validator->fails()){
-      return response()->json([
+    if ($validator->fails()) {
+      return response()->json(
+        [
           'status' => 0,
           'message' => $validator->errors()->first()
         ]
       );
     }
 
-    try{
+    try {
 
       Documentation::updateOrInsert(
         ['name' => $request->name],
@@ -257,12 +284,13 @@ class SettingController extends Controller
         'message' => 'success',
       ]);
 
-    }catch(Exception $e){
-      return response()->json([
-        'status' => 0,
-        'message' => $e->getMessage()
-      ]
-    );
+    } catch (Exception $e) {
+      return response()->json(
+        [
+          'status' => 0,
+          'message' => $e->getMessage()
+        ]
+      );
     }
 
   }

@@ -30,6 +30,11 @@ class AnalyticsController extends Controller
 
     }
 
+    public function landing()
+  {
+    return view('content.pages.landing-page');
+  }
+
     public function stats(Request $request)
     {
 

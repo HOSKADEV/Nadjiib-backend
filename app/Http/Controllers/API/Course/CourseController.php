@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Course;
 
+use App\Http\Traits\sendAlert;
 use Exception;
 use App\Models\Course;
 use App\Models\Subject;
@@ -27,6 +28,7 @@ class CourseController extends Controller
   private $courseSection;
   private $courseLevel;
   use uploadFile;
+  use sendAlert;
 
   public function __construct(CourseRepository $course, CourseSectionRepository $courseSection, CourseLevelRepository $courseLevel)
   {
@@ -129,6 +131,11 @@ class CourseController extends Controller
         }
       }
       if ($course) {
+        $this->alertAdmins(
+          trans('course.course_created.title', ['course_id' => $course->id]),
+          trans('course.course_created.body', ['course_name' => $course->name]),
+          url('dashbaord/courses'),
+        );
         return response()->json([
           'status' => true,
           'message' => 'The course has been created successfully',
@@ -274,10 +281,10 @@ class CourseController extends Controller
       $course->wishlists()->delete();
       $course->delete();
 
-        return response()->json([
-          'status' => true,
-          'message' => 'Course deleted successfully.'
-        ]);
+      return response()->json([
+        'status' => true,
+        'message' => 'Course deleted successfully.'
+      ]);
 
     } catch (Exception $e) {
       return response()->json([
@@ -305,7 +312,7 @@ class CourseController extends Controller
       ], 403);
     }
 
-    try{
+    try {
 
       $user = $this->get_user_from_token($request->bearerToken());
       $request->merge(['user' => $user]);
@@ -324,7 +331,8 @@ class CourseController extends Controller
             Course::suggestions(10, $user)->get()->shuffle()->paginate(10) :
             Course::where('status', 'ACCEPTED')->inRandomOrder()->limit(10)->paginate(10)
           );
-        }if ($request->type == 'recommended') {
+        }
+        if ($request->type == 'recommended') {
           $courses = new PaginateCourseCollection(
             Course::recommended(10, $user)->count() > 0 ?
             Course::recommended(10, $user)->get()->shuffle()->paginate(10) :
@@ -335,7 +343,7 @@ class CourseController extends Controller
           $courses = new WishlistCollection($user?->student?->wishlists()->paginate(10));
         }
         if ($request->type == 'owned') {
-          $courses = $user?->student ?  new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(10)) : [];
+          $courses = $user?->student ? new PaginatedCourseStudentStatsCollection($user->student->owned_courses()->paginate(10)) : [];
         }
         if ($request->type == 'published') {
           $courses = $user?->teacher ? new PaginatedCourseTeacherStatsCollection($user->teacher->courses()->where('status', 'ACCEPTED')->paginate(10)) : [];
@@ -352,7 +360,8 @@ class CourseController extends Controller
         if ($request->has('teacher_id') && $request->teacher_id == $user?->teacher?->id) {
           /* $courses = Course::orderBy('created_at', 'DESC')->where('status', $request->status?? 'ACCEPTED'); */
           $courses = Course::orderBy('created_at', 'DESC');
-        } else {;
+        } else {
+          ;
           $courses = Course::orderBy('created_at', 'DESC')->where('status', 'ACCEPTED');
         }
 
@@ -390,7 +399,8 @@ class CourseController extends Controller
 
   }
 
-  public function info(Request $request){
+  public function info(Request $request)
+  {
     $validation = Validator::make($request->all(), [
       'course_id' => 'required|exists:courses,id'
     ]);

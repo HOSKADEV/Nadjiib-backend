@@ -71,5 +71,10 @@ return [
 
   "drag_drop_image_message" => "اسحب وأسقط صورة الدورة هنا أو انقر للاختيار",
   "video_dropzone_message" => "أسقط فيديو المعاينة هنا أو انقر للرفع",
-  "video_dropzone_note" => "الحد الأقصى لحجم الملف=> 2 جيجابايت"
+  "video_dropzone_note" => "الحد الأقصى لحجم الملف=> 2 جيجابايت",
+
+  'course_created' => [
+    'title' => 'دورة جديدة #:course_id',
+    'body' => 'تم إضافة دورة جديدة ":course_name" إلى المنصة'
+  ],
 ];

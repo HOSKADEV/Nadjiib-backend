@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use Exception;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Chargily\ChargilyPay\ChargilyPay;
@@ -63,8 +64,7 @@ class AuthController extends Controller
       }
 
       if (empty($user->customer_id)) {
-        $credentials = new Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')), true));
-        $chargily_pay = new ChargilyPay($credentials);
+        $chargily_pay = new ChargilyPay(new Credentials(Setting::chargily_credentials()));
         $customer = $chargily_pay->customers()->create([
           'name' => $user->name,
           'email' => $user->email,

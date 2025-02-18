@@ -143,13 +143,13 @@
                                             </a>
                                         @endif
 
-                                        @if ($course->status != 'ACCEPTED')
+                                        {{-- @if ($course->status != 'ACCEPTED') --}}
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#deleteCourseModal{{ $course->id }}">
                                                 <i class="bx bx-trash me-2"></i>
                                                 {{ trans('course.delete') }}
                                             </a>
-                                        @endif
+                                        {{-- @endif --}}
 
                                         <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                             data-bs-target="#createAdModal{{ $course->id }}">

@@ -2,7 +2,7 @@
 
   <!-- ! Hide app brand if navbar-full -->
   <div class="app-brand demo">
-    <a href="{{url('/')}}" class="app-brand-link">
+    <a href="{{url('/dashboard')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
         @include('_partials.macros',["width"=>25,"withbg"=>'#696cff'])
       </span>

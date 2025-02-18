@@ -17,7 +17,7 @@ class SettingsController extends Controller
   {
     try {
 
-      $email = Setting::where('name', 'email')->value('value');
+      /* $email = Setting::where('name', 'email')->value('value');
       $whatsapp = Setting::where('name', 'whatsapp')->value('value');
       $facebook = Setting::where('name', 'facebook')->value('value');
       $instagram = Setting::where('name', 'instagram')->value('value');
@@ -35,7 +35,22 @@ class SettingsController extends Controller
         'instagram' => $instagram,
         'success_url' => route('chargily-success'),
         'failure_url' => route('chargily-failed')
-      ];
+      ]; */
+
+      $data = Setting::whereNotIn('name', [
+        'posts_number',
+        'cloud_bonus',
+        'community_bonus',
+        'invitation_bonus',
+        'invitation_discount',
+        'calls_duration',
+        'standard_bonus',
+      ])->pluck('value', 'name')->toArray();
+      $data['success_url'] = route('chargily-success');
+      $data['failure_url'] = route('chargily-failed');
+      if(isset($data['form_image'])){
+        $data['form_image'] = url($data['form_image']);
+      }
 
       return response()->json([
         'status' => true,

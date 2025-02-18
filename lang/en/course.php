@@ -73,5 +73,11 @@ return [
 
   'drag_drop_image_message' => 'Drag and drop course image here or click to select',
   'video_dropzone_message' => 'Drop course preview video here or click to upload',
-  'video_dropzone_note' => 'Maximum file size: 2GB'
+  'video_dropzone_note' => 'Maximum file size: 2GB',
+
+  'course_created' => [
+    'title' => 'New Course Created: #:course_id',
+    'body' => 'A new course ":course_name" has been added to the platform'
+  ],
+
 ];

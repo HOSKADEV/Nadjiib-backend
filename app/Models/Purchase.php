@@ -260,8 +260,7 @@ class Purchase extends Model
   public function receipt(){
     $transaction = $this->transaction;
     if($this->payment_method=='chargily' && $transaction->checkout_id && empty($transaction?->receipt) ){
-      $credentials = new Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')),true));
-      $chargily_pay = new ChargilyPay($credentials);
+      $chargily_pay = new ChargilyPay(new Credentials(Setting::chargily_credentials()));
       $checkout = $chargily_pay->checkouts()->get($transaction->checkout_id);
 
       if($checkout){

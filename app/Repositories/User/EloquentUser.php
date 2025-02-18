@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Models\Setting;
 use Chargily\ChargilyPay\ChargilyPay;
 use App\Repositories\User\UserRepository;
 use Chargily\ChargilyPay\Auth\Credentials;
@@ -49,8 +50,7 @@ class EloquentUser implements UserRepository
     if ($user->customer_id) {
       $filtered_array = array_intersect_key($data, array_flip(['name', 'email', 'phone']));
       if (count($filtered_array)) {
-        $credentials = new Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')), true));
-        $chargily_pay = new ChargilyPay($credentials);
+        $chargily_pay = new ChargilyPay(new Credentials(Setting::chargily_credentials()));
         $chargily_pay->customers()->update($user->customer_id, $filtered_array);
       }
     }

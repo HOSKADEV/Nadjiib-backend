@@ -16,7 +16,9 @@ use Illuminate\Support\Carbon;
 use App\Http\Traits\uploadFile;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Chargily\ChargilyPay\ChargilyPay;
 use Illuminate\Support\Facades\Validator;
+use Chargily\ChargilyPay\Auth\Credentials;
 
 class PurchaseController extends Controller
 {
@@ -90,6 +92,12 @@ class PurchaseController extends Controller
 
       DB::commit();
 
+      $this->alertAdmins(
+        trans('purchase.purchase_made.title', ['purchase_id' => $purchase->id]),
+        trans('purchase.purchase_made.body', ['username' => $user->name]),
+        url('dashbaord/purchases'),
+      );
+
       return response()->json([
         'status' => true,
         'message' => 'success'
@@ -161,8 +169,7 @@ class PurchaseController extends Controller
       }
 
 
-      $credentials = new \Chargily\ChargilyPay\Auth\Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')), true));
-      $chargily_pay = new \Chargily\ChargilyPay\ChargilyPay($credentials);
+      $chargily_pay = new ChargilyPay(new Credentials(Setting::chargily_credentials()));
       $checkout = $chargily_pay->checkouts()->get($request->checkout_id);
 
       if (empty($checkout)) {

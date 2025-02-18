@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Setting;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +37,8 @@ use App\Http\Controllers\Dashboard\Notification\NotificationController;
 
 $controller_path = 'App\Http\Controllers';
 
-Route::get('/',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/',[AnalyticsController::class, 'landing'])->name('landing');
+Route::get('/dashboard',[AnalyticsController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/stats',[AnalyticsController::class, 'stats'])->name('stats')->middleware(['auth','role']);
 
 
@@ -93,10 +96,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::post('/post/delete', [PostController::class,'delete'])->name('posts.delete');
 
     Route::get('/settings', [SettingController::class,'index']);
-    Route::post('/setting/version/update', [SettingController::class,'version']);
-    Route::post('/setting/misc/update', [SettingController::class,'misc']);
-    Route::post('/setting/contact/update', [SettingController::class,'contact']);
-    Route::post('/setting/bank/update', [SettingController::class,'bank']);
+    Route::post('/version/update', [SettingController::class,'version']);
+    Route::post('/setting/update', [SettingController::class,'update']);
     Route::get('/documentation/policy',[SettingController::class,'doc_index'])->name('documentation.policy');
     Route::get('/documentation/about',[SettingController::class,'doc_index'])->name('documentation.about');
     Route::post('/documentation/update',[SettingController::class,'documentation']);
@@ -131,13 +132,20 @@ Route::get('/lang/{lang}', function ($lang) {
     return redirect()->back();
 });
 
+Route::get('/pusher/beams-auth', function (Request $request) {
 
+  $userID = $request->user()->id;
+  $userIDInQueryParam = $request->user_id;
 
-/* Route::get('/uploader', function(){
-  $courses = Course::all();
-  session()->put(['locale' => 'en']);
-  return view('dashboard.uploader')->with('courses',$courses);
+  $beamsClient = new \Pusher\PushNotifications\PushNotifications(Setting::pusher_credentials());
+
+  if ($userID != $userIDInQueryParam) {
+      return response('Inconsistent request', 401);
+  } else {
+      $beamsToken = $beamsClient->generateToken($userID);
+      return response()->json($beamsToken);
+  }
 });
 
-Route::post('/lesson/create', [LessonController::class, 'create']); */
+
 
