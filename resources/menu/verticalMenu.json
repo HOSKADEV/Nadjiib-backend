@@ -1,0 +1,50 @@
+{
+  "menu": [
+    {
+      "url": "dashboard-analytics",
+      "name": "menu.dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard-analytics"
+    },
+    {
+      "menuHeader": "menu.pages"
+    },
+    {
+      "name": "menu.sections",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "sections.index"
+    },
+    {
+      "name": "menu.levels",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "levels.index"
+    },
+    {
+      "name": "menu.subjects",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "subjects.index"
+    },
+    {
+      "name": "menu.subjects",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "subjects.index"
+    },
+    {
+      "name": "menu.subjects",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "subjects.index"
+    },
+    {
+      "name": "menu.subjects",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "cards-basic",
+      "url": "subjects.index"
+    }
+
+  ]
+}

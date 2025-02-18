@@ -1,0 +1,27 @@
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 100%;
+  height: 400px;
+  padding: 20px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 28px;
+  text-decoration: bold;
+  cursor: pointer;
+}
+
+#drop-area.highlight {
+  border-color: purple;
+}
+
+#image-cropper {
+  max-width: 700px;
+  margin: 20px auto;
+  display: none;
+}
+
+#controls {
+  display: none;
+  text-align: center;
+}
