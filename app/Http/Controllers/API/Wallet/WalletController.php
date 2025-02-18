@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Wallet;
 
 use App\Enums\WalletTransactionStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\uploadFile;
 use App\Models\WalletTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ use Exception;
 
 class WalletController extends Controller
 {
-
+  use uploadFile;
   public function deposit(Request $request)
   {
     $data = Validator::make($request->all(), [

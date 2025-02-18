@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\User;
 
+use App\Enums\WalletTransactionStatus;
 use App\Models\User;
 use App\Enums\CouponType;
 use App\Models\WalletTransaction;
@@ -173,8 +174,12 @@ class UserController extends Controller
   }
 
   public function updateTransaction(Request $request){
-    $transaction = WalletTransaction::find($request->id);
-    $transaction->update(['status' => $request->status]);
+    if($request->status == WalletTransactionStatus::SUCCESS){
+      validateTransaction($request->id);
+
+    }else{
+      cancelTransaction($request->id);
+    }
     return redirect()->back()->with('success', 'Transaction status updated successfully.');
   }
 }

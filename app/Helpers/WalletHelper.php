@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 function newTransaction(int $user_id,float $amount,string $paymentMehode,string|null $description = null,int $checkoutId= null, string|null $receipt = null,string|null $account = null): void
 {
-  $wallet = User::where('user_id', $user_id)->first();
+  $wallet = Wallet::where('user_id', $user_id)->first();
   if (!$wallet) {
    $wallet = findOrCreateWallet($user_id, $amount);
   }
@@ -26,7 +26,7 @@ function validateTransaction(int $transaction_id): void
     $transaction->update([
       'status' => WalletTransactionStatus::SUCCESS
     ]);
-    $wallet = User::where('user_id', $transaction->user_id)->first();
+    $wallet = Wallet::where('user_id', $transaction->user_id)->first();
     $wallet->update([
       'balance' => $wallet->balance + $transaction->amount
     ]);

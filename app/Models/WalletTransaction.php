@@ -33,30 +33,26 @@ class WalletTransaction extends Model
     }
 
     public function receipt(){
-      $transaction = $this->transaction;
-      if($this->payment_method=='chargily' && $transaction->checkout_id && empty($transaction?->receipt) ){
+      if($this->payment_method=='chargily' && $this->checkout_id && empty($this?->receipt) ){
         $credentials = new Credentials(json_decode(file_get_contents(base_path('chargily-pay-env.json')),true));
         $chargily_pay = new ChargilyPay($credentials);
-        $checkout = $chargily_pay->checkouts()->get($transaction->checkout_id);
+        $checkout = $chargily_pay->checkouts()->get($this->checkout_id);
 
         if($checkout){
           $pdf = Pdf::loadView('checkout.pdf', compact('checkout'));
           $pdf->render();
-          $filePath = 'documents/purchase/checkout/' . md5($transaction->checkout_id) . '.pdf';
+          $filePath = 'documents/purchase/checkout/' . md5($this->checkout_id) . '.pdf';
           Storage::put($filePath, $pdf->output());
-          $transaction->receipt = $filePath;
-          $transaction->save();
+          $this->receipt = $filePath;
+          $this->save();
         }
-
-
-
       }
 
-      return $transaction?->receipt;
+      return $this->receipt;
     }
 
     public function receipt_is(){
-      $filePath = $this->transaction?->receipt;
+      $filePath = $this?->receipt;
 
       if(empty($filePath)){
         return null;

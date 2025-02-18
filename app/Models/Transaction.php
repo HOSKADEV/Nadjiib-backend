@@ -20,6 +20,7 @@ class Transaction extends Model
         'checkout_id',
         'account',
         'receipt',
+        'student_id',
         'data'
     ];
 
