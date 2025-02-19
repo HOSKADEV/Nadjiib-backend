@@ -107,7 +107,7 @@
                                             {{ trans('user.edit') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('dashboard.users.wallet', $user->id) }}">
-                                          <i class='bx bxs-edit me-2'></i>
+                                          <i class='bx bxs-wallet-alt me-2'></i>
                                           {{ trans('user.wallet') }}
                                       </a>
                                         @if ($user->teacher == null)
