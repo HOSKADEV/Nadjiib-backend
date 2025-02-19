@@ -35,6 +35,11 @@ class User extends Authenticatable
     'baridi_mob',
   ];
 
+  public function wallet()
+  {
+      return $this->hasOne(Wallet::class);
+  }
+
   /**
    * The attributes that should be hidden for serialization.
    *

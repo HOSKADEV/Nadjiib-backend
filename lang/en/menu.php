@@ -19,4 +19,5 @@ return [
     'about' => 'Terms of use',
     'stats' => 'Statistics',
     'posts' => 'Posts',
+    "app-setting" => "App settings",
 ];

@@ -2,18 +2,19 @@
 
 return [
     'users'  => 'utilisateurs',
-    'name'   => 'Nom', 
-    'email'  => 'Email', 
-    'phone'  => 'Téléphone', 
+    'name'   => 'Nom',
+    'email'  => 'Email',
+    'phone'  => 'Téléphone',
     'gender' => 'Gender',
-    'image'  => 'Image', 
+    'image'  => 'Image',
     'role'   => 'Rôle',
     'status' => 'Statut',
+    "wallet" => "Portefeuille",
 
     'create'    => 'Ajouter un nouvel utilisateur',
     'edit'      => 'Modifier le profil utilisateur',
-    'update'    => 'Mettre à jour les données utilisateur',   
-    'delete'    => "Supprimer l'utilisateur",  
+    'update'    => 'Mettre à jour les données utilisateur',
+    'delete'    => "Supprimer l'utilisateur",
 
     'delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
     'label'=> [
@@ -27,9 +28,9 @@ return [
     'select'=>[
         'status' => "Choisir le statut d'utilisateur",
         'role'   => "Choisissez le rôle d'utilisateur",
-    ], 
+    ],
     "statuss" => [
         'active'   => 'Activé',
         'inactive' => 'Pas activé',
-    ], 
+    ],
 ];

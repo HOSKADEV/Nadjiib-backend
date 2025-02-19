@@ -4,6 +4,7 @@ namespace App\Repositories\User;
 
 use App\Models\User;
 use App\Models\Setting;
+use App\Models\WalletTransaction;
 use Chargily\ChargilyPay\ChargilyPay;
 use App\Repositories\User\UserRepository;
 use Chargily\ChargilyPay\Auth\Credentials;
@@ -74,6 +75,7 @@ class EloquentUser implements UserRepository
   public function findByEmail($email)
   {
     return User::whereEmail($email)->first();
+
   }
 
   /**
@@ -120,4 +122,28 @@ class EloquentUser implements UserRepository
 
     return $user;
   }
+
+    /**
+   * @param int $user_id
+   * @param int $perPage
+   * @param string|null $status
+   * @param string|null $searchFrom
+   * @param $searchTo
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|mixed
+   */
+  public function getTransactions(int $user_id, int $perPage,string|null $search = null,string|null $status = null, string|null $type = null)
+  {
+    $query = WalletTransaction::query()->where('user_id', $user_id);
+
+    if ($status) {
+      $query->where('status', $status);
+    }
+
+    $result = $query->orderBy('id', 'desc')
+      ->paginate($perPage);
+
+
+    return $result;
+  }
+
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard\User;
 
+use App\Enums\WalletTransactionStatus;
 use App\Models\User;
 use App\Enums\CouponType;
+use App\Models\WalletTransaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,6 +19,8 @@ class UserController extends Controller
   private $users;
   private $teachers;
   private $coupons;
+
+  private $wallet;
 
   /**
    * UserController constructor.
@@ -39,7 +43,7 @@ class UserController extends Controller
   public function index(Request $request)
   {
     $users = $this->users->paginate($perPage = 10, $request->search, $request->status, $request->role);
-
+    // dd($users);
     return view('dashboard.user.index', compact('users'));
   }
 
@@ -157,5 +161,25 @@ class UserController extends Controller
     ]);
     toastr()->success(trans('message.success.upgrade'));
     return redirect()->route('dashboard.users.index');
+  }
+
+  public function wallet(Request $request, $user){
+    $transactions = $this->users->getTransactions($user,$perPage = 10, $request->search, $request->status, $request->type);
+
+    $balance = getWalletBalance($user);
+    $user = $this->users->find($user);
+    $userName = $user->name;
+    // dd($user);
+    return view('dashboard.user.wallet', compact('transactions', 'balance', 'userName'));
+  }
+
+  public function updateTransaction(Request $request){
+    if($request->status == WalletTransactionStatus::SUCCESS){
+      validateTransaction($request->id);
+
+    }else{
+      cancelTransaction($request->id);
+    }
+    return redirect()->back()->with('success', 'Transaction status updated successfully.');
   }
 }

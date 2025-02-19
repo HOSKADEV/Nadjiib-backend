@@ -65,6 +65,7 @@
                         {{-- <th>{{ trans('user.role') }}</th> --}}
                         <th>{{ trans('user.account') }}</th>
                         <th>{{ trans('user.status') }}</th>
+                        <th>{{ trans('user.wallet') }}</th>
                         <th>{{ trans('app.actions') }}</th>
                     </tr>
                 </thead>
@@ -88,6 +89,8 @@
                                     {{ $user->status == 'ACTIVE' ? trans('app.status.Active') : trans('app.status.Inactive') }}
                                 </span>
                             </td>
+
+                            <td>{{ $user?->wallet->balance ?? '0.00' }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -103,6 +106,10 @@
                                             <i class='bx bxs-edit me-2'></i>
                                             {{ trans('user.edit') }}
                                         </a>
+                                        <a class="dropdown-item" href="{{ route('dashboard.users.wallet', $user->id) }}">
+                                          <i class='bx bxs-edit me-2'></i>
+                                          {{ trans('user.wallet') }}
+                                      </a>
                                         @if ($user->teacher == null)
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#upgradeAccountModal{{ $user->id }}">
@@ -155,7 +162,6 @@
         $(document).ready(function() {
             $('#status').on('change', function(event) {
                 // $("#name").focus();
-
                 timer = setTimeout(function() {
                     submitForm();
                 }, 1000);

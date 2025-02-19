@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Purchase;
 use App\Rules\ValidCoupon;
+use App\Enums\WalletAction;
 use App\Models\Transaction;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class PurchaseController extends Controller
       'course_id' => 'required|exists:courses,id',
       'coupon_code' => ['sometimes', 'exists:coupons,code', new ValidCoupon($request)],
       'invitation_code' => ['sometimes', 'exists:coupons,code', new ValidCoupon($request)],
-      'payment_method' => 'required|in:baridimob,poste,chargily',
+      'payment_method' => 'required|in:baridimob,poste,chargily,wallet',
       'account' => 'required_if:payment_method,baridimob',
       'receipt' => 'required_if:payment_method,baridimob|required_if:payment_method,poste',
       'checkout_id' => 'required_if:payment_method,chargily|string|unique:transactions'
@@ -82,8 +83,15 @@ class PurchaseController extends Controller
 
       $purchase->apply_bonuses($teacher, $invitation_code);
 
-      $transaction = Transaction::create($request->only('account', 'checkout_id') + ['purchase_id' => $purchase->id]);
-
+      $transaction = Transaction::create($request->only('account', 'checkout_id') + ['purchase_id' => $purchase->id,'student_id' => $student->id]);
+      if($request->payment_method == 'wallet'){
+        if(takeFromWallet($user->id, $purchase->total, WalletAction::BUY, 'wallet') == -1){
+          throw new Exception('insufficient balance');
+        }
+        $purchase->status = 'success';
+        $purchase->save();
+        $purchase->apply_subscription();
+      }
       if ($request->hasFile('receipt')) {
         $path = $this->SaveDocument($request->receipt, 'documents/purchase/receipt/');
         $transaction->receipt = $path->getPathName();
@@ -91,13 +99,6 @@ class PurchaseController extends Controller
       }
 
       DB::commit();
-
-      $this->alertAdmins(
-        trans('purchase.purchase_made.title', ['purchase_id' => $purchase->id]),
-        trans('purchase.purchase_made.body', ['username' => $user->name]),
-        url('dashbaord/purchases'),
-      );
-
       return response()->json([
         'status' => true,
         'message' => 'success'

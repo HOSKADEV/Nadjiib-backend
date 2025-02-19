@@ -53,4 +53,16 @@ interface UserRepository
      * @return mixed
      */
     public function changeStatus($id);
+
+     /**
+     * Paginate Users.
+     *
+     * @param int $user_id
+     * @param int $perPage
+     * @param string|null $search
+     * @param string| null $status
+     * @return mixed
+     */
+    public function getTransactions(int $user_id,int $perPage,string|null $search = null,string|null $status = null,string|null $type = null);
+
 }

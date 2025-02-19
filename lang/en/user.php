@@ -10,6 +10,7 @@ return [
     'account'   => 'Account',
     'role'   => 'Role',
     'status' => 'Status',
+    "wallet" => "Wallet",
 
     'create'    => 'Add a new user',
     'edit'      => 'Edit user Profile',

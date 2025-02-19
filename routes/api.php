@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\API\Wallet\WalletController;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonVideo;
@@ -69,6 +70,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/payment/confirm', [PaymentController::class, 'confirm']);
     Route::post('/payment/info', [PaymentController::class, 'info']);
     Route::post('/user/deactivate', [UserController::class, 'deactivate']);
+    Route::post('/wallet/deposit', [WalletController::class, 'deposit']);
+    Route::get('/wallet/transactions', [WalletController::class, 'getTransactions']);
 
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
 
@@ -154,21 +157,97 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::post('v1/test', function(Request $request){
-  $admins = \App\Models\User::where('role', 0)->where('status','ACTIVE')->pluck('id')->toArray();
+return Course::find(4)->ads;
+  $validation = Validator::make($request->all(), [
+    'course_id' => 'required|exists:courses,id',
+    'title' => 'required',
+    'description' => 'required',
+    'video_url' => 'required',
+    'video_filename' => 'sometimes',
+    'video_extension' => 'sometimes',
+    'video_duartion' => 'sometimes',
+    'file_url' => 'sometimes',
+    'file_filename' => 'sometimes',
+    'file_extension' => 'sometimes',
+    'file_duartion' => 'sometimes',
+  ]);
 
-      $beamsClient = new \Pusher\PushNotifications\PushNotifications(\App\Models\Setting::pusher_credentials());
+  if ($validation->fails()) {
+    return response()->json([
+      'status' => false,
+      'message' => 'Invalid data sent',
+      'errors' => $validation->errors()
+    ], 422);
+  }
 
-      $publishResponse = $beamsClient->publishToUsers(
-        array_map('strval', $admins),
-        [
-          "web" => [
-            "notification" => [
-              "title" => 'test',
-              "body" => 'notification test',
-              'deep_link' => url('dashboard/purchases'),
-            ]
-          ]
+  try {
+    DB::beginTransaction();
+
+    $lesson = Lesson::create($request->only(['course_id', 'title', 'description']));
+
+    if ($lesson) {
+
+      if ($request->has('video_url')) {
+
+          $file = $request->video_url;
+          $url = Controller::firestore($file, 'lessons/' . $lesson->id . '/videos');
+          LessonVideo::create([
+          'lesson_id' => $lesson->id,
+          'video_url' => $url,
+          'filename'=> $request->video_filename,
+          'extension'=> $request->video_extension,
+          'duration'=> $request->video_duration,
+          ]);
+
+      }
+
+      if ($request->has('file_url')) {
+        $files = $request->file_url;
+        $filenames = $request->file_filename;
+        $extensions = $request->file_extension;
+        $filesData = [];
+
+        $lenght = count($files);
+
+        for ($i = 0; $i < $lenght; $i++) {
+
+
+          $file_url = Controller::firestore($files[$i], 'lessons/' . $lesson->id . '/files');
+
+          $filesData[] = [
+            'lesson_id' => $lesson->id,
+            'file_url' => $file_url,
+            'filename' => $filenames[$i],
+            'extension' => $extensions[$i],
+            'created_at' => now(),
+            'updated_at' => now()
+          ];
+        }
+
+        \App\Models\LessonFile::insert($filesData);
+      }
+
+      DB::commit();
+      return response()->json([
+        'status' => true,
+        'message' => 'Lesson Create Successfully',
+        'data' => new LessonResource($lesson)
       ]);
+    } else {
+      DB::rollBack();
+      return response()->json([
+        'status' => false,
+        'message' => 'Lesson Create Failed',
+      ]);
+    }
+  } catch (Exception $e) {
+    DB::rollBack();
+    return response()->json([
+      'status' => false,
+      'message' => $e->getMessage()
+    ]);
+  }
+
 
 });
 

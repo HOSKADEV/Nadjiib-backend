@@ -121,6 +121,13 @@
                     <div>{{ trans('menu.payments') }}</div>
                 </a>
             </li>
+            <li
+                class="menu-item {{ request()->routeIs('dashboard.payments.index') || request()->routeIs('dashboard.payment-purchases') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.app-setting.index') }}" class="menu-link">
+                    <i class='menu-icon bx bxs-gear'></i>
+                    <div>{{ trans('menu.app-setting') }}</div>
+                </a>
+            </li>
 
             <li
                 class="menu-item {{ str_contains(request()->route()->getName(), 'dashboard.documentation') ? 'active open' : '' }}">

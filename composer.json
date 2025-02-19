@@ -13,6 +13,7 @@
     "askedio/laravel-soft-cascade": "^10.0",
     "barryvdh/laravel-dompdf": "^3.0",
     "chargily/chargily-pay": "^2.0",
+    "doctrine/dbal": "^3.9",
     "enyo/dropzone": "^5.9",
     "guzzlehttp/guzzle": "^7.2",
     "illuminate/support": "*",
@@ -24,7 +25,6 @@
     "league/flysystem-aws-s3-v3": "^3.29",
     "pion/laravel-chunk-upload": "^1.5",
     "protonemedia/laravel-mixins": "^3.7",
-    "pusher/pusher-push-notifications": "^2.0",
     "spatie/laravel-collection-macros": "^7.12",
     "spatie/laravel-query-builder": "^5.7",
     "yajra/laravel-datatables-oracle": "^10.7",
@@ -43,7 +43,10 @@
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
-    }
+    },
+    "files": [
+      "app/Helpers/WalletHelper.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

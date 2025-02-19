@@ -21,6 +21,7 @@ use App\Http\Controllers\Dashboard\Subject\SubjectController;
 use App\Http\Controllers\Dashboard\Teacher\TeacherController;
 use App\Http\Controllers\Dashboard\Purchase\PurchaseController;
 use App\Http\Controllers\Dashboard\Analytics\AnalyticsController;
+use App\Http\Controllers\Dashboard\AppSetting\AppSettingController;
 use App\Http\Controllers\Dashboard\LevelSubject\LevelSubjectController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
 
@@ -78,6 +79,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('notices', NotificationController::class);
     Route::resource('purchases', PurchaseController::class);
     Route::resource('payments', PaymentController::class);
+    Route::resource('app-setting', AppSettingController::class);
+    Route::get('users/wallet/{user}',[UserController::class,'wallet'])->name('users.wallet');
+    Route::put('wallet/transaction/status', [UserController::class, 'updateTransaction'])->name('wallet.update');
 
     Route::post('notices/broadcast', [NotificationController::class, 'broadcast'])->name('notices.broadcast');
 
