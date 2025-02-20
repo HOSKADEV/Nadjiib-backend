@@ -72,7 +72,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/user/deactivate', [UserController::class, 'deactivate']);
     Route::post('/wallet/deposit', [WalletController::class, 'deposit']);
     Route::get('/wallet/transactions', [WalletController::class, 'getTransactions']);
-
+    Route::get('/wallet/balance', [WalletController::class, 'getBalance']);
     Route::post('/lesson/complete', [CompletedLessonController::class, 'create']);
 
     Route::post('/notifications', [NotificationController::class, 'get']);
