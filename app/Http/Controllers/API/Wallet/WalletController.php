@@ -111,4 +111,14 @@ class WalletController extends Controller
       return redirect()->route('error');
     }
   }
+
+  public function getBalance()
+  {
+    $user = Auth::user();
+    $balance = getWalletBalance($user->id);
+    return response()->json([
+      'status' => true,
+      'data' => $balance
+    ]);
+  }
 }
