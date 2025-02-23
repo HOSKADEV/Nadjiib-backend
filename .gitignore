@@ -5,6 +5,7 @@
 /vendor
 .env.backup
 .env
+najiib-app-5070a-firebase-adminsdk-ziqok-f175205356.json
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -19,6 +20,7 @@ public/mix-manifest.json
 public/videos
 public/images
 public/documents
+
 # But not these files...
 # public/assets/*
 # public/assets/js

@@ -10,4 +10,5 @@ return [
     'coupons'        => 'Coupons',
     'users'          => 'Utilisateurs',
     "app-setting" => "Paramètres de l'application",
+    'wallet' => 'Dépôts',
 ];

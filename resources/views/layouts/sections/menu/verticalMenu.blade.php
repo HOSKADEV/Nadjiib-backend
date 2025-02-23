@@ -77,6 +77,12 @@
                     <div>{{ trans('menu.users') }}</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.users.index') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.wallet.index') }}" class="menu-link">
+                    <i class='menu-icon bx bxs-wallet-alt'></i>
+                    <div>{{ trans('menu.wallet') }}</div>
+                </a>
+            </li>
             <li
                 class="menu-item {{ request()->routeIs('dashboard.courses.index') || request()->routeIs('dashboard.course-lessons') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.courses.index') }}" class="menu-link">

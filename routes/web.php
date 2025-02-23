@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\Dashboard\Wallet\WalletController;
 use App\Models\Course;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -80,6 +82,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('purchases', PurchaseController::class);
     Route::resource('payments', PaymentController::class);
     Route::resource('app-setting', AppSettingController::class);
+    Route::resource('wallet', WalletController::class);
     Route::get('users/wallet/{user}',[UserController::class,'wallet'])->name('users.wallet');
     Route::put('wallet/transaction/status', [UserController::class, 'updateTransaction'])->name('wallet.update');
 

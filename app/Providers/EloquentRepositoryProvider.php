@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Repositories\User\EloquentUser;
+use App\Repositories\Wallet\EloquentWallet;
+use App\Repositories\Wallet\WalletRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Level\EloquentLevel;
 use App\Repositories\User\UserRepository;
@@ -66,6 +68,8 @@ class EloquentRepositoryProvider extends ServiceProvider
 
         $this->app->bind(ReviewRepository::class, EloquentReview::class);
         $this->app->bind(WishlistRepository::class, EloquentWishlist::class);
+        $this->app->bind(WalletRepository::class, EloquentWallet::class);
+
 
     }
 

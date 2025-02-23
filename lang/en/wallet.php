@@ -15,6 +15,9 @@ return [
     "status" => "Status",
     "type" => "Type",
     "amount" => "Amount",
+    "action" => "Action",
+    "user" => "User",
+    "date" => "Date",
 
   ]
 ];
