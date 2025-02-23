@@ -12,7 +12,7 @@ function newTransaction(int $user_id,float $amount,string $paymentMehode,string|
 {
   $wallet = Wallet::where('user_id', $user_id)->first();
   if (!$wallet) {
-   $wallet = findOrCreateWallet($user_id, $amount);
+   $wallet = findOrCreateWallet($user_id);
   }
 
   createWalletTransaction($user_id, $amount, WalletAction::DEPOSIT, WalletTransactionStatus::PENDING,$paymentMehode, $checkoutId, $receipt, $account, $description);
