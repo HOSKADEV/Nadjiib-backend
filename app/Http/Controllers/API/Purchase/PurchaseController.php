@@ -85,7 +85,7 @@ class PurchaseController extends Controller
 
       $transaction = Transaction::create($request->only('account', 'checkout_id') + ['purchase_id' => $purchase->id,'student_id' => $student->id]);
       if($request->payment_method == 'wallet'){
-        if(takeFromWallet($user->id, $purchase->total, WalletAction::BUY, 'wallet') == -1){
+        if(takeFromWallet($user->id, $purchase->total, WalletAction::BUY, 'wallet',$course->name) == -1){
           throw new Exception('insufficient balance');
         }
         $purchase->status = 'success';
