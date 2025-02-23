@@ -44,7 +44,6 @@ class AuthController extends Controller
     }
 
     $auth = Firebase::auth();
-// dd($request->uid);
     try {
 
       $firebase_user = $auth->getUser($request->uid);
