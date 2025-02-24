@@ -50,7 +50,6 @@
                 <thead>
                     <tr class="text-nowrap">
                         <th>#</th>
-                        <th>{{ trans('wallet.label.type') }}</th>
                         <th>{{ trans('wallet.label.user') }}</th>
                         <th>{{ trans('wallet.label.date') }}</th>
                         <th>{{ trans('wallet.label.amount') }}</th>
@@ -62,11 +61,10 @@
                     @foreach ($transactions as $key => $tr)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td class="td-3">{{ $tr->type }}</td>
                             <td class="td-3">{{ $tr->user->name }}</td>
                             <td class="td-3">{{ $tr->created_at }}</td>
                             <td class="td-3">{{ $tr->amount }}</td>
-                            <td class="td-3">{{ $tr->status }}</td>
+                            <td class="td-3">{{App\Enums\WalletTransactionStatus::get($tr->status)}}</td>
                             <td class="td-3">
                               <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

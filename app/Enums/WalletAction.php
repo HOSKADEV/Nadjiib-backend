@@ -13,9 +13,9 @@ class WalletAction
     public static function lists()
     {
         return [
-            self::DEPOSIT => trans('app.deposit'),
-            self::WITHDRAW => trans('app.withdraw'),
-            self::BUY => trans('app.buy'),
+            self::DEPOSIT => trans('wallet.types.deposit'),
+            self::WITHDRAW => trans('wallet.types.withdraw'),
+            self::BUY => trans('wallet.types.buy'),
         ];
     }
 

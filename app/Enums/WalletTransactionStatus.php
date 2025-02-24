@@ -13,9 +13,9 @@ class WalletTransactionStatus
   public static function lists()
   {
     return [
-      self::PENDING => trans('app.status.pending'),
-      self::SUCCESS => trans('app.status.success'),
-      self::FAILED => trans('app.status.failed'),
+      self::PENDING => trans('wallet.statuss.pending'),
+      self::SUCCESS => trans('wallet.statuss.success'),
+      self::FAILED => trans('wallet.statuss.failed'),
     ];
   }
   public static function lists2()

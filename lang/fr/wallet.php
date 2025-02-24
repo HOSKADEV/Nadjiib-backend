@@ -11,6 +11,7 @@ return [
   "types" => [
     'buy'   => 'Acheter',
     'deposit' => 'Dépôt',
+    'withdraw' => 'Retrait',
   ],
   "label" => [
     "status" => "Statut",

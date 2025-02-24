@@ -10,6 +10,7 @@ return [
   "types" => [
     'buy'   => 'Buy',
     'deposit' => 'Deposit',
+    'withdraw' => 'Withdraw',
   ],
   "label" => [
     "status" => "Status",

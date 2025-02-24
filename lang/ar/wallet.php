@@ -10,6 +10,7 @@ return [
   "types" => [
     'buy'   => 'شراء',
     'deposit' => 'ايداع',
+    'withdraw' => 'سحب',
   ],
   "label" => [
     "status" => "حالة التحويل",

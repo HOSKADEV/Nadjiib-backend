@@ -76,9 +76,9 @@
                     @foreach ($transactions as $key => $tr)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td class="td-3">{{ $tr->type }}</td>
+                            <td class="td-3">{{App\Enums\WalletAction::get($tr->type)}}</td>
                             <td class="td-3">{{ $tr->amount }}</td>
-                            <td class="td-3">{{ $tr->status }}</td>
+                            <td class="td-3">{{App\Enums\WalletTransactionStatus::get($tr->status)}}</td>
                             <td class="td-3">
                               <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
