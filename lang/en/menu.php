@@ -20,5 +20,5 @@ return [
     'stats' => 'Statistics',
     'posts' => 'Posts',
     "app-setting" => "App settings",
-    'wallet' => 'Deposits',
+    'wallet' => 'Wallet (Deposits)',
 ];

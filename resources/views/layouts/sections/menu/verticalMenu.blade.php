@@ -78,11 +78,23 @@
                 </a>
             </li>
             <li class="menu-item {{ request()->routeIs('dashboard.users.index') ? 'active' : '' }}">
-                <a href="{{ route('dashboard.wallet.index') }}" class="menu-link">
-                    <i class='menu-icon bx bxs-wallet-alt'></i>
-                    <div>{{ trans('menu.wallet') }}</div>
-                </a>
-            </li>
+              <a href="{{ route('dashboard.wallet.index') }}" class="menu-link">
+                  <div style="position: relative; display: inline-block;">
+                      <i class="menu-icon bx bxs-wallet-alt"></i>
+                      @php
+                          $pendingCount = App\Models\WalletTransaction::where('status', 'pending')->count();
+                      @endphp
+                      @if($pendingCount > 0)
+                          <span style="position: absolute; top: -5px; right: 5px; background-color: red; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.6rem; width: 1rem; height: 1rem;">
+                              {{ $pendingCount }}
+                          </span>
+                      @endif
+                  </div>
+                  <div>
+                      {{ trans('menu.wallet') }}
+                  </div>
+              </a>
+          </li>
             <li
                 class="menu-item {{ request()->routeIs('dashboard.courses.index') || request()->routeIs('dashboard.course-lessons') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.courses.index') }}" class="menu-link">
