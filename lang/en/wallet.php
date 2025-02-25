@@ -19,6 +19,7 @@ return [
     "action" => "Action",
     "user" => "User",
     "date" => "Date",
+    "description" => "Description",
 
   ]
 ];

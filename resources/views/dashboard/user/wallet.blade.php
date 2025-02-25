@@ -68,7 +68,9 @@
                         <th>#</th>
                         <th>{{ trans('wallet.label.type') }}</th>
                         <th>{{ trans('wallet.label.amount') }}</th>
+                        <th>{{ trans('wallet.label.description') }}</th>
                         <th>{{ trans('wallet.label.status') }}</th>
+
                         <th>{{ trans('wallet.label.action') }}</th>
                     </tr>
                 </thead>
@@ -78,6 +80,7 @@
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td class="td-3">{{App\Enums\WalletAction::get($tr->type)}}</td>
                             <td class="td-3">{{ $tr->amount }}</td>
+                            <td class="td-3">{{ $tr->description }}</td>
                             <td class="td-3">{{App\Enums\WalletTransactionStatus::get($tr->status)}}</td>
                             <td class="td-3">
                               <div class="dropdown">
